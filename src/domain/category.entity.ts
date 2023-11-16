@@ -30,4 +30,30 @@ export class Category {
   static create(props: CategoryCreateProps): Category {
     return new Category(props);
   }
+
+  public changeName(name: string): void {
+    this.name = name;
+  }
+
+  public changeDescription(description: string | null): void {
+    this.description = description;
+  }
+
+  public activate(): void {
+    this.is_active = true;
+  }
+
+  public deactivate(): void {
+    this.is_active = false;
+  }
+
+  public toJSON(): CategoryProps {
+    return {
+      category_id: this.category_id,
+      name: this.name,
+      description: this.description,
+      is_active: this.is_active,
+      created_at: this.created_at
+    }
+  }
 }
