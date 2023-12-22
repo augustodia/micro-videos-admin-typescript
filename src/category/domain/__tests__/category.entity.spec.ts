@@ -1,6 +1,11 @@
 import { Uuid } from "../../../shared/domain/value-objects/uuid.vo";
 import { Category } from "../category.entity"
 
+let validateSpy: jest.SpyInstance;
+
+beforeEach(() => {
+  validateSpy = jest.spyOn(Category, 'validate');
+})
 describe('Category Unit Tests', () => {
   describe('constructor', () => {
     
@@ -53,6 +58,7 @@ describe('create command', () => {
     expect(category.description).toBeNull();
     expect(category.is_active).toBe(true);
     expect(category.created_at).toBeInstanceOf(Date);
+    expect(validateSpy).toHaveBeenCalledTimes(1);
   })
 
   test('should create a category with description', () => {
@@ -66,6 +72,7 @@ describe('create command', () => {
     expect(category.description).toBe('Movie description');
     expect(category.is_active).toBe(true);
     expect(category.created_at).toBeInstanceOf(Date);
+    expect(validateSpy).toHaveBeenCalledTimes(1);
   })
 
   test('should create a category with is_active false', () => {
@@ -79,6 +86,7 @@ describe('create command', () => {
     expect(category.description).toBeNull();
     expect(category.is_active).toBe(false);
     expect(category.created_at).toBeInstanceOf(Date);
+    expect(validateSpy).toHaveBeenCalledTimes(1)
   })
 
   test('should create a category with description and is_active false', () => {
@@ -93,6 +101,7 @@ describe('create command', () => {
     expect(category.description).toBe('Movie description');
     expect(category.is_active).toBe(false);
     expect(category.created_at).toBeInstanceOf(Date);
+    expect(validateSpy).toHaveBeenCalledTimes(1);
   })
 
   describe('category id', () => {
@@ -117,6 +126,7 @@ describe('create command', () => {
     category.changeName('Movie 2');
 
     expect(category.name).toBe('Movie 2');
+    expect(validateSpy).toHaveBeenCalledTimes(2);
   })
 
   test('should change description', () => {
@@ -127,6 +137,7 @@ describe('create command', () => {
     category.changeDescription('Movie description');
 
     expect(category.description).toBe('Movie description');
+    expect(validateSpy).toHaveBeenCalledTimes(2);
   })
 
   test('should activate', () => {
