@@ -1,3 +1,6 @@
+
+import { Entity } from "../../shared/domain/entity";
+import { EntityValidationError } from "../../shared/domain/errors/validation.error";
 import { Uuid } from "../../shared/domain/value-objects/uuid.vo";
 import { CategoryValidatorFactory } from "./category.validator";
 
@@ -9,13 +12,18 @@ export type CategoryProps = {
   created_at?: Date;
 }
 
+export type CategoryPropsUpdate = {
+  name?: string;
+  description?: string | null;
+}
+
 export type CategoryCreateProps = {
   name: string;
   description?: string | null;
   is_active?: boolean;
 }
 
-export class Category {
+export class Category extends Entity {
   category_id: Uuid;
   name: string;
   description: string | null;
@@ -23,11 +31,17 @@ export class Category {
   created_at?: Date;
 
   constructor(props: CategoryProps) {
+    super();
+
     this.category_id = props.category_id ?? new Uuid();
     this.name = props.name;
     this.description = props.description ?? null;
     this.is_active = props.is_active ?? true;
     this.created_at = props.created_at ?? new Date();
+  }
+
+  get entity_id(): Uuid {
+    return this.category_id;
   }
 
   static create(props: CategoryCreateProps): Category {
@@ -55,10 +69,20 @@ export class Category {
     this.is_active = false;
   }
 
-  static validate(entity: Category) {
-    const validator = CategoryValidatorFactory.create()
+  public update(props: CategoryPropsUpdate): void {
+    const hasNameUpdate = Object.keys(props).includes('name');
+    
+    if(hasNameUpdate) this.name = props.name ?? '';
+    this.description = props.description ?? null;
 
-    return validator.validate(entity);
+    Category.validate(this);
+  }
+
+  static validate(entity: Category) {
+    const validator = CategoryValidatorFactory.create();
+    const isValid = validator.validate(entity);
+
+    if (!isValid) throw new EntityValidationError(validator.errors);
   }
 
   public toJSON(): CategoryProps {

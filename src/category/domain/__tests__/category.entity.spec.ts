@@ -161,4 +161,102 @@ describe('create command', () => {
 
     expect(category.is_active).toBe(false);
   })
+
+  test('should update name', () => {
+    const category = Category.create({
+      name: 'Movie',
+    });
+
+    category.update({
+      name: 'Movie 2',
+    });
+
+    expect(category.name).toBe('Movie 2');
+    expect(validateSpy).toHaveBeenCalledTimes(2);
+  })
+
+  test('should update description', () => {
+    const category = Category.create({
+      name: 'Movie',
+    });
+
+    category.update({
+      description: 'Movie description',
+    });
+
+    expect(category.description).toBe('Movie description');
+    expect(validateSpy).toHaveBeenCalledTimes(2);
+  })
+
+  test('should update name and description', () => {
+    const category = Category.create({
+      name: 'Movie',
+    });
+
+    category.update({
+      name: 'Movie 2',
+      description: 'Movie description',
+    });
+
+    expect(category.name).toBe('Movie 2');
+    expect(category.description).toBe('Movie description');
+    expect(validateSpy).toHaveBeenCalledTimes(2);
+  })
+})
+
+describe('Category Validator', () => {
+  describe('Create command', () => {
+    it('should an invalid category with name property is null', () => {
+      expect(() => {
+        Category.create({
+          // @ts-ignore
+          name: null,
+        })
+      }).containsErrorMessages({
+        name: [
+          "name should not be empty",
+          "name must be a string",
+          "name must be shorter than or equal to 255 characters"
+        ]
+      })
+    })
+
+    it('should an invalid category with name property is empty', () => {
+      expect(() => {
+        Category.create({
+          name: '',
+        })
+      }).containsErrorMessages({
+        name: [
+          "name should not be empty",
+        ]
+      })
+    })
+
+    it('should an invalid category with name property is not a string', () => {
+      expect(() => {
+        Category.create({
+          // @ts-ignore
+          name: 1,
+        })
+      }).containsErrorMessages({
+        name: [
+          "name must be a string",
+          "name must be shorter than or equal to 255 characters"
+        ]
+      })
+    })
+
+    it('should an invalid category with name property is longer than 255 characters', () => {
+      expect(() => {
+        Category.create({
+          name: 'a'.repeat(256),
+        })
+      }).containsErrorMessages({
+        name: [
+          "name must be shorter than or equal to 255 characters"
+        ]
+      })
+    })
+  })
 })
