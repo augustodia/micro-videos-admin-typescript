@@ -11,8 +11,11 @@ export type SearchParamsConstructorProps<E extends Entity, Filter = string> = {
   filter?: Filter | null;
 };
 
-export class SearchParams<E extends Entity, Filter = string, > extends ValueObject {
-  protected _page: number;
+export class SearchParams<
+  E extends Entity,
+  Filter = string
+> extends ValueObject {
+  protected _page: number = 1;
   protected _per_page: number = 15;
   protected _sort: keyof E | null;
   protected _sort_dir: SortDirection | null;
@@ -20,11 +23,11 @@ export class SearchParams<E extends Entity, Filter = string, > extends ValueObje
 
   constructor(props: SearchParamsConstructorProps<E, Filter> = {}) {
     super();
-    this.page = props.page!;
-    this.per_page = props.per_page!;
-    this.sort = props.sort!;
-    this.sort_dir = props.sort_dir!;
-    this.filter = props.filter!;
+    this.page = props.page ?? 1;
+    this.per_page = props.per_page ?? 15;
+    this.sort = props.sort ?? null;
+    this.sort_dir = props.sort_dir ?? null;
+    this.filter = props.filter ?? null;
   }
 
   get page() {
@@ -63,8 +66,11 @@ export class SearchParams<E extends Entity, Filter = string, > extends ValueObje
     return this._sort;
   }
 
-  private set sort(value: keyof E | null ) {
-    this._sort = value === null || value === undefined || value === '' ? null : (String(value) as keyof E);
+  private set sort(value: keyof E | null) {
+    this._sort =
+      value === null || value === undefined || value === ""
+        ? null
+        : (String(value) as keyof E);
   }
 
   get sort_dir(): SortDirection | null {
