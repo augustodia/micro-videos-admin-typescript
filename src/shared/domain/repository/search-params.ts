@@ -1,23 +1,24 @@
+import { Entity } from "../entity";
 import { ValueObject } from "../value-object";
 
 export type SortDirection = "asc" | "desc";
 
-export type SearchParamsConstructorProps<Filter = string> = {
+export type SearchParamsConstructorProps<E extends Entity, Filter = string> = {
   page?: number;
   per_page?: number;
-  sort?: string | null;
+  sort?: keyof E | null;
   sort_dir?: SortDirection | null;
   filter?: Filter | null;
 };
 
-export class SearchParams<Filter = string> extends ValueObject {
+export class SearchParams<E extends Entity, Filter = string, > extends ValueObject {
   protected _page: number;
   protected _per_page: number = 15;
-  protected _sort: string | null;
+  protected _sort: keyof E | null;
   protected _sort_dir: SortDirection | null;
   protected _filter: Filter | null;
 
-  constructor(props: SearchParamsConstructorProps<Filter> = {}) {
+  constructor(props: SearchParamsConstructorProps<E, Filter> = {}) {
     super();
     this.page = props.page!;
     this.per_page = props.per_page!;
@@ -58,13 +59,12 @@ export class SearchParams<Filter = string> extends ValueObject {
     this._per_page = _per_page;
   }
 
-  get sort(): string | null {
+  get sort(): keyof E | null {
     return this._sort;
   }
 
-  private set sort(value: string | null) {
-    this._sort =
-      value === null || value === undefined || value === "" ? null : `${value}`;
+  private set sort(value: keyof E | null ) {
+    this._sort = value === null || value === undefined || value === '' ? null : (String(value) as keyof E);
   }
 
   get sort_dir(): SortDirection | null {

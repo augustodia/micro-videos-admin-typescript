@@ -85,11 +85,11 @@ describe('SearchParams Unit Tests', () => {
     params = new SearchParams({ sort: undefined });
     expect(params.sort_dir).toBeNull();
 
-    params = new SearchParams({ sort: '' });
+    params = new SearchParams<any>({ sort: '' });
     expect(params.sort_dir).toBeNull();
 
     expect(
-      new SearchParams({ sort: 'field', sort_dir: props.sort_dir as any })
+      new SearchParams<any>({ sort: 'field', sort_dir: props.sort_dir as any })
         .sort_dir,
     ).toBe(props.expected);
   });
