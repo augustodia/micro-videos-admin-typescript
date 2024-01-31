@@ -1,3 +1,4 @@
+import { CategoryFakeBuilder } from "../../domain/__tests__/category-fake.builder";
 import { Category } from "../../domain/category.entity";
 import { CategoryInMemoryRepository } from "./category-in-memory.repository";
 
@@ -6,7 +7,7 @@ describe("CategoryInMemoryRepository", () => {
 
   beforeEach(() => (repository = new CategoryInMemoryRepository()));
   it("should no filter items when filter object is null", async () => {
-    const items = [Category.create({ name: "test" })];
+    const items = [CategoryFakeBuilder.aCategory().build()];
     const filterSpy = jest.spyOn(items, "filter" as any);
 
     const itemsFiltered = await repository["applyFilter"](items, null);
@@ -16,9 +17,9 @@ describe("CategoryInMemoryRepository", () => {
 
   it("should filter items using filter parameter", async () => {
     const items = [
-      new Category({ name: "test" }),
-      new Category({ name: "TEST" }),
-      new Category({ name: "fake" }),
+      CategoryFakeBuilder.aCategory().withName("test").build(),
+      CategoryFakeBuilder.aCategory().withName("TEST").build(),
+      CategoryFakeBuilder.aCategory().withName("fake").build(),
     ];
     const filterSpy = jest.spyOn(items, "filter" as any);
 
@@ -30,17 +31,7 @@ describe("CategoryInMemoryRepository", () => {
   it("should sort by created_at when sort param is null", async () => {
     const created_at = new Date();
 
-    const items = [
-      new Category({ name: "test", created_at }),
-      new Category({
-        name: "TEST",
-        created_at: new Date(created_at.getTime() + 100),
-      }),
-      new Category({
-        name: "fake",
-        created_at: new Date(created_at.getTime() + 200),
-      }),
-    ];
+    const items = CategoryFakeBuilder.theCategories(3).withCreatedAt((index) => new Date(created_at.getTime() + ((index + 1) * 100))).build();
 
     const itemsSorted = repository["applySort"](items, null, null);
     expect(itemsSorted).toStrictEqual([items[2], items[1], items[0]]);
@@ -48,9 +39,9 @@ describe("CategoryInMemoryRepository", () => {
 
   it("should sort by name", async () => {
     const items = [
-      Category.create({ name: "c" }),
-      Category.create({ name: "b" }),
-      Category.create({ name: "a" }),
+      CategoryFakeBuilder.aCategory().withName("c").build(),
+      CategoryFakeBuilder.aCategory().withName("b").build(),
+      CategoryFakeBuilder.aCategory().withName("a").build(),
     ];
 
     let itemsSorted = repository["applySort"](items, "name", "asc");
