@@ -73,8 +73,8 @@ export class SearchParams<
         : (String(value) as keyof E);
   }
 
-  get sort_dir(): SortDirection | null {
-    return this._sort_dir;
+  get sort_dir(): SortDirection {
+    return this._sort_dir ?? 'asc';
   }
 
   private set sort_dir(value: SortDirection | null) {
