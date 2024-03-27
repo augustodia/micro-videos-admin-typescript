@@ -8,9 +8,7 @@ import { CategoryModel } from "./category.model";
 export class CategorySequelizeRepository implements ICategoryRepository {
   sortableFields: (keyof Category)[] = ['name', 'created_at'];
 
-  constructor(private categoryModel: typeof CategoryModel) {
-    
-  }
+  constructor(private categoryModel: typeof CategoryModel) {}
 
   async search(props: CategorySearchParams ): Promise<CategorySearchResult> {
     const offset = (props.page - 1) * props.per_page;
