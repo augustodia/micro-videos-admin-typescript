@@ -1,5 +1,4 @@
 import { CategoryFakeBuilder } from "../../../domain/__tests__/category-fake.builder";
-import { Category } from "../../../domain/category.entity";
 import { CategoryInMemoryRepository } from "./category-in-memory.repository";
 
 describe("CategoryInMemoryRepository", () => {
