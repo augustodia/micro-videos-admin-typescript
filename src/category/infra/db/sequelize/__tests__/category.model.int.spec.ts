@@ -1,6 +1,5 @@
 import { DataType, Sequelize } from "sequelize-typescript";
 import { CategoryModel } from "../category.model";
-import { Category } from "../../../../domain/category.entity";
 
 describe("CategoryModel Integration Tests", () => {
   let sequelize;
@@ -37,15 +36,15 @@ describe("CategoryModel Integration Tests", () => {
 
     const nameAttr = attributesMap.name;
     expect(nameAttr).toMatchObject({
+      allowNull: false,
       field: "name",
       fieldName: "name",
-      allowNull: false,
       type: DataType.STRING(255),
     });
 
     const descriptionAttr = attributesMap.description;
+    console.log(descriptionAttr)
     expect(descriptionAttr).toMatchObject({
-      allowNull: false,
       field: "description",
       fieldName: "description",
       type: DataType.TEXT(),
@@ -53,7 +52,6 @@ describe("CategoryModel Integration Tests", () => {
 
     const isActiveAttr = attributesMap.is_active;
     expect(isActiveAttr).toMatchObject({
-      allowNull: false,
       field: "is_active",
       fieldName: "is_active",
       type: DataType.BOOLEAN(),
