@@ -37,7 +37,7 @@ export class CategorySequelizeRepository implements ICategoryRepository {
         created_at: model.created_at
       })),
       per_page: props.per_page,
-      current_page: props.per_page,
+      current_page: props.page,
       total: count,
     });
   }
