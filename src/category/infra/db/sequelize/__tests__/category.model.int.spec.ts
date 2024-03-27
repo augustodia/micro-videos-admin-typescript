@@ -17,7 +17,6 @@ describe("CategoryModel Integration Tests", () => {
   test("mapping props", () => {
     const attributesMap = CategoryModel.getAttributes();
     const attributes = Object.keys(CategoryModel.getAttributes());
-    console.log(attributes, attributesMap);
     expect(attributes).toStrictEqual([
       "category_id",
       "name",
@@ -43,7 +42,6 @@ describe("CategoryModel Integration Tests", () => {
     });
 
     const descriptionAttr = attributesMap.description;
-    console.log(descriptionAttr)
     expect(descriptionAttr).toMatchObject({
       field: "description",
       fieldName: "description",
