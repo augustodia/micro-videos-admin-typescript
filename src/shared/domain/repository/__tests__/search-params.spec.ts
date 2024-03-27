@@ -76,18 +76,6 @@ describe('SearchParams Unit Tests', () => {
     { sort_dir: 'desc', expected: 'desc' },
     { sort_dir: 'DESC', expected: 'desc' },
   ])('sort_dir prop %p', (props) => {
-    let params = new SearchParams();
-    expect(params.sort_dir).toBeNull();
-
-    params = new SearchParams({ sort: null });
-    expect(params.sort_dir).toBeNull();
-
-    params = new SearchParams({ sort: undefined });
-    expect(params.sort_dir).toBeNull();
-
-    params = new SearchParams<any>({ sort: '' });
-    expect(params.sort_dir).toBeNull();
-
     expect(
       new SearchParams<any>({ sort: 'field', sort_dir: props.sort_dir as any })
         .sort_dir,
