@@ -103,7 +103,7 @@ describe('InMemorySearchableRepository Unit Tests', () => {
         new StubEntity({ name: 'a', price: 5 }),
       ];
 
-      let itemsSorted = repository['applySort'](items, null, null);
+      let itemsSorted = repository['applySort'](items, null, 'desc');
       expect(itemsSorted).toStrictEqual(items);
 
       itemsSorted = repository['applySort'](items, 'price', 'asc');
