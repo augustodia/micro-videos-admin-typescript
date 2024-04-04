@@ -1,5 +1,4 @@
-import { SearchParams, SortDirection } from "../../../../shared/domain/repository/search-params";
-import { SearchResult } from "../../../../shared/domain/repository/search-result";
+import { SortDirection } from "../../../../shared/domain/repository/search-params";
 import { Uuid } from "../../../../shared/domain/value-objects/uuid.vo";
 import { InMemorySearchableRepository } from "../../../../shared/infra/db/in-memory/in-memory.repository";
 import { Category } from "../../../domain/category.entity";
@@ -12,12 +11,6 @@ export class CategoryInMemoryRepository extends InMemorySearchableRepository<
 > implements ICategoryRepository {
 
   sortableFields: (keyof Category)[] = ["name", "created_at"];
-
-  search(
-    props: SearchParams<Category, string>
-  ): Promise<SearchResult<Category>> {
-    throw new Error("Method not implemented.");
-  }
 
   protected async applyFilter(
     items: Category[],
@@ -32,18 +25,10 @@ export class CategoryInMemoryRepository extends InMemorySearchableRepository<
     });
   }
 
-  protected applyPaginate(
-    items: Category[],
-    page: number,
-    per_page: number
-  ): Category[] {
-    throw new Error("Method not implemented.");
-  }
-
   protected applySort(
     items: Category[],
     sort: keyof Category | null,
-    sort_dir: SortDirection | null,
+    sort_dir: SortDirection,
     custom_getter?: ((sort: keyof Category, item: Category) => any) | undefined
   ): Category[] {
     return sort
