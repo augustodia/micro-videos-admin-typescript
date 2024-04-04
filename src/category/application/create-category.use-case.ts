@@ -5,7 +5,7 @@ import { ICategoryRepository } from "../domain/category.repository";
 export type CreateCategoryInput = {
   name: string;
   description?: string | null;
-  is_actve?: boolean;
+  is_active?: boolean;
 }
 
 export type CreateCategoryOutput = {
