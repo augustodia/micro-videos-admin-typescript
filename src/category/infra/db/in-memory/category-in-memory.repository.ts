@@ -28,7 +28,7 @@ export class CategoryInMemoryRepository extends InMemorySearchableRepository<
   protected applySort(
     items: Category[],
     sort: keyof Category | null,
-    sort_dir: SortDirection,
+    sort_dir: SortDirection | null,
     custom_getter?: ((sort: keyof Category, item: Category) => any) | undefined
   ): Category[] {
     return sort
