@@ -88,7 +88,7 @@ export abstract class InMemorySearchableRepository<
     return items.slice(start, end);
   }
 
-  protected applySort(items: E[], sort: keyof E | null, sort_dir: SearchParams<E>["sort_dir"], custom_getter?: (sort: keyof E, item: E) => any) {
+  protected applySort(items: E[], sort: keyof E | null, sort_dir: SearchParams<E>["sort_dir"] | null, custom_getter?: (sort: keyof E, item: E) => any) {
     if (!sort || !this.sortableFields.includes(sort)) return items;
 
     return [...items].sort((a, b) => {
