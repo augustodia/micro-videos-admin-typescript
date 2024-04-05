@@ -1,6 +1,7 @@
-import { IUseCase } from "../../shared/application/use-case.interface";
-import { Category } from "../domain/category.entity";
-import { ICategoryRepository } from "../domain/category.repository";
+import { IUseCase } from "../../../shared/application/use-case.interface";
+import { Category } from "../../domain/category.entity";
+import { ICategoryRepository } from "../../domain/category.repository";
+import { CategoryOutputMapper } from "./common/category-output";
 
 export type CreateCategoryInput = {
   name: string;
@@ -23,12 +24,6 @@ export class CreateCategoryUseCase implements IUseCase<CreateCategoryInput, Crea
     const category = Category.create(input);
     await this.categoryRepository.insert(category);
 
-    return {
-      id: category.category_id.id,
-      name: category.name,
-      description: category.description,
-      is_active: category.is_active,
-      created_at: category.created_at,
-    }
+    return CategoryOutputMapper.toOutput(category);
   }
 }
