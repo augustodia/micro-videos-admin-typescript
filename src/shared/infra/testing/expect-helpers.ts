@@ -1,50 +1,33 @@
-import { EntityValidationError } from '../../domain/errors/validation.error';
-import { ClassValidatorFields } from '../../domain/validators/class-validator-field';
-import { FieldsErrors } from './../../domain/validators/validator-fields-interface';
 
-type Expected = {
-  validator: ClassValidatorFields<any>;
-  data: any;
-} | (() => any)
+import { Notification } from '../../domain/validators/notification';
 
 expect.extend({
-  containsErrorMessages(expected: Expected, received: FieldsErrors) {
-    if (typeof expected === 'function') {
-      try {
-        expected();
-        return isValid();
-      } catch (e) {
-        const error = e as EntityValidationError
+  notificationContainsErrorMessages(
+    expected: Notification,
+    received: Array<string | { [key: string]: string[] }>,
+  ) {
+    const every = received.every((error) => {
+      if (typeof error === 'string') {
+        return expected.errors.has(error);
+      } else {
+        return Object.entries(error).every(([field, messages]) => {
+          const fieldMessages = expected.errors.get(field) as string[];
 
-        return assertContainsErrorsMessages(error.errors, received);
+          return (
+            fieldMessages?.length &&
+            fieldMessages.every((message) => messages.includes(message))
+          );
+        });
       }
-    } 
-      const { validator, data } = expected;
-      const validate = validator.validate(data);
-
-      if (validate) {
-        isValid();
-      }
-
-      return assertContainsErrorsMessages(validator.errors, received);
-    }
-  })
-
-function assertContainsErrorsMessages(expected: FieldsErrors, received: FieldsErrors) {
-  const isMatch = expect.objectContaining(received).asymmetricMatch(expected);
-
-  const receivedMessage = JSON.stringify(received);
-  const expectedMessage = JSON.stringify(expected);
-
-  return isMatch ? isValid() : {
-    message: () => `The validation errors not contains ${receivedMessage}. Current: ${expectedMessage}`,
-    pass: false
-  };
-}
-
-function isValid() {
-  return {
-    message: () => '',
-    pass: true,
-  }
-}
+    });
+    return every
+      ? { pass: true, message: () => '' }
+      : {
+          pass: false,
+          message: () =>
+            `The validation errors not contains ${JSON.stringify(
+              received,
+            )}. Current: ${JSON.stringify(expected.toJSON())}`,
+        };
+  },
+});
