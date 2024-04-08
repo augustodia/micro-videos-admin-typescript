@@ -1,6 +1,4 @@
-
 import { Entity } from "../../shared/domain/entity";
-import { EntityValidationError } from "../../shared/domain/errors/validation.error";
 import { Uuid } from "../../shared/domain/value-objects/uuid.vo";
 import { CategoryValidatorFactory } from "./category.validator";
 
@@ -15,6 +13,7 @@ export type CategoryProps = {
 export type CategoryPropsUpdate = {
   name?: string;
   description?: string | null;
+  is_active?: boolean;
 }
 
 export type CategoryCreateProps = {
@@ -46,19 +45,18 @@ export class Category extends Entity {
 
   static create(props: CategoryCreateProps): Category {
     const category =  new Category(props);
-    Category.validate(category);
+    category.validate();
 
     return category;
   }
 
   public changeName(name: string): void {
     this.name = name;
-    Category.validate(this);
+    this.validate(['name']);
   }
 
   public changeDescription(description: string | null): void {
     this.description = description;
-    Category.validate(this);
   }
 
   public activate(): void {
@@ -70,19 +68,26 @@ export class Category extends Entity {
   }
 
   public update(props: CategoryPropsUpdate): void {
-    const hasNameUpdate = Object.keys(props).includes('name');
     
-    if(hasNameUpdate) this.name = props.name ?? '';
-    this.description = props.description ?? null;
+    props.name && this.changeName(props.name);
 
-    Category.validate(this);
+    if ("description" in props && props.description !== undefined) {
+      this.changeDescription(props.description);
+    }
+
+    if (props.is_active === true) {
+      this.activate();
+    }
+
+    if (props.is_active === false) {
+      this.deactivate();
+    }
   }
 
-  static validate(entity: Category) {
+  validate(fields?: [keyof Category]): boolean {
     const validator = CategoryValidatorFactory.create();
-    const isValid = validator.validate(entity);
 
-    if (!isValid) throw new EntityValidationError(validator.errors);
+    return validator.validate(this.notification, this, fields);
   }
 
   public toJSON() {

@@ -3,7 +3,7 @@ import { Uuid } from "../../../../../shared/domain/value-objects/uuid.vo";
 import { Category } from "../../../../domain/category.entity";
 import { CategorySequelizeRepository } from "../category-sequelize.repository";
 import { CategoryModel } from "../category.model";
-import { CategoryFakeBuilder } from "../../../../domain/__tests__/category-fake.builder";
+import { CategoryFakeBuilder } from "../../../../domain/category-fake.builder";
 import { CategoryModelMapper } from "../category-model-mapper";
 import {
   CategorySearchParams,

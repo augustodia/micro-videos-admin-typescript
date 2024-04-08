@@ -1,5 +1,6 @@
 import { IUseCase } from "../../../shared/application/use-case.interface";
 import { NotFoundError } from "../../../shared/domain/errors/not-found.error";
+import { EntityValidationError } from "../../../shared/domain/errors/validation.error";
 import { Uuid } from "../../../shared/domain/value-objects/uuid.vo";
 import { Category } from "../../domain/category.entity";
 import { ICategoryRepository } from "../../domain/category.repository";
@@ -34,18 +35,14 @@ export class UpdateCategoryUseCase
       throw new NotFoundError(input.id, Category);
     }
 
-    input.name && category.changeName(input.name);
+    category.update({
+      name: input.name,
+      description: input.description,
+      is_active: input.is_active,
+    });
 
-    if ("description" in input && input.description !== undefined) {
-      category.changeDescription(input.description);
-    }
-
-    if (input.is_active === true) {
-      category.activate();
-    }
-
-    if (input.is_active === false) {
-      category.deactivate();
+    if (category.notification.hasErrors()) {
+      throw new EntityValidationError(category.notification.toJSON());
     }
 
     await this.categoryRepo.update(category);
