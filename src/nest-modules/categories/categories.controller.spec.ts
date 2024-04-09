@@ -1,4 +1,4 @@
-import { ConfigModule } from './../config/config.module';
+import { ConfigModule } from '../config/config.module';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CategoriesController } from './categories.controller';
 import { DatabaseModule } from '../database/database.module';
