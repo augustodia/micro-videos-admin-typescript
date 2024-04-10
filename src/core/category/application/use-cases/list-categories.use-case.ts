@@ -4,7 +4,7 @@ import {
 } from '../../../shared/application/pagination-output';
 import { IUseCase } from '../../../shared/application/use-case.interface';
 import { SortDirection } from '../../../shared/domain/repository/search-params';
-import { Category } from '../../domain/category.entity';
+
 import {
   ICategoryRepository,
   CategorySearchParams,
@@ -16,7 +16,7 @@ import { CategoryOutputMapper, CategoryOutput } from './common/category-output';
 export type ListCategoriesInput = {
   page?: number;
   per_page?: number;
-  sort?: keyof Category;
+  sort?: string;
   sort_dir?: SortDirection;
   filter?: CategoryFilter;
 };
