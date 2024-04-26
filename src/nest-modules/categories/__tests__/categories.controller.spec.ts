@@ -1,8 +1,8 @@
-import { ConfigModule } from '../config/config.module';
+import { ConfigModule } from '../../config/config.module';
 import { Test, TestingModule } from '@nestjs/testing';
-import { CategoriesController } from './categories.controller';
-import { DatabaseModule } from '../database/database.module';
-import { CategoriesModule } from './categories.module';
+import { CategoriesController } from '../categories.controller';
+import { DatabaseModule } from '../../database/database.module';
+import { CategoriesModule } from '../categories.module';
 
 describe('CategoriesController', () => {
   let controller: CategoriesController;

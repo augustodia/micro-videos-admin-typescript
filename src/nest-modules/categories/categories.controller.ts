@@ -44,7 +44,7 @@ export class CategoriesController {
   }
 
   @Get()
-  async findAll(@Query() searchParamsDto: SearchCategoriesDto) {
+  async search(@Query() searchParamsDto: SearchCategoriesDto) {
     const outputs = await this.listUseCase.execute(searchParamsDto);
 
     return new CategoryCollectionPresenter(outputs);
