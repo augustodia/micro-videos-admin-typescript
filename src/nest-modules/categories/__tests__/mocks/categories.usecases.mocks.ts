@@ -15,6 +15,7 @@ import {
   UpdateCategoryOutput,
   UpdateCategoryUseCase,
 } from '../../../../core/category/application/use-cases/update-category/update-category.use-case';
+
 //#region Create
 const outputCreateUseCase: CreateCategoryOutput = {
   id: '9366b7dc-2d71-4799-b91c-c64adb205104',

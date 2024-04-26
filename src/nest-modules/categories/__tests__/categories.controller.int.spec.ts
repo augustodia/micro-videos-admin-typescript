@@ -1,4 +1,4 @@
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule } from '../../config/config.module';
 import { TestingModule, Test } from '@nestjs/testing';
 import { CreateCategoryUseCase } from '../../../core/category/application/use-cases/create-category/create-category.use-case';
 import { DeleteCategoryUseCase } from '../../../core/category/application/use-cases/delete-category.use-case';
