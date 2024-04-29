@@ -17,7 +17,7 @@ import {
   outputGetUseCase,
   outputListUseCase,
   outputUpdateUseCase,
-} from './mocks/categories.usecases.mocks';
+} from '../testing/mocks/categories.usecases.mocks';
 
 describe('CategoriesController Unit Tests', () => {
   let controller: CategoriesController;

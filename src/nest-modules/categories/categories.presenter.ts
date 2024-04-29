@@ -6,6 +6,7 @@ import { CollectionPresenter } from '../shared/collection.presenter';
 export class CategoryPresenter {
   id: string;
   name: string;
+  is_active: boolean;
   description: string | null;
 
   @Transform(({ value }: { value: Date }) => value.toISOString())
@@ -15,6 +16,7 @@ export class CategoryPresenter {
     this.id = output.id;
     this.name = output.name;
     this.description = output.description;
+    this.is_active = output.is_active;
     this.created_at = output.created_at;
   }
 }

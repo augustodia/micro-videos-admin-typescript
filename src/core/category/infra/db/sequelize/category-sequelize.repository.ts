@@ -11,7 +11,7 @@ import { CategoryModel } from './category.model';
 import { CategoryModelMapper } from './category-model-mapper';
 
 export class CategorySequelizeRepository implements ICategoryRepository {
-  sortableFields: (keyof Category)[] = ['name', 'created_at'];
+  sortableFields: string[] = ['name', 'created_at'];
 
   constructor(private categoryModel: typeof CategoryModel) {}
 
