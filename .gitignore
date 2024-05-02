@@ -36,4 +36,6 @@ lerna-debug.log*
 
 /coverage
 /dist
-/envs
+
+.env
+.env.e2e
