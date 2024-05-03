@@ -8,12 +8,12 @@ export class CategoryFakeBuilder<TBuild = any> {
   // auto generated in entity
   private _category_id: PropOrFactory<Uuid> | undefined = undefined;
 
-  private _name: PropOrFactory<string> = (_index) => this.chance.word();
+  private _name: PropOrFactory<string> = () => this.chance.word();
 
-  private _description: PropOrFactory<string | null> = (_index) =>
+  private _description: PropOrFactory<string | null> = () =>
     this.chance.paragraph();
 
-  private _is_active: PropOrFactory<boolean> = (_index) => true;
+  private _is_active: PropOrFactory<boolean> = () => true;
   // auto generated in entity
   private _created_at: PropOrFactory<Date> | undefined = undefined;
 
