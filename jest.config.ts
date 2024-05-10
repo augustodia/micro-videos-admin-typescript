@@ -13,11 +13,24 @@ const config: Config = {
   coverageProvider: 'v8',
   coverageThreshold: {
     global: {
+      statements: 80, // Mínimo de 80% de cobertura de declarações
       branches: 80, // Mínimo de 80% de cobertura de branches
       lines: 80, // Mínimo de 80% de cobertura de linhas
       functions: 80, // Mínimo de 80% de cobertura de funções
     },
   },
+  coveragePathIgnorePatterns: [
+    '/node_modules/',
+    '.interface.ts',
+    '-interface.ts',
+    'shared/testing',
+    'validator-rules.ts',
+    '-fixture.ts',
+    '.fixture.ts',
+    '.input.ts',
+    '.dto.ts',
+    '.d.ts',
+  ],
   setupFilesAfterEnv: ['./core/shared/infra/testing/expect-helpers.ts'],
   // testMatch: ['**/?(*.)+(spec|test).[tj]s?(x)'],
   moduleFileExtensions: ['js', 'json', 'ts'],
