@@ -10,14 +10,11 @@ export type CategorySearchParamsProps = {
   page?: number;
   per_page?: number;
   filter?: CategoryFilter;
-  sort?: keyof Category;
+  sort?: string;
   sort_dir?: 'asc' | 'desc';
 };
 
-export class CategorySearchParams extends SearchParams<
-  Category,
-  CategoryFilter
-> {
+export class CategorySearchParams extends SearchParams<CategoryFilter> {
   constructor(props?: CategorySearchParamsProps) {
     const sortProps = CategorySearchParams.determineSortProps(props);
 

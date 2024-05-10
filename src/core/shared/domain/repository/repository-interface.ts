@@ -19,9 +19,9 @@ export interface ISearchableRepository<
   E extends Entity,
   EntityId extends ValueObject,
   Filter = string,
-  SearchInput = SearchParams<E, Filter>,
+  SearchInput = SearchParams<Filter>,
   SearchOutput = SearchResult,
 > extends IRepository<E, EntityId> {
-  sortableFields: (keyof E)[];
+  sortableFields: string[];
   search(props: SearchInput): Promise<SearchOutput>;
 }

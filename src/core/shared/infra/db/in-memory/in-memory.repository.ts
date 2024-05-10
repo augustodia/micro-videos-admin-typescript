@@ -65,8 +65,8 @@ export abstract class InMemorySearchableRepository<
   extends InMemoryRepository<E, EntityId>
   implements ISearchableRepository<E, EntityId, Filter>
 {
-  sortableFields: (keyof E)[] = [];
-  async search(props: SearchParams<E, Filter>): Promise<SearchResult<E>> {
+  sortableFields: string[] = [];
+  async search(props: SearchParams<Filter>): Promise<SearchResult<E>> {
     const itemsFiltered = await this.applyFilter(this.items, props.filter);
     const itemsSorted = this.applySort(
       itemsFiltered,
@@ -105,9 +105,9 @@ export abstract class InMemorySearchableRepository<
 
   protected applySort(
     items: E[],
-    sort: keyof E | null,
+    sort: string | null,
     sort_dir: SearchParams<E>['sort_dir'] | null,
-    custom_getter?: (sort: keyof E, item: E) => any,
+    custom_getter?: (sort: string, item: E) => any,
   ) {
     if (!sort || !this.sortableFields.includes(sort)) return items;
 
