@@ -63,7 +63,7 @@ describe('CategoriesController (e2e)', () => {
             .expect(201);
 
           const keysInResponse = CreateCategoryFixture.keysInResponse;
-          console.log(res.body);
+
           expect(Object.keys(res.body)).toStrictEqual(['data']);
           expect(Object.keys(res.body.data)).toStrictEqual(keysInResponse);
           const id = res.body.data.id;
