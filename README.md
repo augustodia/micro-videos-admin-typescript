@@ -5,7 +5,7 @@
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+  <p align="center">A progressive <a href="http://nodejs.org" target="blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
     <p align="center">
 <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
 <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
@@ -56,6 +56,30 @@ $ yarn run test:e2e
 
 # test coverage
 $ yarn run test:cov
+```
+
+## Payment Integration
+
+The platform now supports credit card payment integration, adhering to Hexagonal Architecture, SOLID, TDD, and DDD principles. This allows for easy changes between different payment gateways.
+
+### Switching Payment Gateways
+
+To switch between payment gateways, you can use the `IPaymentGateway` interface defined in `src/core/payment/infra/payment-gateway/payment-gateway.interface.ts`. Implementations for Stripe and PayPal are provided in `src/core/payment/infra/payment-gateway/stripe/stripe-payment-gateway.ts` and `src/core/payment/infra/payment-gateway/paypal/paypal-payment-gateway.ts`, respectively.
+
+Example on switching to Stripe:
+
+```typescript
+import { StripePaymentGateway } from './src/core/payment/infra/payment-gateway/stripe/stripe-payment-gateway';
+
+const paymentGateway = new StripePaymentGateway(stripeClient);
+```
+
+Example on switching to PayPal:
+
+```typescript
+import { PayPalPaymentGateway } from './src/core/payment/infra/payment-gateway/paypal/paypal-payment-gateway';
+
+const paymentGateway = new PayPalPaymentGateway(payPalClient);
 ```
 
 ## Support
