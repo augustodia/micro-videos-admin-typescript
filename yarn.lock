@@ -875,10 +875,10 @@
   resolved "https://registry.npmjs.org/@pkgr/core/-/core-0.1.1.tgz"
   integrity sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==
 
-"@rushstack/node-core-library@5.4.1":
-  version "5.4.1"
-  resolved "https://registry.npmjs.org/@rushstack/node-core-library/-/node-core-library-5.4.1.tgz"
-  integrity sha512-WNnwdS8r9NZ/2K3u29tNoSRldscFa7SxU0RT+82B6Dy2I4Hl2MeCSKm4EXLXPKeNzLGvJ1cqbUhTLviSF8E6iA==
+"@rushstack/node-core-library@5.5.0":
+  version "5.5.0"
+  resolved "https://registry.npmjs.org/@rushstack/node-core-library/-/node-core-library-5.5.0.tgz"
+  integrity sha512-Cl3MYQ74Je5Y/EngMxcA3SpHjGZ/022nKbAO1aycGfQ+7eKyNCBu0oywj5B1f367GCzuHBgy+3BlVLKysHkXZw==
   dependencies:
     ajv "~8.13.0"
     ajv-draft-04 "~1.0.0"
@@ -889,20 +889,20 @@
     resolve "~1.22.1"
     semver "~7.5.4"
 
-"@rushstack/terminal@0.13.0":
-  version "0.13.0"
-  resolved "https://registry.npmjs.org/@rushstack/terminal/-/terminal-0.13.0.tgz"
-  integrity sha512-Ou44Q2s81BqJu3dpYedAX54am9vn245F0HzqVrfJCMQk5pGgoKKOBOjkbfZC9QKcGNaECh6pwH2s5noJt7X6ew==
+"@rushstack/terminal@0.13.2":
+  version "0.13.2"
+  resolved "https://registry.npmjs.org/@rushstack/terminal/-/terminal-0.13.2.tgz"
+  integrity sha512-t8i0PsGvBHmFBY8pryO3badqFlxQsm2rw3KYrzjcmVkG/WGklKg1qVkr9beAS1Oe8XWDRgj6SkoHkpNjs7aaNw==
   dependencies:
-    "@rushstack/node-core-library" "5.4.1"
+    "@rushstack/node-core-library" "5.5.0"
     supports-color "~8.1.1"
 
 "@rushstack/ts-command-line@^4.12.2":
-  version "4.22.0"
-  resolved "https://registry.npmjs.org/@rushstack/ts-command-line/-/ts-command-line-4.22.0.tgz"
-  integrity sha512-Qj28t6MO3HRgAZ72FDeFsrpdE6wBWxF3VENgvrXh7JF2qIT+CrXiOJIesW80VFZB9QwObSpkB1ilx794fGQg6g==
+  version "4.22.2"
+  resolved "https://registry.npmjs.org/@rushstack/ts-command-line/-/ts-command-line-4.22.2.tgz"
+  integrity sha512-xkvrGd6D9dPlI3I401Thc640WNsEPB1sGEmy12a2VJaPQPwhE6Ik0gEVPZJ/2G1w213eaCAdxUY1xpiTulsmpA==
   dependencies:
-    "@rushstack/terminal" "0.13.0"
+    "@rushstack/terminal" "0.13.2"
     "@types/argparse" "1.0.38"
     argparse "~1.0.9"
     string-argv "~0.3.1"
@@ -6336,9 +6336,9 @@ type-fest@^0.21.3:
   integrity sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==
 
 type-fest@^4.0.0:
-  version "4.20.0"
-  resolved "https://registry.npmjs.org/type-fest/-/type-fest-4.20.0.tgz"
-  integrity sha512-MBh+PHUHHisjXf4tlx0CFWoMdjx8zCMLJHOjnV1prABYZFHqtFOyauCIK2/7w4oIfwkF8iNhLtnJEfVY2vn3iw==
+  version "4.22.0"
+  resolved "https://registry.npmjs.org/type-fest/-/type-fest-4.22.0.tgz"
+  integrity sha512-hxMO1k4ip1uTVGgPbs1hVpYyhz2P91A6tQyH2H9POx3U6T3MdhIcfY8L2hRu/LRmzPFdfduOS0RIDjFlP2urPw==
 
 type-is@^1.6.4, type-is@~1.6.18:
   version "1.6.18"
