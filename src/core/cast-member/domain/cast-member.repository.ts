@@ -3,8 +3,12 @@ import { Uuid } from '../../shared/domain/value-objects/uuid.vo';
 import { SearchParams } from '../../shared/domain/repository/search-params';
 import { SearchResult } from '../../shared/domain/repository/search-result';
 import { CastMember } from './cast-member.entity';
+import { CastMemberType } from './cast-member-type';
 
-export type CastMemberFilter = string;
+export type CastMemberFilter = {
+  name?: string | null;
+  type?: CastMemberType | null;
+};
 
 export type CastMemberSearchParamsProps = {
   page?: number;
@@ -35,6 +39,24 @@ export class CastMemberSearchParams extends SearchParams<CastMemberFilter> {
     }
 
     return { sort: props.sort, sort_dir: props.sort_dir };
+  }
+
+  get filter(): CastMemberFilter | null {
+    return this._filter;
+  }
+
+  protected set filter(value: CastMemberFilter | null) {
+    const _value =
+      !value || (value as unknown) === '' || typeof value !== 'object'
+        ? null
+        : value;
+
+    const filter = {
+      ...(value?.name && { name: `${value.name}` }),
+      ...(_value?.type && { type: _value.type }),
+    };
+
+    this._filter = Object.keys(filter).length === 0 ? null : filter;
   }
 }
 

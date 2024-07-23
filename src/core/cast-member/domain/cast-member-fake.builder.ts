@@ -9,7 +9,10 @@ export class CastMemberFakeBuilder<TBuild = any> {
   // auto generated in entity
   private _cast_member_id: PropOrFactory<Uuid> | undefined = undefined;
 
-  private _name: PropOrFactory<string> = () => this.chance.word();
+  private _name: PropOrFactory<string> = () =>
+    this.chance.word({
+      length: 20,
+    });
 
   private _type: PropOrFactory<CastMemberType> = () =>
     this.chance.pickone([CastMemberType.ACTOR, CastMemberType.DIRECTOR]);

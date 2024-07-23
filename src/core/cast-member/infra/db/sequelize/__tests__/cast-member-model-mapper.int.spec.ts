@@ -1,21 +1,22 @@
 import { EntityValidationError } from '../../../../../shared/domain/errors/validation.error';
 import { Uuid } from '../../../../../shared/domain/value-objects/uuid.vo';
 import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
-import { Category } from '../../../../domain/category.entity';
-import { CategoryModelMapper } from '../category-model-mapper';
-import { CategoryModel } from '../category.model';
+import { CastMemberType } from '../../../../domain/cast-member-type';
+import { CastMember } from '../../../../domain/cast-member.entity';
+import { CastMemberModelMapper } from '../cast-member-model-mapper';
+import { CastMemberModel } from '../cast-member.model';
 
-describe('CategoryModelMapper Integration Tests', () => {
-  setupSequelize({ models: [CategoryModel] });
+describe('CastMemberModelMapper Integration Tests', () => {
+  setupSequelize({ models: [CastMemberModel] });
 
   it('should throws error when category is invalid', () => {
     expect.assertions(2);
-    const model = CategoryModel.build({
-      category_id: '9366b7dc-2d71-4799-b91c-c64adb205104',
+    const model = CastMemberModel.build({
+      cast_member_id: '9366b7dc-2d71-4799-b91c-c64adb205104',
       name: 'a'.repeat(256),
     });
     try {
-      CategoryModelMapper.toEntity(model);
+      CastMemberModelMapper.toEntity(model);
       fail(
         'The category is valid, but it needs throws a EntityValidationError',
       );
@@ -31,19 +32,19 @@ describe('CategoryModelMapper Integration Tests', () => {
 
   it('should convert a category model to a category aggregate', () => {
     const created_at = new Date();
-    const model = CategoryModel.build({
-      category_id: '5490020a-e866-4229-9adc-aa44b83234c4',
+    const model = CastMemberModel.build({
+      cast_member_id: '5490020a-e866-4229-9adc-aa44b83234c4',
       name: 'some value',
-      description: 'some description',
+      type: CastMemberType.ACTOR,
       is_active: true,
       created_at,
     });
-    const aggregate = CategoryModelMapper.toEntity(model);
+    const aggregate = CastMemberModelMapper.toEntity(model);
     expect(aggregate.toJSON()).toStrictEqual(
-      new Category({
-        category_id: new Uuid('5490020a-e866-4229-9adc-aa44b83234c4'),
+      new CastMember({
+        cast_member_id: new Uuid('5490020a-e866-4229-9adc-aa44b83234c4'),
         name: 'some value',
-        description: 'some description',
+        type: CastMemberType.ACTOR,
         is_active: true,
         created_at,
       }).toJSON(),
