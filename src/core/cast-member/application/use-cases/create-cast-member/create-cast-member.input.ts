@@ -5,11 +5,11 @@ import {
   IsString,
   validateSync,
 } from 'class-validator';
-import { CastMemberTypeInput } from '../../common/cast-member-type.enum';
+import { CastMemberType } from '../../../domain/cast-member-type';
 
 export type CreateCastMemberInputConstructorProps = {
   name: string;
-  type: CastMemberTypeInput;
+  type: CastMemberType;
 };
 
 export class CreateCastMemberInput {
@@ -18,9 +18,9 @@ export class CreateCastMemberInput {
   name: string;
 
   @IsNumber()
-  @IsEnum(CastMemberTypeInput)
+  @IsEnum(CastMemberType)
   @IsNotEmpty()
-  type: CastMemberTypeInput;
+  type: CastMemberType;
 
   constructor(props: CreateCastMemberInputConstructorProps) {
     if (!props) return;
