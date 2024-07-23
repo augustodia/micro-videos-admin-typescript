@@ -213,13 +213,13 @@ describe('CastMember Validator', () => {
     test('should not create a cast member with invalid type', () => {
       const castMember = CastMember.create({
         name: 'Actor',
-        type: 3 as CastMemberType,
+        type: 'invalid' as CastMemberType,
       });
 
       expect(castMember.notification.hasErrors()).toBe(true);
       expect(castMember.notification).notificationContainsErrorMessages([
         {
-          type: ['type must be one of the following values: 1, 2'],
+          type: ['type must be one of the following values: director, actor'],
         },
       ]);
     });
@@ -227,14 +227,14 @@ describe('CastMember Validator', () => {
     test('should not create a cast member with invalid name and type', () => {
       const castMember = CastMember.create({
         name: 'A',
-        type: 3 as CastMemberType,
+        type: 'invalid' as CastMemberType,
       });
 
       expect(castMember.notification.hasErrors()).toBe(true);
       expect(castMember.notification).notificationContainsErrorMessages([
         {
           name: ['name must be longer than or equal to 3 characters'],
-          type: ['type must be one of the following values: 1, 2'],
+          type: ['type must be one of the following values: director, actor'],
         },
       ]);
     });
@@ -294,11 +294,11 @@ describe('CastMember Validator', () => {
         type: CastMemberType.ACTOR,
       });
 
-      castMember.changeType(3 as CastMemberType);
+      castMember.changeType('invalid' as CastMemberType);
       expect(castMember.notification.hasErrors()).toBe(true);
       expect(castMember.notification).notificationContainsErrorMessages([
         {
-          type: ['type must be one of the following values: 1, 2'],
+          type: ['type must be one of the following values: director, actor'],
         },
       ]);
     });

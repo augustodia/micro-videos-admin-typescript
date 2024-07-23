@@ -1,6 +1,7 @@
 import { IUseCase } from '../../../../shared/application/use-case.interface';
 import { EntityValidationError } from '../../../../shared/domain/errors/validation.error';
 import { CastMember } from '../../../domain/cast-member.entity';
+import { ICastMemberRepository } from '../../../domain/cast-member.repository';
 import {
   CastMemberOutput,
   CastMemberOutputMapper,
@@ -11,7 +12,7 @@ export type CreateCastMemberOutput = CastMemberOutput;
 export class CreateCategoryUseCase
   implements IUseCase<CreateCastMemberInput, CreateCastMemberOutput>
 {
-  constructor(private readonly categoryRepo: ICategoryRepository) {}
+  constructor(private readonly categoryRepo: ICastMemberRepository) {}
 
   async execute(input: CreateCastMemberInput): Promise<CreateCastMemberOutput> {
     const entity = CastMember.create(input);
