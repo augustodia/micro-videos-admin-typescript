@@ -4,7 +4,7 @@ import { CastMemberType } from './cast-member-type';
 import { CastMemberValidatorFactory } from './cast-member.validator';
 
 export type CastMemberProps = {
-  category_id?: Uuid | null;
+  cast_member_id?: Uuid | null;
   name: string;
   type: CastMemberType;
   is_active?: boolean;
@@ -24,7 +24,7 @@ export type CastMemberCreateProps = {
 };
 
 export class CastMember extends Entity {
-  category_id: Uuid;
+  cast_member_id: Uuid;
   name: string;
   type: CastMemberType;
   is_active: boolean;
@@ -33,7 +33,7 @@ export class CastMember extends Entity {
   constructor(props: CastMemberProps) {
     super();
 
-    this.category_id = props.category_id ?? new Uuid();
+    this.cast_member_id = props.cast_member_id ?? new Uuid();
     this.name = props.name;
     this.type = props.type;
     this.is_active = props.is_active ?? true;
@@ -41,7 +41,7 @@ export class CastMember extends Entity {
   }
 
   get entity_id(): Uuid {
-    return this.category_id;
+    return this.cast_member_id;
   }
 
   static create(props: CastMemberCreateProps): CastMember {
@@ -93,7 +93,7 @@ export class CastMember extends Entity {
 
   public toJSON() {
     return {
-      category_id: this.category_id.id,
+      cast_member_id: this.cast_member_id.id,
       name: this.name,
       type: this.type,
       is_active: this.is_active,

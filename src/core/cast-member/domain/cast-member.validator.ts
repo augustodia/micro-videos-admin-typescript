@@ -1,14 +1,15 @@
-import { IsEnum, MaxLength } from 'class-validator';
+import { IsEnum, MaxLength, MinLength } from 'class-validator';
 import { CastMemberType } from './cast-member-type';
 import { CastMember } from './cast-member.entity';
 import { Notification } from '../../shared/domain/validators/notification';
 import { ClassValidatorFields } from '../../shared/domain/validators/class-validator-field';
 
 export class CastMemberRules {
+  @MinLength(3, { groups: ['name'] })
   @MaxLength(255, { groups: ['name'] })
   name: string;
 
-  @IsEnum(CastMemberType)
+  @IsEnum(CastMemberType, { groups: ['type'] })
   type: CastMemberType;
 
   constructor(entity: CastMember) {
