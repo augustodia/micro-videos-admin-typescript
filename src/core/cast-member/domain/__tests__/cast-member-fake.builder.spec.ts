@@ -33,21 +33,21 @@ describe('CategoryFakerBuilder Unit Tests', () => {
       expect(faker.cast_member_id).toBe(cast_member_id);
     });
 
-    test('should assign correct category IDs when multiple categories are created', () => {
+    test('should assign correct castMember IDs when multiple castMembers are created', () => {
       let mockFactory = jest.fn(() => new Uuid());
       faker.withUuid(mockFactory);
       faker.build();
       expect(mockFactory).toHaveBeenCalledTimes(1);
 
-      const categoryId = new Uuid();
-      mockFactory = jest.fn(() => categoryId);
+      const castMemberId = new Uuid();
+      mockFactory = jest.fn(() => castMemberId);
       const fakerMany = CastMemberFakeBuilder.theCastMembers(2);
       fakerMany.withUuid(mockFactory);
       fakerMany.build();
 
       expect(mockFactory).toHaveBeenCalledTimes(2);
-      expect(fakerMany.build()[0].cast_member_id).toBe(categoryId);
-      expect(fakerMany.build()[1].cast_member_id).toBe(categoryId);
+      expect(fakerMany.build()[0].cast_member_id).toBe(castMemberId);
+      expect(fakerMany.build()[1].cast_member_id).toBe(castMemberId);
     });
   });
 
@@ -80,15 +80,15 @@ describe('CategoryFakerBuilder Unit Tests', () => {
 
     test('should pass index to name factory', () => {
       faker.withName((index) => `test name ${index}`);
-      const category = faker.build();
-      expect(category.name).toBe(`test name 0`);
+      const castMember = faker.build();
+      expect(castMember.name).toBe(`test name 0`);
 
       const fakerMany = CastMemberFakeBuilder.theCastMembers(2);
       fakerMany.withName((index) => `test name ${index}`);
-      const categories = fakerMany.build();
+      const castMembers = fakerMany.build();
 
-      expect(categories[0].name).toBe(`test name 0`);
-      expect(categories[1].name).toBe(`test name 1`);
+      expect(castMembers[0].name).toBe(`test name 0`);
+      expect(castMembers[1].name).toBe(`test name 1`);
     });
 
     test('invalid too long case', () => {
@@ -180,31 +180,31 @@ describe('CategoryFakerBuilder Unit Tests', () => {
     test('should pass index to created_at factory', () => {
       const date = new Date();
       faker.withCreatedAt((index) => new Date(date.getTime() + index + 2));
-      const category = faker.build();
-      expect(category.created_at?.getTime()).toBe(date.getTime() + 2);
+      const castMember = faker.build();
+      expect(castMember.created_at?.getTime()).toBe(date.getTime() + 2);
 
       const fakerMany = CastMemberFakeBuilder.theCastMembers(2);
       fakerMany.withCreatedAt((index) => new Date(date.getTime() + index + 2));
-      const categories = fakerMany.build();
+      const castMembers = fakerMany.build();
 
-      expect(categories[0].created_at?.getTime()).toBe(date.getTime() + 2);
-      expect(categories[1].created_at?.getTime()).toBe(date.getTime() + 3);
+      expect(castMembers[0].created_at?.getTime()).toBe(date.getTime() + 2);
+      expect(castMembers[1].created_at?.getTime()).toBe(date.getTime() + 3);
     });
   });
 
-  test('should create a category', () => {
+  test('should create a castMember', () => {
     const faker = CastMemberFakeBuilder.aCastMember();
-    let category = faker.build();
+    let castMember = faker.build();
 
-    expect(category.cast_member_id).toBeInstanceOf(Uuid);
-    expect(typeof category.name === 'string').toBeTruthy();
-    expect(typeof category.type === 'number').toBeTruthy();
-    expect(category.is_active).toBe(true);
-    expect(category.created_at).toBeInstanceOf(Date);
+    expect(castMember.cast_member_id).toBeInstanceOf(Uuid);
+    expect(typeof castMember.name === 'string').toBeTruthy();
+    expect(typeof castMember.type === 'number').toBeTruthy();
+    expect(castMember.is_active).toBe(true);
+    expect(castMember.created_at).toBeInstanceOf(Date);
 
     const created_at = new Date();
     const cast_member_id = new Uuid();
-    category = faker
+    castMember = faker
       .withUuid(cast_member_id)
       .withName('name test')
       .withType(CastMemberType.DIRECTOR)
@@ -212,28 +212,28 @@ describe('CategoryFakerBuilder Unit Tests', () => {
       .withCreatedAt(created_at)
       .build();
 
-    expect(category.cast_member_id.id).toBe(cast_member_id.id);
-    expect(category.name).toBe('name test');
-    expect(category.type).toBe(CastMemberType.DIRECTOR);
-    expect(category.is_active).toBe(false);
-    expect(category.created_at).toBe(created_at);
+    expect(castMember.cast_member_id.id).toBe(cast_member_id.id);
+    expect(castMember.name).toBe('name test');
+    expect(castMember.type).toBe(CastMemberType.DIRECTOR);
+    expect(castMember.is_active).toBe(false);
+    expect(castMember.created_at).toBe(created_at);
   });
 
-  test('should create many categories', () => {
+  test('should create many castMembers', () => {
     const faker = CastMemberFakeBuilder.theCastMembers(2);
-    let categories = faker.build();
+    let castMembers = faker.build();
 
-    categories.forEach((category) => {
-      expect(category.cast_member_id).toBeInstanceOf(Uuid);
-      expect(typeof category.name === 'string').toBeTruthy();
-      expect(typeof category.type === 'number').toBeTruthy();
-      expect(category.is_active).toBe(true);
-      expect(category.created_at).toBeInstanceOf(Date);
+    castMembers.forEach((castMember) => {
+      expect(castMember.cast_member_id).toBeInstanceOf(Uuid);
+      expect(typeof castMember.name === 'string').toBeTruthy();
+      expect(typeof castMember.type === 'number').toBeTruthy();
+      expect(castMember.is_active).toBe(true);
+      expect(castMember.created_at).toBeInstanceOf(Date);
     });
 
     const created_at = new Date();
     const cast_member_id = new Uuid();
-    categories = faker
+    castMembers = faker
       .withUuid(cast_member_id)
       .withName('name test')
       .withType(CastMemberType.ACTOR)
@@ -241,12 +241,12 @@ describe('CategoryFakerBuilder Unit Tests', () => {
       .withCreatedAt(created_at)
       .build();
 
-    categories.forEach((category) => {
-      expect(category.cast_member_id.id).toBe(cast_member_id.id);
-      expect(category.name).toBe('name test');
-      expect(category.type).toBe(CastMemberType.ACTOR);
-      expect(category.is_active).toBe(false);
-      expect(category.created_at).toBe(created_at);
+    castMembers.forEach((castMember) => {
+      expect(castMember.cast_member_id.id).toBe(cast_member_id.id);
+      expect(castMember.name).toBe('name test');
+      expect(castMember.type).toBe(CastMemberType.ACTOR);
+      expect(castMember.is_active).toBe(false);
+      expect(castMember.created_at).toBe(created_at);
     });
   });
 });
