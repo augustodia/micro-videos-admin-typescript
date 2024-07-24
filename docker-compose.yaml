@@ -8,6 +8,9 @@ services:
       - 3000:3000
     volumes:
       - .:/home/node/app
+    depends_on:
+      db:
+        condition: service_healthy
 
   db:
     image: mysql:8.0.30-debian
@@ -20,3 +23,8 @@ services:
       - /var/lib/mysql
     security_opt:
       - seccomp:unconfined
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      interval: 5s
+      timeout: 10s
+      retries: 3

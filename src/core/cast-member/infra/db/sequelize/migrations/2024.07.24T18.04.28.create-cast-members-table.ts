@@ -3,7 +3,7 @@ import type { MigrationFn } from 'umzug';
 
 export const up: MigrationFn<Sequelize> = async ({ context: sequelize }) => {
   await sequelize.getQueryInterface().createTable('cast_members', {
-    category_id: {
+    cast_member_id: {
       type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
@@ -14,7 +14,7 @@ export const up: MigrationFn<Sequelize> = async ({ context: sequelize }) => {
     },
     type: {
       type: DataTypes.ENUM('actor', 'director'),
-      allowNull: true,
+      allowNull: false,
     },
     created_at: {
       type: DataTypes.DATE(3),

@@ -20,8 +20,8 @@ export const REPOSITORIES = {
   },
   CAST_MEMBER_SEQUELIZE_REPOSITORY: {
     provide: CastMemberSequelizeRepository,
-    useFactory: (categoryModel: typeof CastMemberModel) => {
-      return new CastMemberSequelizeRepository(categoryModel);
+    useFactory: (castMemberModel: typeof CastMemberModel) => {
+      return new CastMemberSequelizeRepository(castMemberModel);
     },
     inject: [getModelToken(CastMemberModel)],
   },
