@@ -36,7 +36,6 @@ describe('CastMemberModelMapper Integration Tests', () => {
       cast_member_id: '5490020a-e866-4229-9adc-aa44b83234c4',
       name: 'some value',
       type: CastMemberType.ACTOR,
-      is_active: true,
       created_at,
     });
     const aggregate = CastMemberModelMapper.toEntity(model);
@@ -45,7 +44,6 @@ describe('CastMemberModelMapper Integration Tests', () => {
         cast_member_id: new Uuid('5490020a-e866-4229-9adc-aa44b83234c4'),
         name: 'some value',
         type: CastMemberType.ACTOR,
-        is_active: true,
         created_at,
       }).toJSON(),
     );

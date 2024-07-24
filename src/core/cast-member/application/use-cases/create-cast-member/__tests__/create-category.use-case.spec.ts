@@ -29,21 +29,18 @@ describe('CreateCastMemberUseCase Unit Tests', () => {
       id: repository.items[0].cast_member_id.id,
       name: 'test',
       type: CastMemberType.ACTOR,
-      is_active: true,
       created_at: repository.items[0].created_at,
     });
 
     output = await useCase.execute({
       name: 'test',
       type: CastMemberType.DIRECTOR,
-      is_active: false,
     });
     expect(spyInsert).toHaveBeenCalledTimes(2);
     expect(output).toStrictEqual({
       id: repository.items[1].cast_member_id.id,
       name: 'test',
       type: CastMemberType.DIRECTOR,
-      is_active: false,
       created_at: repository.items[1].created_at,
     });
   });

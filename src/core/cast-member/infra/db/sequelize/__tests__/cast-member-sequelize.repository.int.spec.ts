@@ -115,7 +115,6 @@ describe('CastMemberSequelizeRepository Integration Test', () => {
         new Array(15).fill({
           name: 'Actor',
           type: CastMemberType.ACTOR,
-          is_active: true,
           created_at: created_at,
         }),
       );

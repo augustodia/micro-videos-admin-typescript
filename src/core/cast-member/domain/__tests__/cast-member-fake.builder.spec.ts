@@ -130,27 +130,6 @@ describe('CategoryFakerBuilder Unit Tests', () => {
     });
   });
 
-  describe('is_active prop', () => {
-    const faker = CastMemberFakeBuilder.aCastMember();
-    test('should be a function', () => {
-      expect(typeof faker['_is_active']).toBe('function');
-    });
-
-    test('activate', () => {
-      const $this = faker.activate();
-      expect($this).toBeInstanceOf(CastMemberFakeBuilder);
-      expect(faker['_is_active']).toBe(true);
-      expect(faker.is_active).toBe(true);
-    });
-
-    test('deactivate', () => {
-      const $this = faker.deactivate();
-      expect($this).toBeInstanceOf(CastMemberFakeBuilder);
-      expect(faker['_is_active']).toBe(false);
-      expect(faker.is_active).toBe(false);
-    });
-  });
-
   describe('created_at prop', () => {
     const faker = CastMemberFakeBuilder.aCastMember();
 
@@ -199,7 +178,6 @@ describe('CategoryFakerBuilder Unit Tests', () => {
     expect(castMember.cast_member_id).toBeInstanceOf(Uuid);
     expect(typeof castMember.name === 'string').toBeTruthy();
     expect(typeof castMember.type === 'string').toBeTruthy();
-    expect(castMember.is_active).toBe(true);
     expect(castMember.created_at).toBeInstanceOf(Date);
 
     const created_at = new Date();
@@ -208,14 +186,12 @@ describe('CategoryFakerBuilder Unit Tests', () => {
       .withUuid(cast_member_id)
       .withName('name test')
       .withType(CastMemberType.DIRECTOR)
-      .deactivate()
       .withCreatedAt(created_at)
       .build();
 
     expect(castMember.cast_member_id.id).toBe(cast_member_id.id);
     expect(castMember.name).toBe('name test');
     expect(castMember.type).toBe(CastMemberType.DIRECTOR);
-    expect(castMember.is_active).toBe(false);
     expect(castMember.created_at).toBe(created_at);
   });
 
@@ -227,7 +203,6 @@ describe('CategoryFakerBuilder Unit Tests', () => {
       expect(castMember.cast_member_id).toBeInstanceOf(Uuid);
       expect(typeof castMember.name === 'string').toBeTruthy();
       expect(typeof castMember.type === 'string').toBeTruthy();
-      expect(castMember.is_active).toBe(true);
       expect(castMember.created_at).toBeInstanceOf(Date);
     });
 
@@ -237,7 +212,6 @@ describe('CategoryFakerBuilder Unit Tests', () => {
       .withUuid(cast_member_id)
       .withName('name test')
       .withType(CastMemberType.ACTOR)
-      .deactivate()
       .withCreatedAt(created_at)
       .build();
 
@@ -245,7 +219,6 @@ describe('CategoryFakerBuilder Unit Tests', () => {
       expect(castMember.cast_member_id.id).toBe(cast_member_id.id);
       expect(castMember.name).toBe('name test');
       expect(castMember.type).toBe(CastMemberType.ACTOR);
-      expect(castMember.is_active).toBe(false);
       expect(castMember.created_at).toBe(created_at);
     });
   });

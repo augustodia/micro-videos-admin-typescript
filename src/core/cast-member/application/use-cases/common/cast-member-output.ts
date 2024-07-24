@@ -5,7 +5,6 @@ export type CastMemberOutput = {
   id: string;
   name: string;
   type: CastMemberType;
-  is_active: boolean;
   created_at: Date;
 };
 

@@ -18,35 +18,30 @@ describe('CastMember Without Validator Unit Tests', () => {
     expect(castMember.cast_member_id).toBeInstanceOf(Uuid);
     expect(castMember.name).toBe('Actor');
     expect(castMember.type).toBe(CastMemberType.ACTOR);
-    expect(castMember.is_active).toBe(true);
     expect(castMember.created_at).toBeInstanceOf(Date);
 
     let created_at = new Date();
     castMember = new CastMember({
       name: 'Actor',
       type: CastMemberType.ACTOR,
-      is_active: false,
       created_at,
     });
 
     expect(castMember.cast_member_id).toBeInstanceOf(Uuid);
     expect(castMember.name).toBe('Actor');
     expect(castMember.type).toBe(CastMemberType.ACTOR);
-    expect(castMember.is_active).toBe(false);
     expect(castMember.created_at).toBe(created_at);
 
     created_at = new Date();
     castMember = new CastMember({
       name: 'Director',
       type: CastMemberType.DIRECTOR,
-      is_active: false,
       created_at,
     });
 
     expect(castMember.cast_member_id).toBeInstanceOf(Uuid);
     expect(castMember.name).toBe('Director');
     expect(castMember.type).toBe(CastMemberType.DIRECTOR);
-    expect(castMember.is_active).toBe(false);
     expect(castMember.created_at).toBe(created_at);
   });
 
@@ -60,7 +55,6 @@ describe('CastMember Without Validator Unit Tests', () => {
       expect(castMember.cast_member_id).toBeInstanceOf(Uuid);
       expect(castMember.name).toBe('Actor');
       expect(castMember.type).toBe(CastMemberType.ACTOR);
-      expect(castMember.is_active).toBe(true);
       expect(castMember.created_at).toBeInstanceOf(Date);
       expect(CastMember.prototype.validate).toHaveBeenCalledTimes(1);
       expect(castMember.notification.hasErrors()).toBe(false);
@@ -75,39 +69,6 @@ describe('CastMember Without Validator Unit Tests', () => {
       expect(castMember.cast_member_id).toBeInstanceOf(Uuid);
       expect(castMember.name).toBe('Director');
       expect(castMember.type).toBe(CastMemberType.DIRECTOR);
-      expect(castMember.is_active).toBe(true);
-      expect(castMember.created_at).toBeInstanceOf(Date);
-      expect(CastMember.prototype.validate).toHaveBeenCalledTimes(1);
-      expect(castMember.notification.hasErrors()).toBe(false);
-    });
-
-    test('create a cast member with type actor and is_active false', () => {
-      const castMember = CastMember.create({
-        name: 'Actor',
-        type: CastMemberType.ACTOR,
-        is_active: false,
-      });
-
-      expect(castMember.cast_member_id).toBeInstanceOf(Uuid);
-      expect(castMember.name).toBe('Actor');
-      expect(castMember.type).toBe(CastMemberType.ACTOR);
-      expect(castMember.is_active).toBe(false);
-      expect(castMember.created_at).toBeInstanceOf(Date);
-      expect(CastMember.prototype.validate).toHaveBeenCalledTimes(1);
-      expect(castMember.notification.hasErrors()).toBe(false);
-    });
-
-    test('create a cast member with type director and is_active false', () => {
-      const castMember = CastMember.create({
-        name: 'Director',
-        type: CastMemberType.DIRECTOR,
-        is_active: false,
-      });
-
-      expect(castMember.cast_member_id).toBeInstanceOf(Uuid);
-      expect(castMember.name).toBe('Director');
-      expect(castMember.type).toBe(CastMemberType.DIRECTOR);
-      expect(castMember.is_active).toBe(false);
       expect(castMember.created_at).toBeInstanceOf(Date);
       expect(CastMember.prototype.validate).toHaveBeenCalledTimes(1);
       expect(castMember.notification.hasErrors()).toBe(false);
@@ -143,26 +104,6 @@ describe('CastMember Without Validator Unit Tests', () => {
     castMember.changeType(CastMemberType.DIRECTOR);
     expect(castMember.type).toBe(CastMemberType.DIRECTOR);
     expect(CastMember.prototype.validate).toHaveBeenCalledTimes(1);
-  });
-
-  test('should activate', () => {
-    const castMember = new CastMember({
-      name: 'Actor',
-      type: CastMemberType.ACTOR,
-    });
-
-    castMember.activate();
-    expect(castMember.is_active).toBe(true);
-  });
-
-  test('should deactivate', () => {
-    const castMember = new CastMember({
-      name: 'Actor',
-      type: CastMemberType.ACTOR,
-    });
-
-    castMember.deactivate();
-    expect(castMember.is_active).toBe(false);
   });
 });
 

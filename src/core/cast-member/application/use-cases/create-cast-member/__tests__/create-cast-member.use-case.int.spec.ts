@@ -26,7 +26,6 @@ describe('CreateCastMemberUseCase Integration Tests', () => {
       id: entity?.cast_member_id.id,
       name: 'Actor',
       type: CastMemberType.ACTOR,
-      is_active: true,
       created_at: entity?.created_at,
     });
 
@@ -39,35 +38,6 @@ describe('CreateCastMemberUseCase Integration Tests', () => {
       id: entity?.cast_member_id.id,
       name: 'Director',
       type: CastMemberType.DIRECTOR,
-      is_active: true,
-      created_at: entity?.created_at,
-    });
-
-    output = await useCase.execute({
-      name: 'Actor 1',
-      type: CastMemberType.ACTOR,
-      is_active: true,
-    });
-    entity = await repository.findById(new Uuid(output.id));
-    expect(output).toStrictEqual({
-      id: entity?.cast_member_id.id,
-      name: 'Actor 1',
-      type: CastMemberType.ACTOR,
-      is_active: true,
-      created_at: entity?.created_at,
-    });
-
-    output = await useCase.execute({
-      name: 'Director 1',
-      type: CastMemberType.DIRECTOR,
-      is_active: false,
-    });
-    entity = await repository.findById(new Uuid(output.id));
-    expect(output).toStrictEqual({
-      id: entity?.cast_member_id.id,
-      name: 'Director 1',
-      type: CastMemberType.DIRECTOR,
-      is_active: false,
       created_at: entity?.created_at,
     });
   });

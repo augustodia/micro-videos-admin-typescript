@@ -7,7 +7,6 @@ describe('CastMemberOutputMapper Unit Tests', () => {
     const entity = CastMember.create({
       name: 'Actor',
       type: CastMemberType.ACTOR,
-      is_active: true,
     });
     const spyToJSON = jest.spyOn(entity, 'toJSON');
     const output = CastMemberOutputMapper.toOutput(entity);
@@ -16,7 +15,6 @@ describe('CastMemberOutputMapper Unit Tests', () => {
       id: entity.cast_member_id.id,
       name: 'Actor',
       type: CastMemberType.ACTOR,
-      is_active: true,
       created_at: entity.created_at,
     });
   });

@@ -17,7 +17,6 @@ export class CastMemberFakeBuilder<TBuild = any> {
   private _type: PropOrFactory<CastMemberType> = () =>
     this.chance.pickone([CastMemberType.ACTOR, CastMemberType.DIRECTOR]);
 
-  private _is_active: PropOrFactory<boolean> = () => true;
   // auto generated in entity
   private _created_at: PropOrFactory<Date> | undefined = undefined;
 
@@ -53,16 +52,6 @@ export class CastMemberFakeBuilder<TBuild = any> {
     return this;
   }
 
-  activate() {
-    this._is_active = true;
-    return this;
-  }
-
-  deactivate() {
-    this._is_active = false;
-    return this;
-  }
-
   withCreatedAt(valueOrFactory: PropOrFactory<Date>) {
     this._created_at = valueOrFactory;
     return this;
@@ -83,7 +72,6 @@ export class CastMemberFakeBuilder<TBuild = any> {
             : this.callFactory(this._cast_member_id, index),
           name: this.callFactory(this._name, index),
           type: this.callFactory(this._type, index),
-          is_active: this.callFactory(this._is_active, index),
           ...(this._created_at && {
             created_at: this.callFactory(this._created_at, index),
           }),

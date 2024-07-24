@@ -10,7 +10,6 @@ export class CastMemberModelMapper {
       cast_member_id: entity.cast_member_id.id,
       name: entity.name,
       type: entity.type,
-      is_active: entity.is_active,
       created_at: entity.created_at,
     });
   }
@@ -20,7 +19,6 @@ export class CastMemberModelMapper {
       cast_member_id: new Uuid(model.cast_member_id),
       name: model.name,
       type: CastMemberModelMapper.resolveType(model.type),
-      is_active: model.is_active,
       created_at: model.created_at,
     });
 
