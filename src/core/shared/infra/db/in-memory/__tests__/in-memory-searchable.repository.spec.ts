@@ -209,7 +209,7 @@ describe('InMemorySearchableRepository Unit Tests', () => {
       ];
       const arrange = [
         {
-          search_params: new SearchParams<StubEntity>({
+          search_params: new SearchParams({
             page: 1,
             per_page: 2,
             sort: 'name',
@@ -222,7 +222,7 @@ describe('InMemorySearchableRepository Unit Tests', () => {
           }),
         },
         {
-          search_params: new SearchParams<StubEntity>({
+          search_params: new SearchParams({
             page: 2,
             per_page: 2,
             sort: 'name',
@@ -235,7 +235,7 @@ describe('InMemorySearchableRepository Unit Tests', () => {
           }),
         },
         {
-          search_params: new SearchParams<StubEntity>({
+          search_params: new SearchParams({
             page: 1,
             per_page: 2,
             sort: 'name',
@@ -249,7 +249,7 @@ describe('InMemorySearchableRepository Unit Tests', () => {
           }),
         },
         {
-          search_params: new SearchParams<StubEntity>({
+          search_params: new SearchParams({
             page: 2,
             per_page: 2,
             sort: 'name',
@@ -289,7 +289,7 @@ describe('InMemorySearchableRepository Unit Tests', () => {
 
       const arrange = [
         {
-          params: new SearchParams<StubEntity>({
+          params: new SearchParams({
             page: 1,
             per_page: 2,
             sort: 'name',
@@ -303,7 +303,7 @@ describe('InMemorySearchableRepository Unit Tests', () => {
           }),
         },
         {
-          params: new SearchParams<StubEntity>({
+          params: new SearchParams({
             page: 2,
             per_page: 2,
             sort: 'name',
