@@ -10,7 +10,6 @@ export type CastMemberModelProps = {
   cast_member_id: string;
   name: string;
   type: 'actor' | 'director';
-  is_active: boolean;
   created_at: Date;
 };
 

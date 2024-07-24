@@ -16,7 +16,7 @@ Content-Type: application/json
 
 {
     "name": "Actor 1",
-    "type": "actor"
+    "type": "directors"
 }
 
 ### List CastMembers
