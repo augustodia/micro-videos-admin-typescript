@@ -5,7 +5,7 @@ import { CategoryFakeBuilder } from '../../../../domain/category-fake.builder';
 import { Category } from '../../../../domain/category.entity';
 import { CategorySequelizeRepository } from '../../../../infra/db/sequelize/category-sequelize.repository';
 import { CategoryModel } from '../../../../infra/db/sequelize/category.model';
-import { GetCategoryUseCase } from '../../get-category.use-case';
+import { GetCategoryUseCase } from '../get-category.use-case';
 
 describe('GetCategoryUseCase Integration Tests', () => {
   let useCase: GetCategoryUseCase;
