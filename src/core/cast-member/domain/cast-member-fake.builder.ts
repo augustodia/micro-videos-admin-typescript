@@ -96,10 +96,6 @@ export class CastMemberFakeBuilder<TBuild = any> {
     return this.getValue('type');
   }
 
-  get is_active() {
-    return this.getValue('is_active');
-  }
-
   get created_at() {
     return this.getValue('created_at');
   }
