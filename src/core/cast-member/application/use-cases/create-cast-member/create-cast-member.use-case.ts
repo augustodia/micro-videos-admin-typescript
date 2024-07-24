@@ -9,7 +9,7 @@ import {
 import { CreateCastMemberInput } from './create-cast-member.input';
 
 export type CreateCastMemberOutput = CastMemberOutput;
-export class CreateCategoryUseCase
+export class CreateCastMemberUseCase
   implements IUseCase<CreateCastMemberInput, CreateCastMemberOutput>
 {
   constructor(private readonly categoryRepo: ICastMemberRepository) {}
