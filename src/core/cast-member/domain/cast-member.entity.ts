@@ -29,8 +29,6 @@ export class CastMember extends Entity {
   constructor(props: CastMemberProps) {
     super();
 
-    console.log('props', props);
-
     this.cast_member_id = props.cast_member_id ?? new Uuid();
     this.name = props.name;
     this.type = props.type;

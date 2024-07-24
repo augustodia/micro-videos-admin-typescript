@@ -12,7 +12,7 @@ export type CreateCastMemberOutput = CastMemberOutput;
 export class CreateCastMemberUseCase
   implements IUseCase<CreateCastMemberInput, CreateCastMemberOutput>
 {
-  constructor(private readonly categoryRepo: ICastMemberRepository) {}
+  constructor(private readonly castMemberRepo: ICastMemberRepository) {}
 
   async execute(input: CreateCastMemberInput): Promise<CreateCastMemberOutput> {
     const entity = CastMember.create(input);
@@ -21,7 +21,7 @@ export class CreateCastMemberUseCase
       throw new EntityValidationError(entity.notification.toJSON());
     }
 
-    await this.categoryRepo.insert(entity);
+    await this.castMemberRepo.insert(entity);
 
     return CastMemberOutputMapper.toOutput(entity);
   }

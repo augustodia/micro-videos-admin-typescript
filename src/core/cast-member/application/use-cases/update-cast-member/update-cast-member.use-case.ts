@@ -18,27 +18,27 @@ export type UpdateCastMemberOutput = {
 export class UpdateCastMemberUseCase
   implements IUseCase<UpdateCastMemberInput, UpdateCastMemberOutput>
 {
-  constructor(private categoryRepo: ICastMemberRepository) {}
+  constructor(private castMemberRepo: ICastMemberRepository) {}
 
   async execute(input: UpdateCastMemberInput): Promise<UpdateCastMemberOutput> {
     const uuid = new Uuid(input.id);
-    const category = await this.categoryRepo.findById(uuid);
+    const castMember = await this.castMemberRepo.findById(uuid);
 
-    if (!category) {
+    if (!castMember) {
       throw new NotFoundError(input.id, CastMember);
     }
 
-    category.update({
+    castMember.update({
       name: input.name,
       type: input.type,
     });
 
-    if (category.notification.hasErrors()) {
-      throw new EntityValidationError(category.notification.toJSON());
+    if (castMember.notification.hasErrors()) {
+      throw new EntityValidationError(castMember.notification.toJSON());
     }
 
-    await this.categoryRepo.update(category);
+    await this.castMemberRepo.update(castMember);
 
-    return CastMemberOutputMapper.toOutput(category);
+    return CastMemberOutputMapper.toOutput(castMember);
   }
 }
