@@ -33,8 +33,8 @@ export class CastMemberModelMapper {
     switch (type) {
       case 'director':
         return CastMemberType.DIRECTOR;
-      default:
       case 'actor':
+      default:
         return CastMemberType.ACTOR;
     }
   }
