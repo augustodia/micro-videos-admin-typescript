@@ -25,7 +25,6 @@ export class CreateCastMemberInput {
 
 export class ValidateCreateClassMemberInput {
   static validate(input: CreateCastMemberInput) {
-    console.log(input);
     return validateSync(input);
   }
 }

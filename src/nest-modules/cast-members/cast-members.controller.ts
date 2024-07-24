@@ -23,6 +23,8 @@ import {
   CastMemberCollectionPresenter,
   CastMemberPresenter,
 } from './cast-members.presenter';
+import { ParseJsonPipe } from '../shared/pipes/parse-json.pipe';
+import { CastMemberFilter } from '../../core/cast-member/domain/cast-member.repository';
 
 @Controller('cast-members')
 export class CastMembersController {
@@ -42,7 +44,11 @@ export class CastMembersController {
   }
 
   @Get()
-  async search(@Query() searchParamsDto: SearchCastMembersDto) {
+  async search(
+    @Query() query: SearchCastMembersDto,
+    @Query('filter', ParseJsonPipe) filter?: CastMemberFilter,
+  ) {
+    const searchParamsDto = { ...query, filter };
     const outputs = await this.listUseCase.execute(searchParamsDto);
 
     return new CastMemberCollectionPresenter(outputs);
