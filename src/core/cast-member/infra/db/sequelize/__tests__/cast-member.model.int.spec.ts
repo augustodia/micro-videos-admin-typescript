@@ -12,7 +12,6 @@ describe('CastMemberModel Integration Tests', () => {
       'cast_member_id',
       'name',
       'type',
-      'is_active',
       'created_at',
     ]);
 
@@ -39,13 +38,6 @@ describe('CastMemberModel Integration Tests', () => {
       type: DataType.ENUM('actor', 'director'),
     });
 
-    const isActiveAttr = attributesMap.is_active;
-    expect(isActiveAttr).toMatchObject({
-      field: 'is_active',
-      fieldName: 'is_active',
-      type: DataType.BOOLEAN(),
-    });
-
     const createdAtAttr = attributesMap.created_at;
     expect(createdAtAttr).toMatchObject({
       allowNull: false,
@@ -60,7 +52,6 @@ describe('CastMemberModel Integration Tests', () => {
       cast_member_id: '9366b7dc-2d71-4799-b91c-c64adb205104',
       name: 'test',
       type: 'actor',
-      is_active: true,
       created_at: new Date(),
     };
 

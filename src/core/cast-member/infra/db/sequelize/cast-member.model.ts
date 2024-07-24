@@ -26,9 +26,6 @@ export class CastMemberModel extends Model<CastMemberModelProps> {
   @Column({ type: DataType.ENUM('actor', 'director'), allowNull: false })
   declare type: 'actor' | 'director';
 
-  @Column({ type: DataType.BOOLEAN, defaultValue: false })
-  declare is_active: boolean;
-
   @Column({
     type: DataType.DATE(3),
     defaultValue: DataType.NOW,

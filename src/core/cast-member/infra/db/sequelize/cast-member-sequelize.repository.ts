@@ -69,9 +69,9 @@ export class CastMemberSequelizeRepository implements ICastMemberRepository {
   }
 
   async update(entity: CastMember): Promise<void> {
-    const category = await this.findById(entity.cast_member_id);
+    const castMember = await this.findById(entity.cast_member_id);
 
-    if (!category)
+    if (!castMember)
       throw new NotFoundError(entity.cast_member_id, this.getEntity());
 
     const modelToUpdate = CastMemberModelMapper.toModel(entity);

@@ -9,3 +9,12 @@ Content-Type: application/json
 
 ### List Categories
 GET http://localhost:3000/categories
+
+### Create Cast Member
+POST http://localhost:3000/cast-members
+Content-Type: application/json
+
+{
+    "name": "Actor 1",
+    "type": "actor"
+}
