@@ -309,9 +309,7 @@ export class ListCastMembersFixture {
           page: 1,
           per_page: 2,
           sort: 'name',
-          filter: {
-            name: 'a',
-          },
+          name: 'a',
         },
         expected: {
           entities: [entitiesMap.AAA, entitiesMap.AaA],
@@ -328,9 +326,8 @@ export class ListCastMembersFixture {
           page: 2,
           per_page: 2,
           sort: 'name',
-          filter: {
-            name: 'a',
-          },
+
+          name: 'a',
         },
         expected: {
           entities: [entitiesMap.aaa],

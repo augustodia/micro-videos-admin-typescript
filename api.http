@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ### List Categories
-GET http://localhost:3000/categories
+GET http://localhost:3000/categories?filter=2
 
 ### Create Cast Member
 POST http://localhost:3000/cast-members
@@ -20,7 +20,7 @@ Content-Type: application/json
 }
 
 ### List CastMembers with filter
-GET http://localhost:3000/cast-members?filter={"type": 1}
+GET http://localhost:3000/cast-members?type=1&name=oi
 
 ### List CastMembers
 GET http://localhost:3000/cast-members?sort=name&sort_dir=asc

@@ -60,9 +60,7 @@ describe('ListCastMembersUseCase Integration Tests', () => {
       page: 1,
       per_page: 2,
       sort: 'name',
-      filter: {
-        name: 'a',
-      },
+      name: 'a',
     });
     expect(output).toEqual({
       items: [castMembers[1], castMembers[2]].map(
@@ -78,9 +76,7 @@ describe('ListCastMembersUseCase Integration Tests', () => {
       page: 2,
       per_page: 2,
       sort: 'name',
-      filter: {
-        name: 'a',
-      },
+      name: 'a',
     });
     expect(output).toEqual({
       items: [castMembers[0]].map(CastMemberOutputMapper.toOutput),
@@ -95,9 +91,7 @@ describe('ListCastMembersUseCase Integration Tests', () => {
       per_page: 2,
       sort: 'name',
       sort_dir: 'desc',
-      filter: {
-        name: 'a',
-      },
+      name: 'a',
     });
     expect(output).toEqual({
       items: [castMembers[0], castMembers[2]].map(

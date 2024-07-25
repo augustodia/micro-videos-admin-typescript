@@ -98,9 +98,7 @@ describe('ListCastMembersUseCase Unit Tests', () => {
       page: 1,
       per_page: 2,
       sort: 'name',
-      filter: {
-        name: 'a',
-      },
+      name: 'a',
     });
     expect(output).toStrictEqual({
       items: [items[1], items[2]].map(CastMemberOutputMapper.toOutput),
@@ -114,9 +112,7 @@ describe('ListCastMembersUseCase Unit Tests', () => {
       page: 2,
       per_page: 2,
       sort: 'name',
-      filter: {
-        name: 'a',
-      },
+      name: 'a',
     });
     expect(output).toStrictEqual({
       items: [items[0]].map(CastMemberOutputMapper.toOutput),
@@ -131,9 +127,7 @@ describe('ListCastMembersUseCase Unit Tests', () => {
       per_page: 2,
       sort: 'name',
       sort_dir: 'desc',
-      filter: {
-        name: 'a',
-      },
+      name: 'a',
     });
     expect(output).toStrictEqual({
       items: [items[0], items[2]].map(CastMemberOutputMapper.toOutput),

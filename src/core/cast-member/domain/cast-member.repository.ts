@@ -1,6 +1,9 @@
 import { ISearchableRepository } from '../../shared/domain/repository/repository-interface';
 import { Uuid } from '../../shared/domain/value-objects/uuid.vo';
-import { SearchParams } from '../../shared/domain/repository/search-params';
+import {
+  SearchParams,
+  SearchParamsConstructorProps,
+} from '../../shared/domain/repository/search-params';
 import { SearchResult } from '../../shared/domain/repository/search-result';
 import { CastMember } from './cast-member.entity';
 import { CastMemberType } from './cast-member-type';
@@ -19,15 +22,28 @@ export type CastMemberSearchParamsProps = {
 };
 
 export class CastMemberSearchParams extends SearchParams<CastMemberFilter> {
-  constructor(props?: CastMemberSearchParamsProps) {
+  private constructor(
+    props: SearchParamsConstructorProps<CastMemberFilter> = {},
+  ) {
+    super(props);
+  }
+
+  static create(
+    props: Omit<SearchParamsConstructorProps<CastMemberFilter>, 'filter'> & {
+      name?: string | null;
+      type?: CastMemberType | null;
+    } = {},
+  ) {
     const sortProps = CastMemberSearchParams.determineSortProps(props);
 
-    super({
-      page: props?.page,
-      per_page: props?.per_page,
-      filter: props?.filter,
+    return new CastMemberSearchParams({
+      ...props,
       sort: sortProps.sort,
       sort_dir: sortProps.sort_dir,
+      filter: {
+        name: props.name,
+        type: props.type || null,
+      },
     });
   }
 

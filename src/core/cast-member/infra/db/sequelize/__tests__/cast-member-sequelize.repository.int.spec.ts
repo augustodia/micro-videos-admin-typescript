@@ -96,7 +96,7 @@ describe('CastMemberSequelizeRepository Integration Test', () => {
       const spyToEntity = jest.spyOn(CastMemberModelMapper, 'toEntity');
 
       const searchOutput = await repository.search(
-        new CastMemberSearchParams(),
+        CastMemberSearchParams.create(),
       );
       expect(searchOutput).toBeInstanceOf(CastMemberSearchResult);
       expect(spyToEntity).toHaveBeenCalledTimes(15);
@@ -128,7 +128,7 @@ describe('CastMemberSequelizeRepository Integration Test', () => {
         .withCreatedAt((index) => new Date(created_at.getTime() + index))
         .build();
       const searchOutput = await repository.search(
-        new CastMemberSearchParams(),
+        CastMemberSearchParams.create(),
       );
       const items = searchOutput.items;
       [...items].reverse().forEach((item, index) => {
@@ -159,12 +159,11 @@ describe('CastMemberSequelizeRepository Integration Test', () => {
       await repository.bulkInsert(categories);
 
       let searchOutput = await repository.search(
-        new CastMemberSearchParams({
+        CastMemberSearchParams.create({
           page: 1,
           per_page: 2,
-          filter: {
-            name: 'TEST',
-          },
+
+          name: 'TEST',
         }),
       );
       expect(searchOutput.toJSON(true)).toMatchObject(
@@ -177,12 +176,10 @@ describe('CastMemberSequelizeRepository Integration Test', () => {
       );
 
       searchOutput = await repository.search(
-        new CastMemberSearchParams({
+        CastMemberSearchParams.create({
           page: 2,
           per_page: 2,
-          filter: {
-            name: 'TEST',
-          },
+          name: 'TEST',
         }),
       );
       expect(searchOutput.toJSON(true)).toMatchObject(
@@ -209,7 +206,7 @@ describe('CastMemberSequelizeRepository Integration Test', () => {
 
       const arrange = [
         {
-          params: new CastMemberSearchParams({
+          params: CastMemberSearchParams.create({
             page: 1,
             per_page: 2,
             sort: 'name',
@@ -222,7 +219,7 @@ describe('CastMemberSequelizeRepository Integration Test', () => {
           }),
         },
         {
-          params: new CastMemberSearchParams({
+          params: CastMemberSearchParams.create({
             page: 2,
             per_page: 2,
             sort: 'name',
@@ -235,7 +232,7 @@ describe('CastMemberSequelizeRepository Integration Test', () => {
           }),
         },
         {
-          params: new CastMemberSearchParams({
+          params: CastMemberSearchParams.create({
             page: 1,
             per_page: 2,
             sort: 'name',
@@ -249,7 +246,7 @@ describe('CastMemberSequelizeRepository Integration Test', () => {
           }),
         },
         {
-          params: new CastMemberSearchParams({
+          params: CastMemberSearchParams.create({
             page: 2,
             per_page: 2,
             sort: 'name',
@@ -281,13 +278,11 @@ describe('CastMemberSequelizeRepository Integration Test', () => {
 
       const arrange = [
         {
-          search_params: new CastMemberSearchParams({
+          search_params: CastMemberSearchParams.create({
             page: 1,
             per_page: 2,
             sort: 'name',
-            filter: {
-              name: 'TEST',
-            },
+            name: 'TEST',
           }),
           search_result: new CastMemberSearchResult({
             items: [categories[2], categories[4]],
@@ -297,13 +292,11 @@ describe('CastMemberSequelizeRepository Integration Test', () => {
           }),
         },
         {
-          search_params: new CastMemberSearchParams({
+          search_params: CastMemberSearchParams.create({
             page: 2,
             per_page: 2,
             sort: 'name',
-            filter: {
-              name: 'TEST',
-            },
+            name: 'TEST',
           }),
           search_result: new CastMemberSearchResult({
             items: [categories[0]],
@@ -348,13 +341,12 @@ describe('CastMemberSequelizeRepository Integration Test', () => {
 
       const arrange = [
         {
-          search_params: new CastMemberSearchParams({
+          search_params: CastMemberSearchParams.create({
             page: 1,
             per_page: 2,
             sort: 'created_at',
-            filter: {
-              type: CastMemberType.ACTOR,
-            },
+
+            type: CastMemberType.ACTOR,
           }),
           search_result: new CastMemberSearchResult({
             items: [categories[0], categories[2]],
@@ -364,13 +356,12 @@ describe('CastMemberSequelizeRepository Integration Test', () => {
           }),
         },
         {
-          search_params: new CastMemberSearchParams({
+          search_params: CastMemberSearchParams.create({
             page: 2,
             per_page: 2,
             sort: 'created_at',
-            filter: {
-              type: CastMemberType.ACTOR,
-            },
+
+            type: CastMemberType.ACTOR,
           }),
           search_result: new CastMemberSearchResult({
             items: [categories[4]],

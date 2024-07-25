@@ -149,10 +149,7 @@ describe('CastMembersController Integration Tests', () => {
       test.each(arrange)(
         'when send_data is $send_data',
         async ({ send_data, expected }) => {
-          const presenter = await controller.search(
-            send_data,
-            send_data.filter,
-          );
+          const presenter = await controller.search(send_data);
           const { entities, ...paginationProps } = expected;
           expect(presenter).toEqual(
             new CastMemberCollectionPresenter({
