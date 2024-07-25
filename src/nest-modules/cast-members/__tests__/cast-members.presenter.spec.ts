@@ -143,10 +143,7 @@ describe('CastMembersController Unit Tests', () => {
       },
     };
 
-    const presenter = await controller.search(
-      searchParams,
-      searchParams.filter,
-    );
+    const presenter = await controller.search(searchParams);
     expect(presenter).toBeInstanceOf(CastMemberCollectionPresenter);
     expect(mockListUseCase.execute).toHaveBeenCalledWith(searchParams);
     expect(presenter).toEqual(
