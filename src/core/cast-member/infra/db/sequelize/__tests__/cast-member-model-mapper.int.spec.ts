@@ -35,7 +35,7 @@ describe('CastMemberModelMapper Integration Tests', () => {
     const model = CastMemberModel.build({
       cast_member_id: '5490020a-e866-4229-9adc-aa44b83234c4',
       name: 'some value',
-      type: CastMemberType.ACTOR,
+      type: 'actor',
       created_at,
     });
     const aggregate = CastMemberModelMapper.toEntity(model);
