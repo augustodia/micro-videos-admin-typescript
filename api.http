@@ -16,11 +16,11 @@ Content-Type: application/json
 
 {
     "name": "Actor 2",
-    "type": "actor"
+    "type": 1
 }
 
 ### List CastMembers with filter
-GET http://localhost:3000/cast-members?filter={"name":"1"}
+GET http://localhost:3000/cast-members?filter={"type": 1}
 
 ### List CastMembers
 GET http://localhost:3000/cast-members?sort=name&sort_dir=asc

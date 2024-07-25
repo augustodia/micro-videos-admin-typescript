@@ -9,7 +9,7 @@ export class CastMemberModelMapper {
     return CastMemberModel.build({
       cast_member_id: entity.cast_member_id.id,
       name: entity.name,
-      type: entity.type,
+      type: CastMemberModelMapper.typeToModel(entity.type),
       created_at: entity.created_at,
     });
   }
@@ -18,7 +18,7 @@ export class CastMemberModelMapper {
     const category = new CastMember({
       cast_member_id: new Uuid(model.cast_member_id),
       name: model.name,
-      type: CastMemberModelMapper.resolveType(model.type),
+      type: CastMemberModelMapper.typeToEntity(model.type),
       created_at: model.created_at,
     });
 
@@ -29,13 +29,23 @@ export class CastMemberModelMapper {
     return category;
   }
 
-  private static resolveType(type: string): CastMemberType {
+  static typeToEntity(type: string): CastMemberType {
     switch (type) {
       case 'director':
         return CastMemberType.DIRECTOR;
       case 'actor':
       default:
         return CastMemberType.ACTOR;
+    }
+  }
+
+  static typeToModel(type: CastMemberType): 'director' | 'actor' {
+    switch (type) {
+      case CastMemberType.DIRECTOR:
+        return 'director';
+      case CastMemberType.ACTOR:
+      default:
+        return 'actor';
     }
   }
 }

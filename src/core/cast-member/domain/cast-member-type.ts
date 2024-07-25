@@ -1,4 +1,4 @@
 export enum CastMemberType {
-  DIRECTOR = 'director',
-  ACTOR = 'actor',
+  DIRECTOR = 1,
+  ACTOR = 2,
 }

@@ -117,7 +117,7 @@ export class CreateCastMemberFixture {
           message: [
             'name should not be empty',
             'name must be a string',
-            'type must be one of the following values: director, actor',
+            'type must be one of the following values: 1, 2',
           ],
           ...defaultExpected,
         },
@@ -197,9 +197,7 @@ export class UpdateCastMemberFixture {
           type: 'invalid',
         },
         expected: {
-          message: [
-            'type must be one of the following values: director, actor',
-          ],
+          message: ['type must be one of the following values: 1, 2'],
           ...defaultExpected,
         },
       },
