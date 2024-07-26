@@ -8,7 +8,6 @@ export class CastMemberPresenter {
   id: string;
   name: string;
   type: CastMemberType;
-  is_active: boolean;
 
   @Transform(({ value }: { value: Date }) => value.toISOString())
   created_at: Date;

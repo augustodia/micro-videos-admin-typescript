@@ -76,7 +76,9 @@ export class CreateCastMemberFixture {
 
     return {
       EMPTY: {
-        send_data: {},
+        send_data: {
+          type: CastMemberType.ACTOR,
+        },
         expected: {
           message: ['name should not be empty', 'name must be a string'],
           ...defaultExpected,
@@ -85,6 +87,7 @@ export class CreateCastMemberFixture {
       NAME_UNDEFINED: {
         send_data: {
           name: undefined,
+          type: CastMemberType.ACTOR,
         },
         expected: {
           message: ['name should not be empty', 'name must be a string'],
@@ -94,6 +97,7 @@ export class CreateCastMemberFixture {
       NAME_NULL: {
         send_data: {
           name: null,
+          type: CastMemberType.ACTOR,
         },
         expected: {
           message: ['name should not be empty', 'name must be a string'],
@@ -103,6 +107,7 @@ export class CreateCastMemberFixture {
       NAME_EMPTY: {
         send_data: {
           name: '',
+          type: CastMemberType.ACTOR,
         },
         expected: {
           message: ['name should not be empty'],
@@ -136,6 +141,7 @@ export class CreateCastMemberFixture {
       NAME_TOO_LONG: {
         send_data: {
           name: faker.withInvalidNameTooLong().name,
+          type: CastMemberType.ACTOR,
         },
         expected: {
           message: ['name must be shorter than or equal to 255 characters'],
