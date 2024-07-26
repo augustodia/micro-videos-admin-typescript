@@ -1,6 +1,6 @@
 import { CreateCategoryOutput } from '../../../core/category/application/use-cases/create-category/create-category.use-case';
-import { GetCategoryOutput } from '../../../core/category/application/use-cases/get-category.use-case';
-import { ListCategoriesOutput } from '../../../core/category/application/use-cases/list-categories.use-case';
+import { GetCategoryOutput } from '../../../core/category/application/use-cases/get-category/get-category.use-case';
+import { ListCategoriesOutput } from '../../../core/category/application/use-cases/list-categories/list-categories.use-case';
 import { UpdateCategoryInput } from '../../../core/category/application/use-cases/update-category/update-category.input';
 import { UpdateCategoryOutput } from '../../../core/category/application/use-cases/update-category/update-category.use-case';
 import { SortDirection } from '../../../core/shared/domain/repository/search-params';
@@ -110,8 +110,8 @@ describe('CategoriesController Unit Tests', () => {
     };
     const presenter = await controller.update(input.id, input);
     expect(mockUpdateUseCase.execute).toHaveBeenCalledWith({
-      id: input.id,
       ...input,
+      id: input.id,
     });
     expect(presenter).toBeInstanceOf(CategoryPresenter);
     expect(presenter).toStrictEqual(

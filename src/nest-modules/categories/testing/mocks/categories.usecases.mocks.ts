@@ -2,15 +2,15 @@ import {
   CreateCategoryOutput,
   CreateCategoryUseCase,
 } from '../../../../core/category/application/use-cases/create-category/create-category.use-case';
-import { DeleteCategoryUseCase } from '../../../../core/category/application/use-cases/delete-category.use-case';
+import { DeleteCategoryUseCase } from '../../../../core/category/application/use-cases/delete-category/delete-category.use-case';
 import {
   GetCategoryOutput,
   GetCategoryUseCase,
-} from '../../../../core/category/application/use-cases/get-category.use-case';
+} from '../../../../core/category/application/use-cases/get-category/get-category.use-case';
 import {
   ListCategoriesOutput,
   ListCategoriesUseCase,
-} from '../../../../core/category/application/use-cases/list-categories.use-case';
+} from '../../../../core/category/application/use-cases/list-categories/list-categories.use-case';
 import {
   UpdateCategoryOutput,
   UpdateCategoryUseCase,

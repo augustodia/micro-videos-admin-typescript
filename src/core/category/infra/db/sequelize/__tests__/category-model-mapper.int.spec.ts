@@ -1,7 +1,7 @@
 import { EntityValidationError } from '../../../../../shared/domain/errors/validation.error';
 import { Uuid } from '../../../../../shared/domain/value-objects/uuid.vo';
 import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
-import { Category } from '../../../../domain/category.entity';
+import { Category } from '../../../../domain/category.aggregate';
 import { CategoryModelMapper } from '../category-model-mapper';
 import { CategoryModel } from '../category.model';
 
@@ -10,10 +10,11 @@ describe('CategoryModelMapper Integration Tests', () => {
 
   it('should throws error when category is invalid', () => {
     expect.assertions(2);
-    //@ts-ignore
     const model = CategoryModel.build({
       category_id: '9366b7dc-2d71-4799-b91c-c64adb205104',
       name: 'a'.repeat(256),
+      is_active: true,
+      created_at: new Date(),
     });
     try {
       CategoryModelMapper.toEntity(model);

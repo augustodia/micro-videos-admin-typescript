@@ -8,4 +8,19 @@ Content-Type: application/json
 }
 
 ### List Categories
-GET http://localhost:3000/categories
+GET http://localhost:3000/categories?filter=2
+
+### Create Cast Member
+POST http://localhost:3000/cast-members
+Content-Type: application/json
+
+{
+    "name": "Actor 3",
+    "type": 2
+}
+
+### List CastMembers with filter
+GET http://localhost:3000/cast-members?type=2
+
+### List CastMembers
+GET http://localhost:3000/cast-members?sort=name&sort_dir=asc
