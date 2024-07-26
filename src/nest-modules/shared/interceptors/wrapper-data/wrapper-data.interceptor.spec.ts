@@ -11,7 +11,7 @@ describe('WrapperDataInterceptor', () => {
   it('should wrapper with data key', async () => {
     expect(interceptor).toBeDefined();
 
-    const obs$ = interceptor.intercept(null, {
+    const obs$ = interceptor.intercept({} as any, {
       handle: () => of({ name: 'test' }),
     });
 
@@ -22,7 +22,7 @@ describe('WrapperDataInterceptor', () => {
   it('should not wrapper when meta key is present in body', async () => {
     const data = { data: { name: 'test' }, meta: { total: 1 } };
 
-    const obs$ = interceptor.intercept(null, {
+    const obs$ = interceptor.intercept({} as any, {
       handle: () => of(data),
     });
 

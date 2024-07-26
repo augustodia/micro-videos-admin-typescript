@@ -124,7 +124,7 @@ describe('UpdateCastMemberUseCase Integration Tests', () => {
         input: {
           id: entity.cast_member_id.id,
           name: 'test6',
-          type: null,
+          type: null as any,
         },
         expected: {
           id: entity.cast_member_id.id,

@@ -105,8 +105,8 @@ describe('CastMembersController Unit Tests', () => {
     };
     const presenter = await controller.update(input.id, input);
     expect(mockUpdateUseCase.execute).toHaveBeenCalledWith({
-      id: input.id,
       ...input,
+      id: input.id,
     });
     expect(presenter).toBeInstanceOf(CastMemberPresenter);
     expect(presenter).toStrictEqual(

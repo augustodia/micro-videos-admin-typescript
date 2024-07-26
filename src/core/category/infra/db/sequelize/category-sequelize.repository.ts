@@ -94,7 +94,7 @@ export class CategorySequelizeRepository implements ICategoryRepository {
   }
 
   private formatSort(sort: string, sort_dir: SortDirection) {
-    const dialect = this.categoryModel.sequelize.getDialect() as 'mysql';
+    const dialect = this.categoryModel.sequelize?.getDialect() as 'mysql';
     if (this.orderBy[dialect]?.[sort]) {
       return this.orderBy[dialect][sort](sort_dir);
     }

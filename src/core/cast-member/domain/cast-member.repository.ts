@@ -33,7 +33,10 @@ export class CastMemberSearchParams extends SearchParams<CastMemberFilter> {
       type?: CastMemberType | null;
     } = {},
   ) {
-    const sortProps = CastMemberSearchParams.determineSortProps(props);
+    const sortProps = CastMemberSearchParams.determineSortProps({
+      sort: props.sort,
+      sort_dir: props.sort_dir,
+    });
 
     return new CastMemberSearchParams({
       ...props,
@@ -47,13 +50,13 @@ export class CastMemberSearchParams extends SearchParams<CastMemberFilter> {
   }
 
   private static determineSortProps(
-    props?: CastMemberSearchParamsProps,
+    props?: SearchParamsConstructorProps<CastMemberFilter>,
   ): CastMemberSearchParamsProps {
     if (!props?.sort || (!props?.sort && !props?.sort_dir)) {
       return { sort: 'created_at', sort_dir: 'desc' };
     }
 
-    return { sort: props.sort, sort_dir: props.sort_dir };
+    return { sort: props.sort, sort_dir: props.sort_dir ?? 'asc' };
   }
 
   get filter(): CastMemberFilter | null {
