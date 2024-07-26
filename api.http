@@ -15,12 +15,12 @@ POST http://localhost:3000/cast-members
 Content-Type: application/json
 
 {
-    "name": "Actor 2",
-    "type": 1
+    "name": "Actor 3",
+    "type": 2
 }
 
 ### List CastMembers with filter
-GET http://localhost:3000/cast-members?type=1&name=oi
+GET http://localhost:3000/cast-members?type=2
 
 ### List CastMembers
 GET http://localhost:3000/cast-members?sort=name&sort_dir=asc

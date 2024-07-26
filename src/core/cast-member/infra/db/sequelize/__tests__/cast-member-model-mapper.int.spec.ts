@@ -2,7 +2,7 @@ import { EntityValidationError } from '../../../../../shared/domain/errors/valid
 import { Uuid } from '../../../../../shared/domain/value-objects/uuid.vo';
 import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
 import { CastMemberType } from '../../../../domain/cast-member-type';
-import { CastMember } from '../../../../domain/cast-member.entity';
+import { CastMember } from '../../../../domain/cast-member.aggregate';
 import { CastMemberModelMapper } from '../cast-member-model-mapper';
 import { CastMemberModel } from '../cast-member.model';
 

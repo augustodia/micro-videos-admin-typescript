@@ -1,10 +1,10 @@
-import { Entity } from '../../shared/domain/entity';
+import { AggregateRoot } from '../../shared/domain/aggregate-root';
 import { Uuid } from '../../shared/domain/value-objects/uuid.vo';
 import { CastMemberType } from './cast-member-type';
 import { CastMemberValidatorFactory } from './cast-member.validator';
 
 export type CastMemberProps = {
-  cast_member_id?: Uuid | null;
+  cast_member_id?: CastMemberId | null;
   name: string;
   type: CastMemberType;
   created_at?: Date;
@@ -20,8 +20,10 @@ export type CastMemberCreateProps = {
   type: CastMemberType;
 };
 
-export class CastMember extends Entity {
-  cast_member_id: Uuid;
+export class CastMemberId extends Uuid {}
+
+export class CastMember extends AggregateRoot {
+  cast_member_id: CastMemberId;
   name: string;
   type: CastMemberType;
   created_at: Date;
@@ -29,13 +31,13 @@ export class CastMember extends Entity {
   constructor(props: CastMemberProps) {
     super();
 
-    this.cast_member_id = props.cast_member_id ?? new Uuid();
+    this.cast_member_id = props.cast_member_id ?? new CastMemberId();
     this.name = props.name;
     this.type = props.type;
     this.created_at = props.created_at ?? new Date();
   }
 
-  get entity_id(): Uuid {
+  get entity_id(): CastMemberId {
     return this.cast_member_id;
   }
 

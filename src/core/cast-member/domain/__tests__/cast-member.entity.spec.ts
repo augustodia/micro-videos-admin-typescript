@@ -1,6 +1,6 @@
 import { Uuid } from '../../../shared/domain/value-objects/uuid.vo';
 import { CastMemberType } from '../cast-member-type';
-import { CastMember } from '../cast-member.entity';
+import { CastMember } from '../cast-member.aggregate';
 
 describe('CastMember Without Validator Unit Tests', () => {
   beforeEach(() => {

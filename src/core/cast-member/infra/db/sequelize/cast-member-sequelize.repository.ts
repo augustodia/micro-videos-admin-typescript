@@ -1,9 +1,11 @@
 import { literal, Op } from 'sequelize';
 import { NotFoundError } from '../../../../shared/domain/errors/not-found.error';
-import { Uuid } from '../../../../shared/domain/value-objects/uuid.vo';
 import { SortDirection } from '../../../../shared/domain/repository/search-params';
 import { CastMemberModel } from './cast-member.model';
-import { CastMember } from '../../../domain/cast-member.entity';
+import {
+  CastMember,
+  CastMemberId,
+} from '../../../domain/cast-member.aggregate';
 import {
   CastMemberSearchParams,
   CastMemberSearchResult,
@@ -80,7 +82,7 @@ export class CastMemberSequelizeRepository implements ICastMemberRepository {
     });
   }
 
-  async delete(cast_member_id: Uuid): Promise<void> {
+  async delete(cast_member_id: CastMemberId): Promise<void> {
     const model = await this.findById(cast_member_id);
 
     if (!model) throw new NotFoundError(cast_member_id, this.getEntity());
@@ -92,7 +94,7 @@ export class CastMemberSequelizeRepository implements ICastMemberRepository {
     });
   }
 
-  async findById(entity_id: Uuid): Promise<CastMember | null> {
+  async findById(entity_id: CastMemberId): Promise<CastMember | null> {
     const model = await this.castMemberModel.findByPk(entity_id.id);
 
     return model ? CastMemberModelMapper.toEntity(model) : null;

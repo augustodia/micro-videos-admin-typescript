@@ -1,6 +1,6 @@
 import { IUseCase } from '../../../../shared/application/use-case.interface';
 import { EntityValidationError } from '../../../../shared/domain/errors/validation.error';
-import { CastMember } from '../../../domain/cast-member.entity';
+import { CastMember } from '../../../domain/cast-member.aggregate';
 import { ICastMemberRepository } from '../../../domain/cast-member.repository';
 import {
   CastMemberOutput,

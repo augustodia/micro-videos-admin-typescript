@@ -1,7 +1,7 @@
 import { CastMemberType } from '../../../domain/cast-member-type';
 import { EntityValidationError } from '../../../../shared/domain/errors/validation.error';
 import { Uuid } from '../../../../shared/domain/value-objects/uuid.vo';
-import { CastMember } from '../../../domain/cast-member.entity';
+import { CastMember } from '../../../domain/cast-member.aggregate';
 import { CastMemberModel } from './cast-member.model';
 
 export class CastMemberModelMapper {

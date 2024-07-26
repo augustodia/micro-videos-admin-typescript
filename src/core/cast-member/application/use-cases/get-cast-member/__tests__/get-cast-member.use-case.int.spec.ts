@@ -5,7 +5,7 @@ import { CastMemberModel } from './../../../../infra/db/sequelize/cast-member.mo
 import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
 import { Uuid } from '../../../../../shared/domain/value-objects/uuid.vo';
 import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
-import { CastMember } from '../../../../domain/cast-member.entity';
+import { CastMember } from '../../../../domain/cast-member.aggregate';
 
 describe('GetCastMemberUseCase Integration Tests', () => {
   let useCase: GetCastMemberUseCase;

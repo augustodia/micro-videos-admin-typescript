@@ -5,7 +5,7 @@ import { NotFoundError } from '../../../../../shared/domain/errors/not-found.err
 import { Uuid } from '../../../../../shared/domain/value-objects/uuid.vo';
 import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
 import { CastMemberModel } from '../../../../infra/db/sequelize/cast-member.model';
-import { CastMember } from '../../../../domain/cast-member.entity';
+import { CastMember } from '../../../../domain/cast-member.aggregate';
 
 describe('DeleteCastMemberUseCase Integration Tests', () => {
   let useCase: DeleteCastMemberUseCase;

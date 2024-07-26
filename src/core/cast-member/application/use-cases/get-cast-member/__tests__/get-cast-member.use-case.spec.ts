@@ -1,12 +1,12 @@
 import { GetCastMemberUseCase } from './../get-cast-member.use-case';
 import { CastMemberInMemoryRepository } from './../../../../infra/db/in-memory/cast-member-in-memory.repository';
 
-import { CastMember } from './../../../../domain/cast-member.entity';
-import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
 import {
-  InvalidUuidError,
-  Uuid,
-} from '../../../../../shared/domain/value-objects/uuid.vo';
+  CastMember,
+  CastMemberId,
+} from '../../../../domain/cast-member.aggregate';
+import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
+import { InvalidUuidError } from '../../../../../shared/domain/value-objects/uuid.vo';
 import { CastMemberType } from '../../../../domain/cast-member-type';
 
 describe('GetCastMemberUseCase Unit Tests', () => {
@@ -23,7 +23,7 @@ describe('GetCastMemberUseCase Unit Tests', () => {
       new InvalidUuidError('fake id'),
     );
 
-    const uuid = new Uuid();
+    const uuid = new CastMemberId();
     await expect(() => useCase.execute({ id: uuid.id })).rejects.toThrow(
       new NotFoundError(uuid.id, CastMember),
     );

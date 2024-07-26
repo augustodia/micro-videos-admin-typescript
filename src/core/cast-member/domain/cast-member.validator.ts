@@ -1,6 +1,6 @@
 import { IsEnum, MaxLength, MinLength } from 'class-validator';
 import { CastMemberType } from './cast-member-type';
-import { CastMember } from './cast-member.entity';
+import { CastMember } from './cast-member.aggregate';
 import { Notification } from '../../shared/domain/validators/notification';
 import { ClassValidatorFields } from '../../shared/domain/validators/class-validator-field';
 

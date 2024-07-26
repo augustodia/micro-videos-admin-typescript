@@ -1,7 +1,7 @@
 import { CastMemberInMemoryRepository } from './../../../../infra/db/in-memory/cast-member-in-memory.repository';
 import { ListCastMembersUseCase } from './../list-cast-members.use-case';
 import { CastMemberOutputMapper } from './../../common/cast-member-output';
-import { CastMember } from './../../../../domain/cast-member.entity';
+import { CastMember } from '../../../../domain/cast-member.aggregate';
 import { CastMemberSearchResult } from '../../../../domain/cast-member.repository';
 import { CastMemberType } from '../../../../domain/cast-member-type';
 

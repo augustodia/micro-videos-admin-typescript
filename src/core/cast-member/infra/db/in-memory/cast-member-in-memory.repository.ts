@@ -2,7 +2,7 @@ import { SortDirection } from '../../../../shared/domain/repository/search-param
 import { Uuid } from '../../../../shared/domain/value-objects/uuid.vo';
 import { InMemorySearchableRepository } from '../../../../shared/infra/db/in-memory/in-memory.repository';
 import { CastMemberType } from '../../../domain/cast-member-type';
-import { CastMember } from '../../../domain/cast-member.entity';
+import { CastMember } from '../../../domain/cast-member.aggregate';
 import { ICastMemberRepository } from '../../../domain/cast-member.repository';
 
 type CastMemberFilter = {

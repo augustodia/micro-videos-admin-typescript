@@ -4,7 +4,7 @@ import {
   Uuid,
 } from '../../../../../shared/domain/value-objects/uuid.vo';
 import { CastMemberType } from '../../../../domain/cast-member-type';
-import { CastMember } from '../../../../domain/cast-member.entity';
+import { CastMember } from '../../../../domain/cast-member.aggregate';
 import { CastMemberInMemoryRepository } from '../../../../infra/db/in-memory/cast-member-in-memory.repository';
 import { UpdateCastMemberUseCase } from '../update-cast-member.use-case';
 

@@ -5,7 +5,7 @@ import {
   InvalidUuidError,
   Uuid,
 } from '../../../../../shared/domain/value-objects/uuid.vo';
-import { CastMember } from '../../../../domain/cast-member.entity';
+import { CastMember } from '../../../../domain/cast-member.aggregate';
 import { CastMemberType } from '../../../../domain/cast-member-type';
 
 describe('DeleteCastMemberUseCase Unit Tests', () => {

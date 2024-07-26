@@ -1,9 +1,11 @@
 import { IUseCase } from '../../../../shared/application/use-case.interface';
 import { NotFoundError } from '../../../../shared/domain/errors/not-found.error';
 import { EntityValidationError } from '../../../../shared/domain/errors/validation.error';
-import { Uuid } from '../../../../shared/domain/value-objects/uuid.vo';
 import { CastMemberType } from '../../../domain/cast-member-type';
-import { CastMember } from '../../../domain/cast-member.entity';
+import {
+  CastMember,
+  CastMemberId,
+} from '../../../domain/cast-member.aggregate';
 import { ICastMemberRepository } from '../../../domain/cast-member.repository';
 import { CastMemberOutputMapper } from '../common/cast-member-output';
 import { UpdateCastMemberInput } from './update-cast-member.input';
@@ -21,7 +23,7 @@ export class UpdateCastMemberUseCase
   constructor(private castMemberRepo: ICastMemberRepository) {}
 
   async execute(input: UpdateCastMemberInput): Promise<UpdateCastMemberOutput> {
-    const uuid = new Uuid(input.id);
+    const uuid = new CastMemberId(input.id);
     const castMember = await this.castMemberRepo.findById(uuid);
 
     if (!castMember) {
