@@ -48,6 +48,8 @@ export class Category extends AggregateRoot {
   static create(props: CategoryCreateProps): Category {
     const category = new Category(props);
 
+    category.validate();
+
     return category;
   }
 
