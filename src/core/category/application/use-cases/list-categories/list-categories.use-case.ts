@@ -32,7 +32,7 @@ export class ListCategoriesUseCase
   constructor(private categoryRepo: ICategoryRepository) {}
 
   async execute(input: ListCategoriesInput): Promise<ListCategoriesOutput> {
-    const params = new CategorySearchParams(input);
+    const params = CategorySearchParams.create(input);
     const searchResult = await this.categoryRepo.search(params);
     return this.toOutput(searchResult);
   }

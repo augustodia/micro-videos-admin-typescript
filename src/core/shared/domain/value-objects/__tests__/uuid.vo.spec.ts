@@ -25,6 +25,7 @@ describe('Uuid Unit Tests', () => {
 
   test('should called validate method', () => {
     const uuid = new Uuid();
+    expect(uuid.id).toBeDefined();
     expect(validateSpy).toHaveBeenCalledTimes(1);
   });
 });

@@ -19,6 +19,7 @@ export class SearchParams<Filter = string> extends ValueObject {
 
   constructor(props: SearchParamsConstructorProps<Filter> = {}) {
     super();
+
     this.page = props.page ?? 1;
     this.per_page = props.per_page ?? 15;
     this.sort = props.sort ?? null;
@@ -65,21 +66,21 @@ export class SearchParams<Filter = string> extends ValueObject {
   private set sort(value: string | null) {
     this._sort =
       value === null || value === undefined || value === ''
-        ? null
+        ? 'created_at'
         : String(value);
   }
 
   get sort_dir(): SortDirection {
-    return this._sort_dir ?? 'asc';
+    return this._sort_dir ?? 'desc';
   }
 
   private set sort_dir(value: SortDirection | null) {
     if (!this.sort) {
-      this._sort_dir = null;
+      this._sort_dir = 'desc';
       return;
     }
     const dir = `${value}`.toLowerCase();
-    this._sort_dir = dir !== 'asc' && dir !== 'desc' ? 'asc' : dir;
+    this._sort_dir = dir !== 'asc' && dir !== 'desc' ? 'desc' : dir;
   }
 
   get filter(): Filter | null {

@@ -58,7 +58,7 @@ describe('ListCategoriesUseCase Integration Tests', () => {
       filter: 'a',
     });
     expect(output).toEqual({
-      items: [categories[1], categories[2]].map(CategoryOutputMapper.toOutput),
+      items: [categories[0], categories[2]].map(CategoryOutputMapper.toOutput),
       total: 3,
       current_page: 1,
       per_page: 2,
@@ -72,7 +72,7 @@ describe('ListCategoriesUseCase Integration Tests', () => {
       filter: 'a',
     });
     expect(output).toEqual({
-      items: [categories[0]].map(CategoryOutputMapper.toOutput),
+      items: [categories[1]].map(CategoryOutputMapper.toOutput),
       total: 3,
       current_page: 2,
       per_page: 2,

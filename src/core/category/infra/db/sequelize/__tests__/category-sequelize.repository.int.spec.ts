@@ -89,7 +89,9 @@ describe('CategorySequelizeRepository Integration Test', () => {
       await repository.bulkInsert(categories);
       const spyToEntity = jest.spyOn(CategoryModelMapper, 'toEntity');
 
-      const searchOutput = await repository.search(new CategorySearchParams());
+      const searchOutput = await repository.search(
+        CategorySearchParams.create(),
+      );
       expect(searchOutput).toBeInstanceOf(CategorySearchResult);
       expect(spyToEntity).toHaveBeenCalledTimes(15);
       expect(searchOutput.toJSON()).toMatchObject({
@@ -120,7 +122,9 @@ describe('CategorySequelizeRepository Integration Test', () => {
         .withDescription(null)
         .withCreatedAt((index) => new Date(created_at.getTime() + index))
         .build();
-      const searchOutput = await repository.search(new CategorySearchParams());
+      const searchOutput = await repository.search(
+        CategorySearchParams.create(),
+      );
       const items = searchOutput.items;
       [...items].reverse().forEach((item, index) => {
         expect(`Movie ${index}`).toBe(`${categories[index + 1].name}`);
@@ -150,7 +154,7 @@ describe('CategorySequelizeRepository Integration Test', () => {
       await repository.bulkInsert(categories);
 
       let searchOutput = await repository.search(
-        new CategorySearchParams({
+        CategorySearchParams.create({
           page: 1,
           per_page: 2,
           filter: 'TEST',
@@ -166,7 +170,7 @@ describe('CategorySequelizeRepository Integration Test', () => {
       );
 
       searchOutput = await repository.search(
-        new CategorySearchParams({
+        CategorySearchParams.create({
           page: 2,
           per_page: 2,
           filter: 'TEST',
@@ -196,10 +200,11 @@ describe('CategorySequelizeRepository Integration Test', () => {
 
       const arrange = [
         {
-          params: new CategorySearchParams({
+          params: CategorySearchParams.create({
             page: 1,
             per_page: 2,
             sort: 'name',
+            sort_dir: 'asc',
           }),
           result: new CategorySearchResult({
             items: [categories[1], categories[0]],
@@ -209,10 +214,11 @@ describe('CategorySequelizeRepository Integration Test', () => {
           }),
         },
         {
-          params: new CategorySearchParams({
+          params: CategorySearchParams.create({
             page: 2,
             per_page: 2,
             sort: 'name',
+            sort_dir: 'asc',
           }),
           result: new CategorySearchResult({
             items: [categories[4], categories[2]],
@@ -222,7 +228,7 @@ describe('CategorySequelizeRepository Integration Test', () => {
           }),
         },
         {
-          params: new CategorySearchParams({
+          params: CategorySearchParams.create({
             page: 1,
             per_page: 2,
             sort: 'name',
@@ -236,7 +242,7 @@ describe('CategorySequelizeRepository Integration Test', () => {
           }),
         },
         {
-          params: new CategorySearchParams({
+          params: CategorySearchParams.create({
             page: 2,
             per_page: 2,
             sort: 'name',
@@ -268,10 +274,11 @@ describe('CategorySequelizeRepository Integration Test', () => {
 
       const arrange = [
         {
-          search_params: new CategorySearchParams({
+          search_params: CategorySearchParams.create({
             page: 1,
             per_page: 2,
             sort: 'name',
+            sort_dir: 'asc',
             filter: 'TEST',
           }),
           search_result: new CategorySearchResult({
@@ -282,10 +289,11 @@ describe('CategorySequelizeRepository Integration Test', () => {
           }),
         },
         {
-          search_params: new CategorySearchParams({
+          search_params: CategorySearchParams.create({
             page: 2,
             per_page: 2,
             sort: 'name',
+            sort_dir: 'asc',
             filter: 'TEST',
           }),
           search_result: new CategorySearchResult({

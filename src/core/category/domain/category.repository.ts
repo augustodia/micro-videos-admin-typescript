@@ -15,26 +15,12 @@ export type CategorySearchParamsProps = {
 };
 
 export class CategorySearchParams extends SearchParams<CategoryFilter> {
-  constructor(props?: CategorySearchParamsProps) {
-    const sortProps = CategorySearchParams.determineSortProps(props);
-
-    super({
-      page: props?.page,
-      per_page: props?.per_page,
-      filter: props?.filter,
-      sort: sortProps.sort,
-      sort_dir: sortProps.sort_dir,
-    });
+  private constructor(props?: CategorySearchParamsProps) {
+    super(props);
   }
 
-  private static determineSortProps(
-    props?: CategorySearchParamsProps,
-  ): CategorySearchParamsProps {
-    if (!props?.sort || (!props?.sort && !props?.sort_dir)) {
-      return { sort: 'created_at', sort_dir: 'desc' };
-    }
-
-    return { sort: props.sort, sort_dir: props.sort_dir };
+  static create(props?: CategorySearchParamsProps) {
+    return new CategorySearchParams(props);
   }
 }
 

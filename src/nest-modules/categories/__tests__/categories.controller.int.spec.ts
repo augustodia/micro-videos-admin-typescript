@@ -154,7 +154,7 @@ describe('CategoriesController Integration Tests', () => {
       test.each(arrange)(
         'when send_data is $send_data',
         async ({ send_data, expected }) => {
-          const presenter = await controller.search(send_data);
+          const presenter = await controller.search(send_data as any);
           const { entities, ...paginationProps } = expected;
           expect(presenter).toEqual(
             new CategoryCollectionPresenter({
