@@ -213,6 +213,7 @@ describe('InMemorySearchableRepository Unit Tests', () => {
             page: 1,
             per_page: 2,
             sort: 'name',
+            sort_dir: 'asc',
           }),
           search_result: new SearchResult({
             items: [items[1], items[0]],
@@ -226,6 +227,7 @@ describe('InMemorySearchableRepository Unit Tests', () => {
             page: 2,
             per_page: 2,
             sort: 'name',
+            sort_dir: 'asc',
           }),
           search_result: new SearchResult({
             items: [items[4], items[2]],
@@ -293,6 +295,7 @@ describe('InMemorySearchableRepository Unit Tests', () => {
             page: 1,
             per_page: 2,
             sort: 'name',
+            sort_dir: 'asc',
             filter: 'TEST',
           }),
           result: new SearchResult({
@@ -307,6 +310,7 @@ describe('InMemorySearchableRepository Unit Tests', () => {
             page: 2,
             per_page: 2,
             sort: 'name',
+            sort_dir: 'asc',
             filter: 'TEST',
           }),
           result: new SearchResult({

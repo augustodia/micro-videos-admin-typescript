@@ -47,9 +47,9 @@ describe('SearchParams Unit Tests', () => {
   });
 
   test.each([
-    { sort: null, expected: null },
-    { sort: undefined, expected: null },
-    { sort: '', expected: null },
+    { sort: null, expected: 'created_at' },
+    { sort: undefined, expected: 'created_at' },
+    { sort: '', expected: 'created_at' },
     { sort: 0, expected: '0' },
     { sort: -1, expected: '-1' },
     { sort: 5.5, expected: '5.5' },
@@ -59,17 +59,16 @@ describe('SearchParams Unit Tests', () => {
     { sort: 'field', expected: 'field' },
   ])('sort props %p', (i) => {
     const params = new SearchParams();
-    expect(params.sort).toBeNull();
-
+    expect(params.sort).toBe('created_at');
     expect(new SearchParams({ sort: i.sort as any }).sort).toBe(i.expected);
   });
 
   test.each([
-    { sort_dir: null, expected: 'asc' },
-    { sort_dir: undefined, expected: 'asc' },
-    { sort_dir: '', expected: 'asc' },
-    { sort_dir: 0, expected: 'asc' },
-    { sort_dir: 'fake', expected: 'asc' },
+    { sort_dir: null, expected: 'desc' },
+    { sort_dir: undefined, expected: 'desc' },
+    { sort_dir: '', expected: 'desc' },
+    { sort_dir: 0, expected: 'desc' },
+    { sort_dir: 'fake', expected: 'desc' },
 
     { sort_dir: 'asc', expected: 'asc' },
     { sort_dir: 'ASC', expected: 'asc' },

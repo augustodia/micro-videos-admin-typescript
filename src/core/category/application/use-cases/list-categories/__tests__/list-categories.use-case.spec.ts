@@ -89,6 +89,7 @@ describe('ListCategoriesUseCase Unit Tests', () => {
       page: 1,
       per_page: 2,
       sort: 'name',
+      sort_dir: 'asc',
       filter: 'a',
     });
     expect(output).toStrictEqual({
@@ -103,6 +104,7 @@ describe('ListCategoriesUseCase Unit Tests', () => {
       page: 2,
       per_page: 2,
       sort: 'name',
+      sort_dir: 'asc',
       filter: 'a',
     });
     expect(output).toStrictEqual({

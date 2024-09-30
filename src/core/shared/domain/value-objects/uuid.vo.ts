@@ -13,6 +13,9 @@ export class Uuid extends ValueObject {
   private validate() {
     const isValid = uuidValidate(this.id);
 
+    console.log('this.id', this.id);
+    console.log('isValid', isValid);
+
     if (!isValid) {
       throw new InvalidUuidError(this.id);
     }

@@ -29,6 +29,7 @@ export class Genre extends AggregateRoot {
   constructor(props: GenreConstructorProps) {
     super();
     this.genre_id = props.genre_id ?? new GenreId();
+    console.log('props', this.genre_id);
     this.name = props.name;
     this.categories_id = props.categories_id;
     this.is_active = props.is_active ?? true;

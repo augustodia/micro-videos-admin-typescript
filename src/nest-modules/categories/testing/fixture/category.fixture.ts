@@ -346,6 +346,7 @@ export class ListCategoriesFixture {
           page: 1,
           per_page: 2,
           sort: 'name',
+          sort_dir: 'asc',
           filter: 'a',
         },
         expected: {
@@ -363,6 +364,7 @@ export class ListCategoriesFixture {
           page: 2,
           per_page: 2,
           sort: 'name',
+          sort_dir: 'asc',
           filter: 'a',
         },
         expected: {
