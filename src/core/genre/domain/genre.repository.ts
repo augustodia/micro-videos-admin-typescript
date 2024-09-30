@@ -1,4 +1,3 @@
-import { CategoryId } from '../../category/domain/category.aggregate';
 import { ISearchableRepository } from '../../shared/domain/repository/repository-interface';
 import {
   SearchParams,
@@ -9,7 +8,7 @@ import { Genre, GenreId } from './genre.aggregate';
 
 export type GenreFilter = {
   name?: string;
-  categories_id?: CategoryId[];
+  categories_id?: GenreId[];
 };
 
 export class GenreSearchParams extends SearchParams<GenreFilter> {
@@ -21,12 +20,12 @@ export class GenreSearchParams extends SearchParams<GenreFilter> {
     props: Omit<SearchParamsConstructorProps<GenreFilter>, 'filter'> & {
       filter?: {
         name?: string;
-        categories_id?: CategoryId[] | string[];
+        categories_id?: GenreId[] | string[];
       };
     } = {},
   ) {
     const categories_id = props.filter?.categories_id?.map((c) => {
-      return c instanceof CategoryId ? c : new CategoryId(c);
+      return c instanceof GenreId ? c : new GenreId(c);
     });
 
     return new GenreSearchParams({
