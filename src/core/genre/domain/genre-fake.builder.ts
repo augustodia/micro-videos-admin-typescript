@@ -81,7 +81,7 @@ export class GenreFakeBuilder<TBuild = any> {
           ? undefined
           : this.callFactory(this._genre_id, index),
         name: this.callFactory(this._name, index),
-        categories_id: new Map(categoriesId.map((id) => [id.id, id])),
+        categories_ids: new Map(categoriesId.map((id) => [id.id, id])),
         is_active: this.callFactory(this._is_active, index),
         ...(this._created_at && {
           created_at: this.callFactory(this._created_at, index),
@@ -101,13 +101,13 @@ export class GenreFakeBuilder<TBuild = any> {
     return this.getValue('name');
   }
 
-  get categories_id(): CategoryId[] {
-    let categories_id = this.getValue('categories_id');
+  get categories_ids(): CategoryId[] {
+    let categories_ids = this.getValue('categories_ids');
 
-    if (!categories_id.length) {
-      categories_id = [new CategoryId()];
+    if (!categories_ids.length) {
+      categories_ids = [new CategoryId()];
     }
-    return categories_id;
+    return categories_ids;
   }
 
   get is_active() {

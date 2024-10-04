@@ -52,7 +52,7 @@ describe('GenreSequelizeRepository Integration Tests', () => {
     expect(newGenres.length).toBe(2);
     expect(newGenres[0].toJSON()).toStrictEqual({
       ...genres[0].toJSON(),
-      categories_id: expect.arrayContaining([
+      categories_ids: expect.arrayContaining([
         categories[0].category_id.id,
         categories[1].category_id.id,
         categories[2].category_id.id,
@@ -60,7 +60,7 @@ describe('GenreSequelizeRepository Integration Tests', () => {
     });
     expect(newGenres[1].toJSON()).toStrictEqual({
       ...genres[1].toJSON(),
-      categories_id: expect.arrayContaining([
+      categories_ids: expect.arrayContaining([
         categories[0].category_id.id,
         categories[1].category_id.id,
         categories[2].category_id.id,
@@ -124,7 +124,7 @@ describe('GenreSequelizeRepository Integration Tests', () => {
     entityFound = await genreRepo.findById(genre.genre_id);
     expect(genre.toJSON()).toStrictEqual({
       ...entityFound!.toJSON(),
-      categories_id: expect.arrayContaining([
+      categories_ids: expect.arrayContaining([
         categories[0].category_id.id,
         categories[1].category_id.id,
       ]),
@@ -185,7 +185,7 @@ describe('GenreSequelizeRepository Integration Tests', () => {
         const expected = searchOutput.items[index].toJSON();
         expect(item.toJSON()).toStrictEqual({
           ...expected,
-          categories_id: expect.arrayContaining([
+          categories_ids: expect.arrayContaining([
             categories[0].category_id.id,
             categories[1].category_id.id,
             categories[2].category_id.id,
@@ -248,7 +248,7 @@ describe('GenreSequelizeRepository Integration Tests', () => {
         items: [
           {
             ...expected.items[0],
-            categories_id: expect.arrayContaining([
+            categories_ids: expect.arrayContaining([
               categories[0].category_id.id,
               categories[1].category_id.id,
               categories[2].category_id.id,
@@ -256,7 +256,7 @@ describe('GenreSequelizeRepository Integration Tests', () => {
           },
           {
             ...expected.items[1],
-            categories_id: expect.arrayContaining([
+            categories_ids: expect.arrayContaining([
               categories[0].category_id.id,
               categories[1].category_id.id,
               categories[2].category_id.id,
@@ -283,7 +283,7 @@ describe('GenreSequelizeRepository Integration Tests', () => {
         items: [
           {
             ...expected.items[0],
-            categories_id: expect.arrayContaining([
+            categories_ids: expect.arrayContaining([
               categories[0].category_id.id,
               categories[1].category_id.id,
               categories[2].category_id.id,
@@ -293,7 +293,7 @@ describe('GenreSequelizeRepository Integration Tests', () => {
       });
     });
 
-    it('should apply paginate and filter by categories_id', async () => {
+    it('should apply paginate and filter by categories_ids', async () => {
       const categories = CategoryFakeBuilder.theCategories(4).build();
       await categoryRepo.bulkInsert(categories);
       const genres = [
@@ -329,7 +329,7 @@ describe('GenreSequelizeRepository Integration Tests', () => {
           params: GenreSearchParams.create({
             page: 1,
             per_page: 2,
-            filter: { categories_id: [categories[0].category_id.id] },
+            filter: { categories_ids: [categories[0].category_id.id] },
           }),
           result: {
             items: [genres[2], genres[1]],
@@ -342,7 +342,7 @@ describe('GenreSequelizeRepository Integration Tests', () => {
           params: GenreSearchParams.create({
             page: 2,
             per_page: 2,
-            filter: { categories_id: [categories[0].category_id.id] },
+            filter: { categories_ids: [categories[0].category_id.id] },
           }),
           result: {
             items: [genres[0]],
@@ -356,7 +356,7 @@ describe('GenreSequelizeRepository Integration Tests', () => {
             page: 1,
             per_page: 2,
             filter: {
-              categories_id: [
+              categories_ids: [
                 categories[0].category_id.id,
                 categories[1].category_id.id,
               ],
@@ -374,7 +374,7 @@ describe('GenreSequelizeRepository Integration Tests', () => {
             page: 2,
             per_page: 2,
             filter: {
-              categories_id: [
+              categories_ids: [
                 categories[0].category_id.id,
                 categories[1].category_id.id,
               ],
@@ -400,7 +400,7 @@ describe('GenreSequelizeRepository Integration Tests', () => {
           expect(item.toJSON()).toStrictEqual(
             expect.objectContaining({
               ...expected,
-              categories_id: expect.arrayContaining(expected.categories_id),
+              categories_ids: expect.arrayContaining(expected.categories_ids),
             }),
           );
         });
@@ -513,7 +513,7 @@ describe('GenreSequelizeRepository Integration Tests', () => {
           ...expected,
           items: expected.items.map((i) => ({
             ...i,
-            categories_id: expect.arrayContaining(i.categories_id),
+            categories_ids: expect.arrayContaining(i.categories_ids),
           })),
         });
       }
@@ -602,14 +602,14 @@ describe('GenreSequelizeRepository Integration Tests', () => {
             ...expected,
             items: expected.items.map((i) => ({
               ...i,
-              categories_id: expect.arrayContaining(i.categories_id),
+              categories_ids: expect.arrayContaining(i.categories_ids),
             })),
           });
         },
       );
     });
 
-    describe('should search using filter by categories_id, sort and paginate', () => {
+    describe('should search using filter by categories_ids, sort and paginate', () => {
       const categories = CategoryFakeBuilder.theCategories(4).build();
 
       const genres = [
@@ -646,7 +646,7 @@ describe('GenreSequelizeRepository Integration Tests', () => {
             per_page: 2,
             sort: 'name',
             sort_dir: 'asc',
-            filter: { categories_id: [categories[0].category_id.id] },
+            filter: { categories_ids: [categories[0].category_id.id] },
           }),
           search_result: new GenreSearchResult({
             items: [genres[2], genres[1]],
@@ -661,7 +661,7 @@ describe('GenreSequelizeRepository Integration Tests', () => {
             per_page: 2,
             sort: 'name',
             sort_dir: 'asc',
-            filter: { categories_id: [categories[0].category_id.id] },
+            filter: { categories_ids: [categories[0].category_id.id] },
           }),
           search_result: new GenreSearchResult({
             items: [genres[0]],
@@ -686,14 +686,14 @@ describe('GenreSequelizeRepository Integration Tests', () => {
             ...expected,
             items: expected.items.map((i) => ({
               ...i,
-              categories_id: expect.arrayContaining(i.categories_id),
+              categories_ids: expect.arrayContaining(i.categories_ids),
             })),
           });
         },
       );
     });
 
-    describe('should search using filter by name and categories_id, sort and paginate', () => {
+    describe('should search using filter by name and categories_ids, sort and paginate', () => {
       const categories = CategoryFakeBuilder.theCategories(4).build();
 
       const genres = [
@@ -733,7 +733,7 @@ describe('GenreSequelizeRepository Integration Tests', () => {
             sort_dir: 'asc',
             filter: {
               name: 'TEST',
-              categories_id: [categories[1].category_id],
+              categories_ids: [categories[1].category_id],
             },
           }),
           search_result: new GenreSearchResult({
@@ -751,7 +751,7 @@ describe('GenreSequelizeRepository Integration Tests', () => {
             sort_dir: 'asc',
             filter: {
               name: 'TEST',
-              categories_id: [categories[1].category_id],
+              categories_ids: [categories[1].category_id],
             },
           }),
           search_result: new GenreSearchResult({
@@ -777,7 +777,7 @@ describe('GenreSequelizeRepository Integration Tests', () => {
             ...expected,
             items: expected.items.map((i) => ({
               ...i,
-              categories_id: expect.arrayContaining(i.categories_id),
+              categories_ids: expect.arrayContaining(i.categories_ids),
             })),
           });
         },

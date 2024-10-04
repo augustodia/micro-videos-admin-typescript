@@ -15,38 +15,38 @@ describe('Genre Unit Tests', () => {
     ]);
     let genre = new Genre({
       name: 'test',
-      categories_id: categoriesId,
+      categories_ids: categoriesId,
     });
     expect(genre.genre_id).toBeInstanceOf(GenreId);
     expect(genre.name).toBe('test');
-    expect(genre.categories_id).toEqual(categoriesId);
+    expect(genre.categories_ids).toEqual(categoriesId);
     expect(genre.is_active).toBe(true);
     expect(genre.created_at).toBeInstanceOf(Date);
 
     const created_at = new Date();
     genre = new Genre({
       name: 'test',
-      categories_id: categoriesId,
+      categories_ids: categoriesId,
       is_active: false,
       created_at,
     });
     expect(genre.genre_id).toBeInstanceOf(GenreId);
     expect(genre.name).toBe('test');
-    expect(genre.categories_id).toEqual(categoriesId);
+    expect(genre.categories_ids).toEqual(categoriesId);
     expect(genre.is_active).toBe(false);
     expect(genre.created_at).toBe(created_at);
   });
 
   describe('genre_id field', () => {
     const categoryId = new CategoryId();
-    const categories_id = new Map<string, CategoryId>([
+    const categories_ids = new Map<string, CategoryId>([
       [categoryId.id, categoryId],
     ]);
     const arrange = [
-      { name: 'Movie', categories_id },
-      { name: 'Movie', categories_id, id: null },
-      { name: 'Movie', categories_id, id: undefined },
-      { name: 'Movie', categories_id, id: new GenreId() },
+      { name: 'Movie', categories_ids },
+      { name: 'Movie', categories_ids, id: null },
+      { name: 'Movie', categories_ids, id: undefined },
+      { name: 'Movie', categories_ids, id: new GenreId() },
     ];
 
     test.each(arrange)('when props is %j', (item) => {
@@ -58,27 +58,27 @@ describe('Genre Unit Tests', () => {
   describe('create command', () => {
     test('should create a genre', () => {
       const categoryId = new CategoryId();
-      const categories_id = new Map<string, CategoryId>([
+      const categories_ids = new Map<string, CategoryId>([
         [categoryId.id, categoryId],
       ]);
       const genre = Genre.create({
         name: 'test',
-        categories_id: [categoryId],
+        categories_ids: [categoryId],
       });
       expect(genre.genre_id).toBeInstanceOf(GenreId);
       expect(genre.name).toBe('test');
-      expect(genre.categories_id).toEqual(categories_id);
+      expect(genre.categories_ids).toEqual(categories_ids);
       expect(genre.created_at).toBeInstanceOf(Date);
       expect(Genre.prototype.validate).toHaveBeenCalledTimes(1);
 
       const genre2 = Genre.create({
         name: 'test',
-        categories_id: [categoryId],
+        categories_ids: [categoryId],
         is_active: false,
       });
       expect(genre2.genre_id).toBeInstanceOf(GenreId);
       expect(genre2.name).toBe('test');
-      expect(genre2.categories_id).toEqual(categories_id);
+      expect(genre2.categories_ids).toEqual(categories_ids);
       expect(genre2.is_active).toBe(false);
       expect(genre2.created_at).toBeInstanceOf(Date);
     });
@@ -87,7 +87,7 @@ describe('Genre Unit Tests', () => {
   test('should change name', () => {
     const genre = Genre.create({
       name: 'test',
-      categories_id: [new CategoryId()],
+      categories_ids: [new CategoryId()],
     });
     genre.changeName('test2');
     expect(genre.name).toBe('test2');
@@ -98,17 +98,19 @@ describe('Genre Unit Tests', () => {
     const categoryId = new CategoryId();
     const genre = Genre.create({
       name: 'test',
-      categories_id: [categoryId],
+      categories_ids: [categoryId],
     });
     genre.addCategoryId(categoryId);
-    expect(genre.categories_id.size).toBe(1);
-    expect(genre.categories_id).toEqual(new Map([[categoryId.id, categoryId]]));
+    expect(genre.categories_ids.size).toBe(1);
+    expect(genre.categories_ids).toEqual(
+      new Map([[categoryId.id, categoryId]]),
+    );
     expect(Genre.prototype.validate).toHaveBeenCalledTimes(1);
 
     const categoryId2 = new CategoryId();
     genre.addCategoryId(categoryId2);
-    expect(genre.categories_id.size).toBe(2);
-    expect(genre.categories_id).toEqual(
+    expect(genre.categories_ids.size).toBe(2);
+    expect(genre.categories_ids).toEqual(
       new Map([
         [categoryId.id, categoryId],
         [categoryId2.id, categoryId2],
@@ -124,7 +126,7 @@ describe('Genre Validator', () => {
       const categoryId = new CategoryId();
       const genre = Genre.create({
         name: 't'.repeat(256),
-        categories_id: [categoryId],
+        categories_ids: [categoryId],
       } as any);
       expect(genre.notification.hasErrors()).toBe(true);
       expect(genre.notification).notificationContainsErrorMessages([

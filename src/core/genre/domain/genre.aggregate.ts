@@ -6,14 +6,14 @@ import GenreValidatorFactory from './genre.validator';
 export type GenreConstructorProps = {
   genre_id?: GenreId;
   name: string;
-  categories_id: Map<string, CategoryId>;
+  categories_ids: Map<string, CategoryId>;
   is_active?: boolean;
   created_at?: Date;
 };
 
 export type GenreCreateProps = {
   name: string;
-  categories_id: CategoryId[];
+  categories_ids: CategoryId[];
   is_active?: boolean;
 };
 
@@ -22,16 +22,15 @@ export class GenreId extends Uuid {}
 export class Genre extends AggregateRoot {
   genre_id: GenreId;
   name: string;
-  categories_id: Map<string, CategoryId>;
+  categories_ids: Map<string, CategoryId>;
   is_active: boolean;
   created_at: Date;
 
   constructor(props: GenreConstructorProps) {
     super();
     this.genre_id = props.genre_id ?? new GenreId();
-    console.log('props', this.genre_id);
     this.name = props.name;
-    this.categories_id = props.categories_id;
+    this.categories_ids = props.categories_ids;
     this.is_active = props.is_active ?? true;
     this.created_at = props.created_at ?? new Date();
   }
@@ -39,8 +38,11 @@ export class Genre extends AggregateRoot {
   static create(props: GenreCreateProps): Genre {
     const genre = new Genre({
       ...props,
-      categories_id: new Map(
-        props.categories_id.map((category_id) => [category_id.id, category_id]),
+      categories_ids: new Map(
+        props.categories_ids.map((category_id) => [
+          category_id.id,
+          category_id,
+        ]),
       ),
     });
 
@@ -55,20 +57,20 @@ export class Genre extends AggregateRoot {
   }
 
   addCategoryId(category_id: CategoryId): void {
-    this.categories_id.set(category_id.id, category_id);
+    this.categories_ids.set(category_id.id, category_id);
   }
 
   removeCategoryId(category_id: CategoryId): void {
-    this.categories_id.delete(category_id.id);
+    this.categories_ids.delete(category_id.id);
   }
 
-  syncCategoriesIds(categories_id: CategoryId[]): void {
-    if (categories_id.length === 0) {
+  syncCategoriesIds(categories_ids: CategoryId[]): void {
+    if (categories_ids.length === 0) {
       throw new Error('Categories cannot be empty');
     }
 
-    this.categories_id = new Map(
-      categories_id.map((category_id) => [category_id.id, category_id]),
+    this.categories_ids = new Map(
+      categories_ids.map((category_id) => [category_id.id, category_id]),
     );
   }
 
@@ -93,7 +95,7 @@ export class Genre extends AggregateRoot {
     return {
       genre_id: this.genre_id.id,
       name: this.name,
-      categories_id: Array.from(this.categories_id.values()).map(
+      categories_ids: Array.from(this.categories_ids.values()).map(
         (category_id) => category_id.id,
       ),
       is_active: this.is_active,

@@ -34,7 +34,7 @@ describe('GenreInMemoryRepository', () => {
     expect(itemsFiltered).toStrictEqual([items[0], items[1]]);
   });
 
-  it('should filter items by categories_id', async () => {
+  it('should filter items by categories_ids', async () => {
     const categoryId1 = new CategoryId();
     const categoryId2 = new CategoryId();
     const categoryId3 = new CategoryId();
@@ -52,37 +52,37 @@ describe('GenreInMemoryRepository', () => {
     const filterSpy = jest.spyOn(items, 'filter' as any);
 
     let itemsFiltered = await repository['applyFilter'](items, {
-      categories_id: [categoryId1],
+      categories_ids: [categoryId1],
     });
     expect(filterSpy).toHaveBeenCalledTimes(1);
     expect(itemsFiltered).toStrictEqual([items[0]]);
 
     itemsFiltered = await repository['applyFilter'](items, {
-      categories_id: [categoryId2],
+      categories_ids: [categoryId2],
     });
     expect(filterSpy).toHaveBeenCalledTimes(2);
     expect(itemsFiltered).toStrictEqual([items[0]]);
 
     itemsFiltered = await repository['applyFilter'](items, {
-      categories_id: [categoryId1, categoryId2],
+      categories_ids: [categoryId1, categoryId2],
     });
     expect(filterSpy).toHaveBeenCalledTimes(3);
     expect(itemsFiltered).toStrictEqual([items[0]]);
 
     itemsFiltered = await repository['applyFilter'](items, {
-      categories_id: [categoryId1, categoryId3],
+      categories_ids: [categoryId1, categoryId3],
     });
     expect(filterSpy).toHaveBeenCalledTimes(4);
     expect(itemsFiltered).toStrictEqual([...items]);
 
     itemsFiltered = await repository['applyFilter'](items, {
-      categories_id: [categoryId3, categoryId1],
+      categories_ids: [categoryId3, categoryId1],
     });
     expect(filterSpy).toHaveBeenCalledTimes(5);
     expect(itemsFiltered).toStrictEqual([...items]);
   });
 
-  it('should filter items by name and categories_id', async () => {
+  it('should filter items by name and categories_ids', async () => {
     const categoryId1 = new CategoryId();
     const categoryId2 = new CategoryId();
     const categoryId3 = new CategoryId();
@@ -106,19 +106,19 @@ describe('GenreInMemoryRepository', () => {
 
     let itemsFiltered = await repository['applyFilter'](items, {
       name: 'test',
-      categories_id: [categoryId1],
+      categories_ids: [categoryId1],
     });
     expect(itemsFiltered).toStrictEqual([items[0], items[2]]);
 
     itemsFiltered = await repository['applyFilter'](items, {
       name: 'test',
-      categories_id: [categoryId3],
+      categories_ids: [categoryId3],
     });
     expect(itemsFiltered).toStrictEqual([]);
 
     itemsFiltered = await repository['applyFilter'](items, {
       name: 'fake',
-      categories_id: [categoryId4],
+      categories_ids: [categoryId4],
     });
     expect(itemsFiltered).toStrictEqual([items[1]]);
   });

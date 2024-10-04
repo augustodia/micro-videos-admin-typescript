@@ -6,23 +6,23 @@ import { GenreCategoryModel, GenreModel } from './genre-model';
 
 export class GenreModelMapper {
   static toEntity(model: GenreModel) {
-    const { genre_id: id, categories_id = [], ...otherData } = model.toJSON();
-    const categoriesId = categories_id.map(
+    const { genre_id: id, categories_ids = [], ...otherData } = model.toJSON();
+    const categoriesId = categories_ids.map(
       (c) => new CategoryId(c.category_id),
     );
 
     const notification = new Notification();
     if (!categoriesId.length) {
       notification.addError(
-        'categories_id should not be empty',
-        'categories_id',
+        'categories_ids should not be empty',
+        'categories_ids',
       );
     }
 
     const genre = new Genre({
       ...otherData,
       genre_id: new GenreId(id),
-      categories_id: new Map(categoriesId.map((c) => [c.id, c])),
+      categories_ids: new Map(categoriesId.map((c) => [c.id, c])),
     });
 
     genre.validate();
@@ -37,10 +37,10 @@ export class GenreModelMapper {
   }
 
   static toModelProps(aggregate: Genre) {
-    const { categories_id, ...otherData } = aggregate.toJSON();
+    const { categories_ids, ...otherData } = aggregate.toJSON();
     return {
       ...otherData,
-      categories_id: categories_id.map(
+      categories_ids: categories_ids.map(
         (category_id) =>
           new GenreCategoryModel({
             genre_id: aggregate.genre_id.id,

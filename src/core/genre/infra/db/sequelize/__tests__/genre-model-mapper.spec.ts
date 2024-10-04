@@ -102,16 +102,16 @@ describe('GenreModel Integration Tests', () => {
   test('mapping associations', () => {
     const associationsMap = GenreModel.associations;
     const associations = Object.keys(associationsMap);
-    expect(associations).toStrictEqual(['categories_id', 'categories']);
+    expect(associations).toStrictEqual(['categories_ids', 'categories']);
 
-    const categoriesIdRelation = associationsMap.categories_id;
+    const categoriesIdRelation = associationsMap.categories_ids;
     expect(categoriesIdRelation).toMatchObject({
       associationType: 'HasMany',
       source: GenreModel,
       target: GenreCategoryModel,
       options: {
         foreignKey: { name: 'genre_id' },
-        as: 'categories_id',
+        as: 'categories_ids',
       },
     });
 
@@ -176,12 +176,12 @@ describe('GenreModel Integration Tests', () => {
     const genreWithCategoriesId = await GenreModel.findByPk(
       genreModel.genre_id,
       {
-        include: ['categories_id'],
+        include: ['categories_ids'],
       },
     );
 
-    expect(genreWithCategoriesId!.categories_id).toHaveLength(3);
-    expect(genreWithCategoriesId!.categories_id).toEqual(
+    expect(genreWithCategoriesId!.categories_ids).toHaveLength(3);
+    expect(genreWithCategoriesId!.categories_ids).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           genre_id: genreModel.genre_id,
@@ -208,7 +208,7 @@ describe('GenreModel Integration Tests', () => {
       genre_id: '9366b7dc-2d71-4799-b91c-c64adb205104',
       name: 'test',
       is_active: true,
-      categories_id: [
+      categories_ids: [
         GenreCategoryModel.build({
           category_id: categories[0].category_id.id,
           genre_id: '9366b7dc-2d71-4799-b91c-c64adb205104',
@@ -225,7 +225,7 @@ describe('GenreModel Integration Tests', () => {
       created_at: new Date(),
     };
     const genreModel = await GenreModel.create(genreModelData, {
-      include: ['categories_id'],
+      include: ['categories_ids'],
     });
     const genreWithCategories = await GenreModel.findByPk(genreModel.genre_id, {
       include: [
@@ -237,7 +237,7 @@ describe('GenreModel Integration Tests', () => {
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { categories_id, ...genreCommonProps } = genreModelData;
+    const { categories_ids, ...genreCommonProps } = genreModelData;
     expect(genreWithCategories).toMatchObject(genreCommonProps);
     expect(genreWithCategories!.categories).toHaveLength(3);
     expect(genreWithCategories!.categories).toEqual(
@@ -257,12 +257,12 @@ describe('GenreModel Integration Tests', () => {
     const genreWithCategoriesId = await GenreModel.findByPk(
       genreModel.genre_id,
       {
-        include: ['categories_id'],
+        include: ['categories_ids'],
       },
     );
 
-    expect(genreWithCategoriesId!.categories_id).toHaveLength(3);
-    expect(genreWithCategoriesId!.categories_id).toEqual(
+    expect(genreWithCategoriesId!.categories_ids).toHaveLength(3);
+    expect(genreWithCategoriesId!.categories_ids).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           genre_id: genreModel.genre_id,
