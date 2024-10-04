@@ -14,14 +14,16 @@ describe('GenreSearchParams', () => {
       const searchParams = GenreSearchParams.create({
         filter: {
           name: 'Action',
-          categories_id: ['123e4567-e89b-12d3-a456-426655440000'],
+          categories_ids: ['123e4567-e89b-12d3-a456-426655440000'],
         },
       });
 
       expect(searchParams).toBeInstanceOf(GenreSearchParams);
       expect(searchParams.filter).toEqual({
         name: 'Action',
-        categories_id: [new CategoryId('123e4567-e89b-12d3-a456-426655440000')],
+        categories_ids: [
+          new CategoryId('123e4567-e89b-12d3-a456-426655440000'),
+        ],
       });
     });
   });

@@ -28,10 +28,10 @@ export class GenreInMemoryRepository
       const containsName =
         filter.name &&
         genre.name.toLowerCase().includes(filter.name.toLowerCase());
-      const containsCategoriesId = filter.categories_id?.some((c) =>
-        genre.categories_id.has(c.id),
+      const containsCategoriesId = filter.categories_ids?.some((c) =>
+        genre.categories_ids.has(c.id),
       );
-      if (filter.name && filter.categories_id) {
+      if (filter.name && filter.categories_ids) {
         return containsName && containsCategoriesId;
       } else if (filter.name) {
         return containsName;

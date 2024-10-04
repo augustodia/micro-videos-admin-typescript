@@ -13,7 +13,7 @@ import { CategoryModel } from '../../../../category/infra/db/sequelize/category.
 export type GenreModelProps = {
   genre_id: string;
   name: string;
-  categories_id?: GenreCategoryModel[];
+  categories_ids?: GenreCategoryModel[];
   categories?: CategoryModel[];
   is_active: boolean;
   created_at: Date;
@@ -29,7 +29,7 @@ export class GenreModel extends Model<GenreModelProps> {
   declare name: string;
 
   @HasMany(() => GenreCategoryModel, 'genre_id')
-  declare categories_id: GenreCategoryModel[];
+  declare categories_ids: GenreCategoryModel[];
 
   @BelongsToMany(() => CategoryModel, () => GenreCategoryModel)
   declare categories: CategoryModel[];

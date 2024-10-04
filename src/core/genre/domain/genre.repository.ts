@@ -9,7 +9,7 @@ import { Genre, GenreId } from './genre.aggregate';
 
 export type GenreFilter = {
   name?: string;
-  categories_id?: CategoryId[];
+  categories_ids?: CategoryId[];
 };
 
 export class GenreSearchParams extends SearchParams<GenreFilter> {
@@ -21,11 +21,11 @@ export class GenreSearchParams extends SearchParams<GenreFilter> {
     props: Omit<SearchParamsConstructorProps<GenreFilter>, 'filter'> & {
       filter?: {
         name?: string;
-        categories_id?: CategoryId[] | string[];
+        categories_ids?: CategoryId[] | string[];
       };
     } = {},
   ) {
-    const categories_id = props.filter?.categories_id?.map((c) => {
+    const categories_ids = props.filter?.categories_ids?.map((c) => {
       return c instanceof CategoryId ? c : new CategoryId(c);
     });
 
@@ -33,7 +33,7 @@ export class GenreSearchParams extends SearchParams<GenreFilter> {
       ...props,
       filter: {
         name: props.filter?.name,
-        categories_id,
+        categories_ids,
       },
     });
   }
@@ -50,8 +50,8 @@ export class GenreSearchParams extends SearchParams<GenreFilter> {
 
     const filter = {
       ...(_value?.name && { name: `${_value.name}` }),
-      ...(_value?.categories_id?.length && {
-        categories_id: _value.categories_id,
+      ...(_value?.categories_ids?.length && {
+        categories_ids: _value.categories_ids,
       }),
     };
 
