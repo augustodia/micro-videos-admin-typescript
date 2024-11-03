@@ -1,8 +1,8 @@
 import { Sequelize, Transaction } from 'sequelize';
 import { IUnitOfWork } from '../../../domain/repository/unit-of-work.interface';
+
 export class UnitOfWorkSequelize implements IUnitOfWork {
   private transaction: Transaction | null;
-
   constructor(private sequelize: Sequelize) {}
 
   async start(): Promise<void> {
