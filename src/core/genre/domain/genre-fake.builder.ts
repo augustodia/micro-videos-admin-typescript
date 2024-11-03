@@ -10,7 +10,7 @@ export class GenreFakeBuilder<TBuild = any> {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private _name: PropOrFactory<string> = (_index) => this.chance.word();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private _categories_id: PropOrFactory<CategoryId>[] = [];
+  private _categories_ids: PropOrFactory<CategoryId>[] = [];
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private _is_active: PropOrFactory<boolean> = (_index) => true;
@@ -45,7 +45,7 @@ export class GenreFakeBuilder<TBuild = any> {
   }
 
   addCategoryId(valueOrFactory: PropOrFactory<CategoryId>) {
-    this._categories_id.push(valueOrFactory);
+    this._categories_ids.push(valueOrFactory);
     return this;
   }
 
@@ -72,8 +72,8 @@ export class GenreFakeBuilder<TBuild = any> {
   build(): TBuild {
     const Genres = new Array(this.countObjs).fill(undefined).map((_, index) => {
       const categoryId = new CategoryId();
-      const categoriesId = this._categories_id.length
-        ? this.callFactory(this._categories_id, index)
+      const categoriesId = this._categories_ids.length
+        ? this.callFactory(this._categories_ids, index)
         : [categoryId];
 
       const genre = new Genre({

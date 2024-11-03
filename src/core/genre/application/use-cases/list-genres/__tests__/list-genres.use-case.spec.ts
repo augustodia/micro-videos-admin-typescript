@@ -502,8 +502,6 @@ describe('ListGenresUseCase Unit Tests', () => {
       'when input is {"filter": $input.filter, "page": $input.page, "per_page": $input.per_page, "sort": $input.sort, "sort_dir": $input.sort_dir}',
       async ({ input, output: expectedOutput }) => {
         const output = await useCase.execute(input);
-        console.log(output);
-        console.log(expectedOutput);
         expect(output).toStrictEqual(expectedOutput);
       },
     );

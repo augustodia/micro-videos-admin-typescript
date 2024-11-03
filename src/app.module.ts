@@ -5,6 +5,7 @@ import { DatabaseModule } from './nest-modules/database/database.module';
 import { ConfigModule } from './nest-modules/config/config.module';
 import { SharedModule } from './nest-modules/shared/shared.module';
 import { CastMembersModule } from './nest-modules/cast-members/cast-members.module';
+import { GenresModule } from './nest-modules/genres-module/genres.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { CastMembersModule } from './nest-modules/cast-members/cast-members.modu
     DatabaseModule,
     SharedModule,
     CastMembersModule,
+    GenresModule,
   ],
 })
 export class AppModule {}

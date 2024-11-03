@@ -8,6 +8,7 @@ import { DeleteCategoryUseCase } from '../../core/category/application/use-cases
 import { GetCategoryUseCase } from '../../core/category/application/use-cases/get-category/get-category.use-case';
 import { ListCategoriesUseCase } from '../../core/category/application/use-cases/list-categories/list-categories.use-case';
 import { UpdateCategoryUseCase } from '../../core/category/application/use-cases/update-category/update-category.use-case';
+import { CategoriesIdExistsInDatabaseValidator } from '../../core/category/application/validations/categories-ids-exists-in-database.validator';
 
 export const REPOSITORIES = {
   CATEGORY_REPOSITORY: {
@@ -65,7 +66,18 @@ export const USE_CASES = {
   },
 };
 
+export const VALIDATIONS = {
+  CATEGORIES_IDS_EXISTS_IN_DATABASE_VALIDATOR: {
+    provide: CategoriesIdExistsInDatabaseValidator,
+    useFactory: (categoryRepo: ICategoryRepository) => {
+      return new CategoriesIdExistsInDatabaseValidator(categoryRepo);
+    },
+    inject: [REPOSITORIES.CATEGORY_REPOSITORY.provide],
+  },
+};
+
 export const CATEGORY_PROVIDERS = {
   REPOSITORIES,
   USE_CASES,
+  VALIDATIONS,
 };
