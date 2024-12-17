@@ -1,16 +1,17 @@
 import { DeleteGenreUseCase } from '../delete-genre.use-case';
-import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
-import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
+import { setupSequelize } from '@core/shared/infra/testing/helpers';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
 import { Genre, GenreId } from '../../../../domain/genre.aggregate';
-import { UnitOfWorkSequelize } from '../../../../../shared/infra/db/sequelize/unit-of-work-sequelize';
-import { Category } from '../../../../../category/domain/category.aggregate';
 import { GenreSequelizeRepository } from '../../../../infra/db/sequelize/genre-sequelize.repository';
-import { CategorySequelizeRepository } from '../../../../../category/infra/db/sequelize/category-sequelize.repository';
+import { CategorySequelizeRepository } from '@core/category/infra/db/sequelize/category-sequelize.repository';
 import {
   GenreCategoryModel,
   GenreModel,
 } from '../../../../infra/db/sequelize/genre-model';
-import { CategoryModel } from '../../../../../category/infra/db/sequelize/category.model';
+import { CategoryModel } from '@core/category/infra/db/sequelize/category.model';
+import { UnitOfWorkSequelize } from '@core/shared/infra/db/sequelize/unit-of-work.sequelize';
+import { CategoryFakeBuilder } from '@core/category/domain/category-fake.builder';
+import { GenreFakeBuilder } from '@core/genre/domain/genre-fake.builder';
 
 describe('DeleteGenreUseCase Integration Tests', () => {
   let uow: UnitOfWorkSequelize;
@@ -37,10 +38,9 @@ describe('DeleteGenreUseCase Integration Tests', () => {
   });
 
   it('should delete a genre', async () => {
-    const categories = Category.fake().theCategories(2).build();
+    const categories = CategoryFakeBuilder.theCategories(2).build();
     await categoryRepo.bulkInsert(categories);
-    const genre = Genre.fake()
-      .aGenre()
+    const genre = GenreFakeBuilder.aGenre()
       .addCategoryId(categories[0].category_id)
       .addCategoryId(categories[1].category_id)
       .build();
@@ -52,10 +52,9 @@ describe('DeleteGenreUseCase Integration Tests', () => {
   });
 
   it('rollback transaction', async () => {
-    const categories = Category.fake().theCategories(2).build();
+    const categories = CategoryFakeBuilder.theCategories(2).build();
     await categoryRepo.bulkInsert(categories);
-    const genre = Genre.fake()
-      .aGenre()
+    const genre = GenreFakeBuilder.aGenre()
       .addCategoryId(categories[0].category_id)
       .addCategoryId(categories[1].category_id)
       .build();

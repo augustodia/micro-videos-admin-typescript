@@ -2,20 +2,21 @@ import {
   UpdateGenreOutput,
   UpdateGenreUseCase,
 } from '../update-genre.use-case';
-import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
-import { Genre, GenreId } from '../../../../domain/genre.aggregate';
+import { setupSequelize } from '@core/shared/infra/testing/helpers';
+import { GenreId } from '../../../../domain/genre.aggregate';
 
-import { Category } from '../../../../../category/domain/category.aggregate';
 import { UpdateGenreInput } from '../update-genre.input';
 import { GenreSequelizeRepository } from '../../../../infra/db/sequelize/genre-sequelize.repository';
-import { CategorySequelizeRepository } from '../../../../../category/infra/db/sequelize/category-sequelize.repository';
-import { CategoriesIdExistsInDatabaseValidator } from '../../../../../category/application/validations/categories-ids-exists-in-database.validator';
+import { CategorySequelizeRepository } from '@core/category/infra/db/sequelize/category-sequelize.repository';
+import { CategoriesIdExistsInDatabaseValidator } from '@core/category/application/validations/categories-ids-exists-in-database.validator';
 import {
   GenreCategoryModel,
   GenreModel,
 } from '../../../../infra/db/sequelize/genre-model';
-import { CategoryModel } from '../../../../../category/infra/db/sequelize/category.model';
-import { UnitOfWorkSequelize } from '../../../../../shared/infra/db/sequelize/unit-of-work.sequelize';
+import { CategoryModel } from '@core/category/infra/db/sequelize/category.model';
+import { UnitOfWorkSequelize } from '@core/shared/infra/db/sequelize/unit-of-work.sequelize';
+import { CategoryFakeBuilder } from '@core/category/domain/category-fake.builder';
+import { GenreFakeBuilder } from '@core/genre/domain/genre-fake.builder';
 
 describe('UpdateGenreUseCase Integration Tests', () => {
   let uow: UnitOfWorkSequelize;
@@ -43,10 +44,9 @@ describe('UpdateGenreUseCase Integration Tests', () => {
   });
 
   it('should update a genre', async () => {
-    const categories = Category.fake().theCategories(3).build();
+    const categories = CategoryFakeBuilder.theCategories(3).build();
     await categoryRepo.bulkInsert(categories);
-    const entity = Genre.fake()
-      .aGenre()
+    const entity = GenreFakeBuilder.aGenre()
       .addCategoryId(categories[1].category_id)
       .build();
     await genreRepo.insert(entity);
@@ -158,10 +158,9 @@ describe('UpdateGenreUseCase Integration Tests', () => {
   });
 
   it('rollback transaction', async () => {
-    const category = Category.fake().aCategory().build();
+    const category = CategoryFakeBuilder.aCategory().build();
     await categoryRepo.insert(category);
-    const entity = Genre.fake()
-      .aGenre()
+    const entity = GenreFakeBuilder.aGenre()
       .addCategoryId(category.category_id)
       .build();
     await genreRepo.insert(entity);

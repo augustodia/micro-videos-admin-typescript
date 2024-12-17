@@ -1,6 +1,6 @@
-import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
-import { Uuid } from '../../../../../shared/domain/value-objects/uuid.vo';
-import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
+import { Uuid } from '@core/shared/domain/value-objects/uuid.vo';
+import { setupSequelize } from '@core/shared/infra/testing/helpers';
 import { CategoryFakeBuilder } from '../../../../domain/category-fake.builder';
 import { Category } from '../../../../domain/category.aggregate';
 import { CategorySequelizeRepository } from '../../../../infra/db/sequelize/category-sequelize.repository';
@@ -27,7 +27,7 @@ describe('UpdateCategoryUseCase Integration Tests', () => {
 
   it('should update a category', async () => {
     const entity = CategoryFakeBuilder.aCategory().build();
-    repository.insert(entity);
+    await repository.insert(entity);
 
     let output = await useCase.execute({
       id: entity.category_id.id,
