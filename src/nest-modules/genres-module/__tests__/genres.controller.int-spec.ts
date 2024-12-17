@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { IGenreRepository } from '../../../core/genre/domain/genre.repository';
+import { IGenreRepository } from '@core/genre/domain/genre.repository';
 import { GenresController } from '../genres.controller';
 import { GenresModule } from '../genres.module';
-import { CreateGenreUseCase } from '../../../core/genre/application/use-cases/create-genre/create-genre.use-case';
-import { UpdateGenreUseCase } from '../../../core/genre/application/use-cases/update-genre/update-genre.use-case';
-import { ListGenresUseCase } from '../../../core/genre/application/use-cases/list-genres/list-genres.use-case';
-import { GetGenreUseCase } from '../../../core/genre/application/use-cases/get-genre/get-genre.use-case';
-import { DeleteGenreUseCase } from '../../../core/genre/application/use-cases/delete-genre/delete-genre.use-case';
-import { Uuid } from '../../../core/shared/domain/value-objects/uuid.vo';
+import { CreateGenreUseCase } from '@core/genre/application/use-cases/create-genre/create-genre.use-case';
+import { UpdateGenreUseCase } from '@core/genre/application/use-cases/update-genre/update-genre.use-case';
+import { ListGenresUseCase } from '@core/genre/application/use-cases/list-genres/list-genres.use-case';
+import { GetGenreUseCase } from '@core/genre/application/use-cases/get-genre/get-genre.use-case';
+import { DeleteGenreUseCase } from '@core/genre/application/use-cases/delete-genre/delete-genre.use-case';
+import { Uuid } from '@core/shared/domain/value-objects/uuid.vo';
 import { GenreCollectionPresenter } from '../genres.presenter';
 import {
   CreateGenreFixture,
@@ -17,17 +17,17 @@ import {
 
 import { Sequelize } from 'sequelize-typescript';
 import { getConnectionToken } from '@nestjs/sequelize';
-import { GenreId } from '../../../core/genre/domain/genre.aggregate';
+import { GenreId } from '@core/genre/domain/genre.aggregate';
 import { GENRES_PROVIDERS } from '../genres.providers';
 
-import { GenreOutputMapper } from '../../../core/genre/application/use-cases/common/genre-output';
-import { ICategoryRepository } from '../../../core/category/domain/category.repository';
+import { GenreOutputMapper } from '@core/genre/application/use-cases/common/genre-output';
+import { ICategoryRepository } from '@core/category/domain/category.repository';
 import { DatabaseModule } from '../../database/database.module';
 import { ConfigModule } from '../../config/config.module';
-import { UnitOfWorkSequelize } from '../../../core/shared/infra/db/sequelize/unit-of-work.sequelize';
+import { UnitOfWorkSequelize } from '@core/shared/infra/db/sequelize/unit-of-work.sequelize';
 import { CATEGORY_PROVIDERS } from '../../categories/categories.providers';
-import { CategoryFakeBuilder } from '../../../core/category/domain/category-fake.builder';
-import { GenreFakeBuilder } from '../../../core/genre/domain/genre-fake.builder';
+import { CategoryFakeBuilder } from '@core/category/domain/category-fake.builder';
+import { GenreFakeBuilder } from '@core/genre/domain/genre-fake.builder';
 
 describe('GenresController Integration Tests', () => {
   let controller: GenresController;
@@ -117,7 +117,7 @@ describe('GenresController Integration Tests', () => {
             ? expected.categories_ids
             : genre.categories_ids,
           is_active:
-            expected.is_active === true || expected.is_active === false
+            expected.is_active || !expected.is_active
               ? expected.is_active
               : genre.is_active,
         });

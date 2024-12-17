@@ -1,6 +1,6 @@
-import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
-import { Uuid } from '../../../../../shared/domain/value-objects/uuid.vo';
-import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
+import { Uuid } from '@core/shared/domain/value-objects/uuid.vo';
+import { setupSequelize } from '@core/shared/infra/testing/helpers';
 import { CastMemberFakeBuilder } from '../../../../domain/cast-member-fake.builder';
 import { CastMemberType } from '../../../../domain/cast-member-type';
 import { CastMember } from '../../../../domain/cast-member.aggregate';
@@ -28,7 +28,7 @@ describe('UpdateCastMemberUseCase Integration Tests', () => {
 
   it('should update a cast-member', async () => {
     const entity = CastMemberFakeBuilder.aCastMember().build();
-    repository.insert(entity);
+    await repository.insert(entity);
 
     let output = await useCase.execute({
       id: entity.cast_member_id.id,

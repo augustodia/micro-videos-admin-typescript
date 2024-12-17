@@ -1,6 +1,6 @@
 import { literal, Op } from 'sequelize';
-import { NotFoundError } from '../../../../shared/domain/errors/not-found.error';
-import { SortDirection } from '../../../../shared/domain/repository/search-params';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
+import { SortDirection } from '@core/shared/domain/repository/search-params';
 import { CastMemberModel } from './cast-member.model';
 import {
   CastMember,
@@ -12,7 +12,7 @@ import {
   ICastMemberRepository,
 } from '../../../domain/cast-member.repository';
 import { CastMemberModelMapper } from './cast-member-model-mapper';
-import { InvalidArgumentError } from '../../../../shared/domain/errors/invalid-argument.error';
+import { InvalidArgumentError } from '@core/shared/domain/errors/invalid-argument.error';
 
 export class CastMemberSequelizeRepository implements ICastMemberRepository {
   sortableFields: string[] = ['name', 'created_at'];
@@ -127,7 +127,7 @@ export class CastMemberSequelizeRepository implements ICastMemberRepository {
 
     if (!model) throw new NotFoundError(cast_member_id, this.getEntity());
 
-    this.castMemberModel.destroy({
+    await this.castMemberModel.destroy({
       where: {
         cast_member_id: cast_member_id.id,
       },
