@@ -19,7 +19,7 @@
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true,
     "paths": {
-      "@core/*": ["./src/core/*"]
+      "@core/*": ["src/core/*"]
     }
   }
 }

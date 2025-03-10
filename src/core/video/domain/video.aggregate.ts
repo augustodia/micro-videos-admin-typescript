@@ -11,6 +11,8 @@ import { Trailer } from '@core/video/domain/trailer.vo';
 import VideoValidatorFactory from '@core/video/domain/video.validator';
 import { ThumbnailHalf } from '@core/video/domain/thumbnail-half.vo';
 import { AudioVideoMediaStatus } from '@core/shared/domain/value-objects/audio-video-media.vo';
+import { VideoCreatedEvent } from '@core/video/domain/domain-events/video-created.event';
+import { VideoAudioMediaReplaced } from '../../../../video-audio-media-replaced';
 
 export type VideoConstructorProps = {
   video_id?: VideoId;
@@ -70,7 +72,6 @@ export class Video extends AggregateRoot {
   thumbnail_half?: Thumbnail | null;
   trailer?: Trailer | null;
   video?: VideoMedia | null;
-
   categories_id: Map<string, CategoryId>;
   genres_id: Map<string, GenreId>;
   cast_members_id: Map<string, CastMemberId>;
@@ -94,9 +95,19 @@ export class Video extends AggregateRoot {
     this.trailer = props.trailer ?? null;
     this.video = props.video ?? null;
 
+    this.categories_id = props.categories_id;
     this.genres_id = props.genres_id;
     this.cast_members_id = props.cast_members_id;
     this.created_at = props.created_at ?? new Date();
+
+    this.registerHandler(
+      VideoCreatedEvent.name,
+      this.onVideoCreated.bind(this),
+    );
+    this.registerHandler(
+      VideoAudioMediaReplaced.name,
+      this.onAudioVideoMediaReplaced.bind(this),
+    );
   }
 
   static create(props: VideoCreateCommand) {
@@ -107,8 +118,29 @@ export class Video extends AggregateRoot {
       cast_members_id: new Map(props.cast_members_id.map((id) => [id.id, id])),
       is_published: false,
     });
+
     video.validate(['title']);
-    video.markAsPublished();
+    video.applyEvent(
+      new VideoCreatedEvent({
+        video_id: video.video_id,
+        title: video.title,
+        description: video.description,
+        year_launched: video.year_launched,
+        duration: video.duration,
+        rating: video.rating,
+        is_opened: video.is_opened,
+        is_published: video.is_published,
+        banner: video.banner ?? null,
+        thumbnail: video.thumbnail ?? null,
+        thumbnail_half: video.thumbnail_half ?? null,
+        trailer: video.trailer ?? null,
+        video: video.video ?? null,
+        categories_id: Array.from(video.categories_id.values()),
+        genres_id: Array.from(video.genres_id.values()),
+        cast_members_id: Array.from(video.cast_members_id.values()),
+        created_at: video.created_at,
+      }),
+    );
 
     return video;
   }
@@ -156,12 +188,24 @@ export class Video extends AggregateRoot {
 
   replaceTrailer(trailer: Trailer): void {
     this.trailer = trailer;
-    this.markAsPublished();
+    this.applyEvent(
+      new VideoAudioMediaReplaced({
+        aggregate_id: this.video_id,
+        media: trailer,
+        media_type: 'trailer',
+      }),
+    );
   }
 
   replaceVideo(video: VideoMedia): void {
     this.video = video;
-    this.markAsPublished();
+    this.applyEvent(
+      new VideoAudioMediaReplaced({
+        aggregate_id: this.video_id,
+        media: video,
+        media_type: 'video',
+      }),
+    );
   }
 
   private markAsPublished(): void {
@@ -219,6 +263,35 @@ export class Video extends AggregateRoot {
       throw new Error('Cast Members id is empty');
     }
     this.cast_members_id = new Map(castMembersId.map((id) => [id.id, id]));
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onVideoCreated(_event: VideoCreatedEvent) {
+    if (this.is_published) {
+      return;
+    }
+
+    this.tryMarkAsPublished();
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onAudioVideoMediaReplaced(_event: VideoAudioMediaReplaced) {
+    if (this.is_published) {
+      return;
+    }
+
+    this.tryMarkAsPublished();
+  }
+
+  private tryMarkAsPublished() {
+    if (
+      this.trailer &&
+      this.video &&
+      this.trailer.status === AudioVideoMediaStatus.COMPLETED &&
+      this.video.status === AudioVideoMediaStatus.COMPLETED
+    ) {
+      this.is_published = true;
+    }
   }
 
   validate(fields?: string[]) {
