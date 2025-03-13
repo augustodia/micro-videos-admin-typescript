@@ -10,22 +10,22 @@ import {
   AudioVideoMediaModel,
   AudioVideoMediaRelatedField,
 } from '../audio-video-media.model';
-import {
-  CastMemberModel,
-  CastMemberSequelizeRepository,
-} from '../../../../../cast-member/infra/db/sequelize/cast-member-sequelize';
+
 import { RatingValues } from '../../../../domain/rating.vo';
 import { VideoId } from '../../../../domain/video.aggregate';
-import { AudioVideoMediaStatus } from '../../../../../shared/domain/value-objects/audio-video-media.vo';
-import { Category } from '../../../../../category/domain/category.aggregate';
-import { Genre } from '../../../../../genre/domain/genre.aggregate';
-import { CastMember } from '../../../../../cast-member/domain/cast-member.aggregate';
+import { AudioVideoMediaStatus } from '@core/shared/domain/value-objects/audio-video-media.vo';
 import { setupSequelizeForVideo } from '../testing/helpers';
-import { GenreModel } from '../../../../../genre/infra/db/sequelize/genre-model';
-import { CategorySequelizeRepository } from '../../../../../category/infra/db/sequelize/category-sequelize.repository';
-import { CategoryModel } from '../../../../../category/infra/db/sequelize/category.model';
-import { GenreSequelizeRepository } from '../../../../../genre/infra/db/sequelize/genre-sequelize.repository';
-import { UnitOfWorkFakeInMemory } from '../../../../../shared/infra/db/in-memory/fake-unit-of-work-in-memory';
+import { GenreModel } from '@core/genre/infra/db/sequelize/genre-model';
+import { CategorySequelizeRepository } from '@core/category/infra/db/sequelize/category-sequelize.repository';
+import { CategoryModel } from '@core/category/infra/db/sequelize/category.model';
+import { GenreSequelizeRepository } from '@core/genre/infra/db/sequelize/genre-sequelize.repository';
+import { UnitOfWorkFakeInMemory } from '@core/shared/infra/db/in-memory/fake-unit-of-work-in-memory';
+import { CastMemberModel } from '@core/cast-member/infra/db/sequelize/cast-member.model';
+import { CategoryFakeBuilder } from '@core/category/domain/category-fake.builder';
+import { GenreFakeBuilder } from '@core/genre/domain/genre-fake.builder';
+import { CastMemberSequelizeRepository } from '@core/cast-member/infra/db/sequelize/cast-member-sequelize.repository';
+import { CastMemberFakeBuilder } from '@core/cast-member/domain/cast-member-fake.builder';
+import { CastMemberType } from '@core/cast-member/domain/cast-member-type';
 
 describe('VideoCategoryModel Unit Tests', () => {
   setupSequelizeForVideo();
@@ -360,21 +360,22 @@ describe('VideoModel Unit Tests', () => {
 
   test('create and association relations separately ', async () => {
     const categoryRepo = new CategorySequelizeRepository(CategoryModel);
-    const category = Category.fake().aCategory().build();
+    const category = CategoryFakeBuilder.aCategory().build();
     await categoryRepo.insert(category);
 
     const genreRepo = new GenreSequelizeRepository(
       GenreModel,
       new UnitOfWorkFakeInMemory() as any,
     );
-    const genre = Genre.fake()
-      .aGenre()
+    const genre = GenreFakeBuilder.aGenre()
       .addCategoryId(category.category_id)
       .build();
     await genreRepo.insert(genre);
 
     const castMemberRepo = new CastMemberSequelizeRepository(CastMemberModel);
-    const castMember = CastMember.fake().anActor().build();
+    const castMember = CastMemberFakeBuilder.aCastMember()
+      .withType(CastMemberType.DIRECTOR)
+      .build();
     await castMemberRepo.insert(castMember);
 
     const videoProps = {
@@ -475,21 +476,22 @@ describe('VideoModel Unit Tests', () => {
 
   test('create and association in single transaction ', async () => {
     const categoryRepo = new CategorySequelizeRepository(CategoryModel);
-    const category = Category.fake().aCategory().build();
+    const category = CategoryFakeBuilder.aCategory().build();
     await categoryRepo.insert(category);
 
     const genreRepo = new GenreSequelizeRepository(
       GenreModel,
       new UnitOfWorkFakeInMemory() as any,
     );
-    const genre = Genre.fake()
-      .aGenre()
+    const genre = GenreFakeBuilder.aGenre()
       .addCategoryId(category.category_id)
       .build();
     await genreRepo.insert(genre);
 
     const castMemberRepo = new CastMemberSequelizeRepository(CastMemberModel);
-    const castMember = CastMember.fake().anActor().build();
+    const castMember = CastMemberFakeBuilder.aCastMember()
+      .withType(CastMemberType.ACTOR)
+      .build();
     await castMemberRepo.insert(castMember);
 
     const videoProps = {
