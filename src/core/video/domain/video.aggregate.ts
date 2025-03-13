@@ -24,9 +24,9 @@ export type VideoConstructorProps = {
   is_opened: boolean;
   is_published: boolean;
 
-  banner?: Banner;
-  thumbnail?: Thumbnail;
-  thumbnail_half?: ThumbnailHalf;
+  banner?: Banner | null;
+  thumbnail?: Thumbnail | null;
+  thumbnail_half?: ThumbnailHalf | null;
   trailer?: Trailer;
   video?: VideoMedia;
 

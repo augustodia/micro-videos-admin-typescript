@@ -39,6 +39,7 @@ export abstract class AudioVideoMedia extends ValueObject {
     return {
       name: this.name,
       location: this.raw_location,
+      raw_location: this.encoded_location,
       encoded_location: this.encoded_location,
       status: this.status,
     };
