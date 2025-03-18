@@ -1,12 +1,12 @@
-import { CATEGORY_PROVIDERS } from './../../src/nest-modules/categories/categories.providers';
-import { instanceToPlain } from 'class-transformer';
 import request from 'supertest';
-import { CategoryOutputMapper } from '../../src/core/category/application/use-cases/common/category-output';
+import { instanceToPlain } from 'class-transformer';
 import { ICategoryRepository } from '../../src/core/category/domain/category.repository';
-import { CategoriesController } from '../../src/nest-modules/categories/categories.controller';
-import { GetCategoryFixture } from '../../src/nest-modules/categories/testing/fixture/category.fixture';
-import { startApp } from '../../src/nest-modules/shared/testing/helpers';
-import { CategoryFakeBuilder } from '../../src/core/category/domain/category-fake.builder';
+import * as CategoryProviders from '../../src/nest-modules/categories-module/categories.providers';
+import { CategoryOutputMapper } from '../../src/core/category/application/use-cases/common/category-output';
+import { startApp } from '../../src/nest-modules/shared-module/testing/helpers';
+import { CategoriesController } from '../../src/nest-modules/categories-module/categories.controller';
+import { Category } from '../../src/core/category/domain/category.aggregate';
+import { GetCategoryFixture } from '../../src/nest-modules/categories-module/testing/category-fixture';
 
 describe('CategoriesController (e2e)', () => {
   const nestApp = startApp();
@@ -42,9 +42,9 @@ describe('CategoriesController (e2e)', () => {
 
     it('should return a category ', async () => {
       const categoryRepo = nestApp.app.get<ICategoryRepository>(
-        CATEGORY_PROVIDERS.REPOSITORIES.CATEGORY_REPOSITORY.provide,
+        CategoryProviders.REPOSITORIES.CATEGORY_REPOSITORY.provide,
       );
-      const category = CategoryFakeBuilder.aCategory().build();
+      const category = Category.fake().aCategory().build();
       await categoryRepo.insert(category);
 
       const res = await request(nestApp.app.getHttpServer())

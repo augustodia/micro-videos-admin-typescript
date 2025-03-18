@@ -1,10 +1,10 @@
+import { Either } from '../../shared/domain/either';
+import { MediaFileValidator } from '../../shared/domain/validators/media-file.validator';
 import {
   AudioVideoMedia,
   AudioVideoMediaStatus,
-} from '@core/shared/domain/value-objects/audio-video-media.vo';
-import { VideoId } from '@core/video/domain/video.aggregate';
-import { MediaFileValidator } from '@core/shared/domain/validators/media-file.validator';
-import { Either } from '@core/shared/domain/either';
+} from '../../shared/domain/value-objects/audio-video-media.vo';
+import { VideoId } from './video.aggregate';
 
 export class VideoMedia extends AudioVideoMedia {
   static max_size = 1024 * 1024 * 1024 * 50; // 50GB
@@ -32,9 +32,8 @@ export class VideoMedia extends AudioVideoMedia {
         mime_type,
         size,
       });
-
       return VideoMedia.create({
-        name: `${video_id.id}=${newName}`,
+        name: `${video_id.id}-${newName}`,
         raw_location: `videos/${video_id.id}/videos`,
       });
     });
@@ -52,6 +51,7 @@ export class VideoMedia extends AudioVideoMedia {
     return new VideoMedia({
       name: this.name,
       raw_location: this.raw_location,
+      encoded_location: this.encoded_location!,
       status: AudioVideoMediaStatus.PROCESSING,
     });
   }
@@ -69,6 +69,7 @@ export class VideoMedia extends AudioVideoMedia {
     return new VideoMedia({
       name: this.name,
       raw_location: this.raw_location,
+      encoded_location: this.encoded_location!,
       status: AudioVideoMediaStatus.FAILED,
     });
   }

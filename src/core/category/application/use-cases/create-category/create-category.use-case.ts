@@ -1,5 +1,5 @@
 import { IUseCase } from '../../../../shared/application/use-case.interface';
-import { EntityValidationError } from '../../../../shared/domain/errors/validation.error';
+import { EntityValidationError } from '../../../../shared/domain/validators/validation.error';
 import { Category } from '../../../domain/category.aggregate';
 import { ICategoryRepository } from '../../../domain/category.repository';
 import {
@@ -8,7 +8,6 @@ import {
 } from '../common/category-output';
 import { CreateCategoryInput } from './create-category.input';
 
-export type CreateCategoryOutput = CategoryOutput;
 export class CreateCategoryUseCase
   implements IUseCase<CreateCategoryInput, CreateCategoryOutput>
 {
@@ -26,3 +25,5 @@ export class CreateCategoryUseCase
     return CategoryOutputMapper.toOutput(entity);
   }
 }
+
+export type CreateCategoryOutput = CategoryOutput;

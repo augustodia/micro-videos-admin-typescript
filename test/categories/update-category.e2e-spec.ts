@@ -1,13 +1,13 @@
 import request from 'supertest';
 import { instanceToPlain } from 'class-transformer';
-import { CategoryOutputMapper } from '../../src/core/category/application/use-cases/common/category-output';
 import { ICategoryRepository } from '../../src/core/category/domain/category.repository';
+import * as CategoryProviders from '../../src/nest-modules/categories-module/categories.providers';
+import { CategoryOutputMapper } from '../../src/core/category/application/use-cases/common/category-output';
 import { Uuid } from '../../src/core/shared/domain/value-objects/uuid.vo';
-import { CategoriesController } from '../../src/nest-modules/categories/categories.controller';
-import { UpdateCategoryFixture } from '../../src/nest-modules/categories/testing/fixture/category.fixture';
-import { startApp } from '../../src/nest-modules/shared/testing/helpers';
-import { CategoryFakeBuilder } from '../../src/core/category/domain/category-fake.builder';
-import { CATEGORY_PROVIDERS } from '../../src/nest-modules/categories/categories.providers';
+import { startApp } from '../../src/nest-modules/shared-module/testing/helpers';
+import { CategoriesController } from '../../src/nest-modules/categories-module/categories.controller';
+import { Category } from '../../src/core/category/domain/category.aggregate';
+import { UpdateCategoryFixture } from '../../src/nest-modules/categories-module/testing/category-fixture';
 
 describe('CategoriesController (e2e)', () => {
   const uuid = '9366b7dc-2d71-4799-b91c-c64adb205104';
@@ -15,7 +15,7 @@ describe('CategoriesController (e2e)', () => {
   describe('/categories/:id (PATCH)', () => {
     describe('should a response error when id is invalid or not found', () => {
       const nestApp = startApp();
-      const faker = CategoryFakeBuilder.aCategory();
+      const faker = Category.fake().aCategory();
       const arrange = [
         {
           id: '88ff2587-ce5a-4769-a8c6-1d63d29c5f7a',
@@ -78,11 +78,11 @@ describe('CategoriesController (e2e)', () => {
 
       beforeEach(() => {
         categoryRepo = app.app.get<ICategoryRepository>(
-          CATEGORY_PROVIDERS.REPOSITORIES.CATEGORY_REPOSITORY.provide,
+          CategoryProviders.REPOSITORIES.CATEGORY_REPOSITORY.provide,
         );
       });
       test.each(arrange)('when body is $label', async ({ value }) => {
-        const category = CategoryFakeBuilder.aCategory().build();
+        const category = Category.fake().aCategory().build();
         await categoryRepo.insert(category);
         return request(app.app.getHttpServer())
           .patch(`/categories/${category.category_id.id}`)
@@ -99,13 +99,13 @@ describe('CategoriesController (e2e)', () => {
 
       beforeEach(async () => {
         categoryRepo = appHelper.app.get<ICategoryRepository>(
-          CATEGORY_PROVIDERS.REPOSITORIES.CATEGORY_REPOSITORY.provide,
+          CategoryProviders.REPOSITORIES.CATEGORY_REPOSITORY.provide,
         );
       });
       test.each(arrange)(
         'when body is $send_data',
         async ({ send_data, expected }) => {
-          const categoryCreated = CategoryFakeBuilder.aCategory().build();
+          const categoryCreated = Category.fake().aCategory().build();
           await categoryRepo.insert(categoryCreated);
 
           const res = await request(appHelper.app.getHttpServer())

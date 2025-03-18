@@ -1,5 +1,5 @@
 #!/bin/bash
 
-yarn && yarn migrate:ts up && yarn start:dev
+npm install && npm run migrate:ts up && npm run start:dev
 
 tail -f /dev/null

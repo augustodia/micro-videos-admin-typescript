@@ -10,20 +10,14 @@ import {
   CastMemberOutputMapper,
 } from '../common/cast-member-output';
 
-export type GetCastMemberInput = {
-  id: string;
-};
-
-export type GetCastMemberOutput = CastMemberOutput;
-
 export class GetCastMemberUseCase
   implements IUseCase<GetCastMemberInput, GetCastMemberOutput>
 {
   constructor(private castMemberRepo: ICastMemberRepository) {}
 
   async execute(input: GetCastMemberInput): Promise<GetCastMemberOutput> {
-    const uuid = new CastMemberId(input.id);
-    const castMember = await this.castMemberRepo.findById(uuid);
+    const castMemberId = new CastMemberId(input.id);
+    const castMember = await this.castMemberRepo.findById(castMemberId);
     if (!castMember) {
       throw new NotFoundError(input.id, CastMember);
     }
@@ -31,3 +25,9 @@ export class GetCastMemberUseCase
     return CastMemberOutputMapper.toOutput(castMember);
   }
 }
+
+export type GetCastMemberInput = {
+  id: string;
+};
+
+export type GetCastMemberOutput = CastMemberOutput;

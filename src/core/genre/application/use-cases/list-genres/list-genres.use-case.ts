@@ -34,7 +34,7 @@ export class ListGenresUseCase
 
     const categoriesIdRelated = searchResult.items.reduce<CategoryId[]>(
       (acc, item) => {
-        return acc.concat([...item.categories_ids.values()]);
+        return acc.concat([...item.categories_id.values()]);
       },
       [],
     );
@@ -44,7 +44,7 @@ export class ListGenresUseCase
 
     const items = _items.map((i) => {
       const categoriesOfGenre = categoriesRelated.filter((c) =>
-        i.categories_ids.has(c.category_id.id),
+        i.categories_id.has(c.category_id.id),
       );
       return GenreOutputMapper.toOutput(i, categoriesOfGenre);
     });

@@ -1,7 +1,7 @@
 import { MaxLength } from 'class-validator';
+import { ClassValidatorFields } from '../../shared/domain/validators/class-validator-fields';
 import { Genre } from './genre.aggregate';
 import { Notification } from '../../shared/domain/validators/notification';
-import { ClassValidatorFields } from '../../shared/domain/validators/class-validator-field';
 
 export class GenreRules {
   @MaxLength(255, { groups: ['name'] })

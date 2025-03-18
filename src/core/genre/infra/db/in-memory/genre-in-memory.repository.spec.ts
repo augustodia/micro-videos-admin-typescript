@@ -1,5 +1,5 @@
 import { CategoryId } from '../../../../category/domain/category.aggregate';
-import { GenreFakeBuilder } from '../../../domain/genre-fake.builder';
+import { Genre } from '../../../domain/genre.aggregate';
 import { GenreInMemoryRepository } from './genre-in-memory.repository';
 
 describe('GenreInMemoryRepository', () => {
@@ -8,8 +8,8 @@ describe('GenreInMemoryRepository', () => {
   beforeEach(() => (repository = new GenreInMemoryRepository()));
   it('should no filter items when filter object is null', async () => {
     const items = [
-      GenreFakeBuilder.aGenre().build(),
-      GenreFakeBuilder.aGenre().build(),
+      Genre.fake().aGenre().build(),
+      Genre.fake().aGenre().build(),
     ];
     const filterSpy = jest.spyOn(items, 'filter' as any);
 
@@ -19,7 +19,7 @@ describe('GenreInMemoryRepository', () => {
   });
 
   it('should filter items by name', async () => {
-    const faker = GenreFakeBuilder.aGenre();
+    const faker = Genre.fake().aGenre();
     const items = [
       faker.withName('test').build(),
       faker.withName('TEST').build(),
@@ -34,17 +34,19 @@ describe('GenreInMemoryRepository', () => {
     expect(itemsFiltered).toStrictEqual([items[0], items[1]]);
   });
 
-  it('should filter items by categories_ids', async () => {
+  it('should filter items by categories_id', async () => {
     const categoryId1 = new CategoryId();
     const categoryId2 = new CategoryId();
     const categoryId3 = new CategoryId();
     const categoryId4 = new CategoryId();
     const items = [
-      GenreFakeBuilder.aGenre()
+      Genre.fake()
+        .aGenre()
         .addCategoryId(categoryId1)
         .addCategoryId(categoryId2)
         .build(),
-      GenreFakeBuilder.aGenre()
+      Genre.fake()
+        .aGenre()
         .addCategoryId(categoryId3)
         .addCategoryId(categoryId4)
         .build(),
@@ -52,53 +54,56 @@ describe('GenreInMemoryRepository', () => {
     const filterSpy = jest.spyOn(items, 'filter' as any);
 
     let itemsFiltered = await repository['applyFilter'](items, {
-      categories_ids: [categoryId1],
+      categories_id: [categoryId1],
     });
     expect(filterSpy).toHaveBeenCalledTimes(1);
     expect(itemsFiltered).toStrictEqual([items[0]]);
 
     itemsFiltered = await repository['applyFilter'](items, {
-      categories_ids: [categoryId2],
+      categories_id: [categoryId2],
     });
     expect(filterSpy).toHaveBeenCalledTimes(2);
     expect(itemsFiltered).toStrictEqual([items[0]]);
 
     itemsFiltered = await repository['applyFilter'](items, {
-      categories_ids: [categoryId1, categoryId2],
+      categories_id: [categoryId1, categoryId2],
     });
     expect(filterSpy).toHaveBeenCalledTimes(3);
     expect(itemsFiltered).toStrictEqual([items[0]]);
 
     itemsFiltered = await repository['applyFilter'](items, {
-      categories_ids: [categoryId1, categoryId3],
+      categories_id: [categoryId1, categoryId3],
     });
     expect(filterSpy).toHaveBeenCalledTimes(4);
     expect(itemsFiltered).toStrictEqual([...items]);
 
     itemsFiltered = await repository['applyFilter'](items, {
-      categories_ids: [categoryId3, categoryId1],
+      categories_id: [categoryId3, categoryId1],
     });
     expect(filterSpy).toHaveBeenCalledTimes(5);
     expect(itemsFiltered).toStrictEqual([...items]);
   });
 
-  it('should filter items by name and categories_ids', async () => {
+  it('should filter items by name and categories_id', async () => {
     const categoryId1 = new CategoryId();
     const categoryId2 = new CategoryId();
     const categoryId3 = new CategoryId();
     const categoryId4 = new CategoryId();
     const items = [
-      GenreFakeBuilder.aGenre()
+      Genre.fake()
+        .aGenre()
         .withName('test')
         .addCategoryId(categoryId1)
         .addCategoryId(categoryId2)
         .build(),
-      GenreFakeBuilder.aGenre()
+      Genre.fake()
+        .aGenre()
         .withName('fake')
         .addCategoryId(categoryId3)
         .addCategoryId(categoryId4)
         .build(),
-      GenreFakeBuilder.aGenre()
+      Genre.fake()
+        .aGenre()
         .withName('test fake')
         .addCategoryId(categoryId1)
         .build(),
@@ -106,49 +111,51 @@ describe('GenreInMemoryRepository', () => {
 
     let itemsFiltered = await repository['applyFilter'](items, {
       name: 'test',
-      categories_ids: [categoryId1],
+      categories_id: [categoryId1],
     });
     expect(itemsFiltered).toStrictEqual([items[0], items[2]]);
 
     itemsFiltered = await repository['applyFilter'](items, {
       name: 'test',
-      categories_ids: [categoryId3],
+      categories_id: [categoryId3],
     });
     expect(itemsFiltered).toStrictEqual([]);
 
     itemsFiltered = await repository['applyFilter'](items, {
       name: 'fake',
-      categories_ids: [categoryId4],
+      categories_id: [categoryId4],
     });
     expect(itemsFiltered).toStrictEqual([items[1]]);
   });
 
   it('should sort by created_at when sort param is null', async () => {
     const items = [
-      GenreFakeBuilder.aGenre().withCreatedAt(new Date()).build(),
-      GenreFakeBuilder.aGenre()
+      Genre.fake().aGenre().withCreatedAt(new Date()).build(),
+      Genre.fake()
+        .aGenre()
         .withCreatedAt(new Date(new Date().getTime() + 1))
         .build(),
-      GenreFakeBuilder.aGenre()
+      Genre.fake()
+        .aGenre()
         .withCreatedAt(new Date(new Date().getTime() + 2))
         .build(),
     ];
 
-    const itemsSorted = repository['applySort'](items, null, null);
+    const itemsSorted = await repository['applySort'](items, null, null);
     expect(itemsSorted).toStrictEqual([items[2], items[1], items[0]]);
   });
 
   it('should sort by name', async () => {
     const items = [
-      GenreFakeBuilder.aGenre().withName('c').build(),
-      GenreFakeBuilder.aGenre().withName('b').build(),
-      GenreFakeBuilder.aGenre().withName('a').build(),
+      Genre.fake().aGenre().withName('c').build(),
+      Genre.fake().aGenre().withName('b').build(),
+      Genre.fake().aGenre().withName('a').build(),
     ];
 
-    let itemsSorted = repository['applySort'](items, 'name', 'asc');
+    let itemsSorted = await repository['applySort'](items, 'name', 'asc');
     expect(itemsSorted).toStrictEqual([items[2], items[1], items[0]]);
 
-    itemsSorted = repository['applySort'](items, 'name', 'desc');
+    itemsSorted = await repository['applySort'](items, 'name', 'desc');
     expect(itemsSorted).toStrictEqual([items[0], items[1], items[2]]);
   });
 });

@@ -1,8 +1,7 @@
-import { Uuid } from '../../../../domain/value-objects/uuid.vo';
 import { Entity } from '../../../../domain/entity';
 import { SearchParams } from '../../../../domain/repository/search-params';
 import { SearchResult } from '../../../../domain/repository/search-result';
-
+import { Uuid } from '../../../../domain/value-objects/uuid.vo';
 import { InMemorySearchableRepository } from '../in-memory.repository';
 
 type StubEntityConstructorProps = {
@@ -35,7 +34,7 @@ class StubInMemorySearchableRepository extends InMemorySearchableRepository<
   StubEntity,
   Uuid
 > {
-  sortableFields: (keyof StubEntity)[] = ['name'];
+  sortableFields: string[] = ['name'];
 
   getEntity(): new (...args: any[]) => StubEntity {
     return StubEntity;
@@ -102,10 +101,10 @@ describe('InMemorySearchableRepository Unit Tests', () => {
         new StubEntity({ name: 'a', price: 5 }),
       ];
 
-      let itemsSorted = repository['applySort'](items, null, 'desc');
+      let itemsSorted = await repository['applySort'](items, null, null);
       expect(itemsSorted).toStrictEqual(items);
 
-      itemsSorted = repository['applySort'](items, 'price', 'asc');
+      itemsSorted = await repository['applySort'](items, 'price', 'asc');
       expect(itemsSorted).toStrictEqual(items);
     });
 
@@ -116,10 +115,10 @@ describe('InMemorySearchableRepository Unit Tests', () => {
         new StubEntity({ name: 'c', price: 5 }),
       ];
 
-      let itemsSorted = repository['applySort'](items, 'name', 'asc');
+      let itemsSorted = await repository['applySort'](items, 'name', 'asc');
       expect(itemsSorted).toStrictEqual([items[1], items[0], items[2]]);
 
-      itemsSorted = repository['applySort'](items, 'name', 'desc');
+      itemsSorted = await repository['applySort'](items, 'name', 'desc');
       expect(itemsSorted).toStrictEqual([items[2], items[0], items[1]]);
     });
   });
@@ -134,16 +133,16 @@ describe('InMemorySearchableRepository Unit Tests', () => {
         new StubEntity({ name: 'e', price: 5 }),
       ];
 
-      let itemsPaginated = repository['applyPaginate'](items, 1, 2);
+      let itemsPaginated = await repository['applyPaginate'](items, 1, 2);
       expect(itemsPaginated).toStrictEqual([items[0], items[1]]);
 
-      itemsPaginated = repository['applyPaginate'](items, 2, 2);
+      itemsPaginated = await repository['applyPaginate'](items, 2, 2);
       expect(itemsPaginated).toStrictEqual([items[2], items[3]]);
 
-      itemsPaginated = repository['applyPaginate'](items, 3, 2);
+      itemsPaginated = await repository['applyPaginate'](items, 3, 2);
       expect(itemsPaginated).toStrictEqual([items[4]]);
 
-      itemsPaginated = repository['applyPaginate'](items, 4, 2);
+      itemsPaginated = await repository['applyPaginate'](items, 4, 2);
       expect(itemsPaginated).toStrictEqual([]);
     });
   });
@@ -213,7 +212,6 @@ describe('InMemorySearchableRepository Unit Tests', () => {
             page: 1,
             per_page: 2,
             sort: 'name',
-            sort_dir: 'asc',
           }),
           search_result: new SearchResult({
             items: [items[1], items[0]],
@@ -227,7 +225,6 @@ describe('InMemorySearchableRepository Unit Tests', () => {
             page: 2,
             per_page: 2,
             sort: 'name',
-            sort_dir: 'asc',
           }),
           search_result: new SearchResult({
             items: [items[4], items[2]],
@@ -295,7 +292,6 @@ describe('InMemorySearchableRepository Unit Tests', () => {
             page: 1,
             per_page: 2,
             sort: 'name',
-            sort_dir: 'asc',
             filter: 'TEST',
           }),
           result: new SearchResult({
@@ -310,7 +306,6 @@ describe('InMemorySearchableRepository Unit Tests', () => {
             page: 2,
             per_page: 2,
             sort: 'name',
-            sort_dir: 'asc',
             filter: 'TEST',
           }),
           result: new SearchResult({

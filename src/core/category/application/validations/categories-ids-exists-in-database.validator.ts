@@ -7,9 +7,9 @@ export class CategoriesIdExistsInDatabaseValidator {
   constructor(private categoryRepo: ICategoryRepository) {}
 
   async validate(
-    categories_ids: string[],
+    categories_id: string[],
   ): Promise<Either<CategoryId[], NotFoundError[]>> {
-    const categoriesId = categories_ids.map((v) => new CategoryId(v));
+    const categoriesId = categories_id.map((v) => new CategoryId(v));
 
     const existsResult = await this.categoryRepo.existsById(categoriesId);
     return existsResult.not_exists.length > 0

@@ -1,13 +1,13 @@
+import { Either } from '../../shared/domain/either';
+import { MediaFileValidator } from '../../shared/domain/validators/media-file.validator';
 import {
   AudioVideoMedia,
   AudioVideoMediaStatus,
-} from '@core/shared/domain/value-objects/audio-video-media.vo';
-import { VideoId } from '@core/video/domain/video.aggregate';
-import { MediaFileValidator } from '@core/shared/domain/validators/media-file.validator';
-import { Either } from '@core/shared/domain/either';
+} from '../../shared/domain/value-objects/audio-video-media.vo';
+import { VideoId } from './video.aggregate';
 
 export class Trailer extends AudioVideoMedia {
-  static max_size = 1024 * 1024 * 500; // 500MB
+  static max_size = 1024 * 1024 * 500; // 50MB
   static mime_types = ['video/mp4'];
 
   static createFromFile({
@@ -32,10 +32,9 @@ export class Trailer extends AudioVideoMedia {
         mime_type,
         size,
       });
-
       return Trailer.create({
-        name: `${video_id.id}=${newName}`,
-        raw_location: `videos/${video_id.id}/trailers`,
+        name: `${video_id.id}-${newName}`,
+        raw_location: `videos/${video_id.id}/videos`,
       });
     });
   }
@@ -52,6 +51,7 @@ export class Trailer extends AudioVideoMedia {
     return new Trailer({
       name: this.name,
       raw_location: this.raw_location,
+      encoded_location: this.encoded_location!,
       status: AudioVideoMediaStatus.PROCESSING,
     });
   }
@@ -69,6 +69,7 @@ export class Trailer extends AudioVideoMedia {
     return new Trailer({
       name: this.name,
       raw_location: this.raw_location,
+      encoded_location: this.encoded_location!,
       status: AudioVideoMediaStatus.FAILED,
     });
   }

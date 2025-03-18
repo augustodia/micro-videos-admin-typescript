@@ -1,8 +1,8 @@
 import request from 'supertest';
 import { ICategoryRepository } from '../../src/core/category/domain/category.repository';
-import { startApp } from '../../src/nest-modules/shared/testing/helpers';
-import { CategoryFakeBuilder } from '../../src/core/category/domain/category-fake.builder';
-import { CATEGORY_PROVIDERS } from '../../src/nest-modules/categories/categories.providers';
+import * as CategoryProviders from '../../src/nest-modules/categories-module/categories.providers';
+import { startApp } from '../../src/nest-modules/shared-module/testing/helpers';
+import { Category } from '../../src/core/category/domain/category.aggregate';
 
 describe('CategoriesController (e2e)', () => {
   describe('/delete/:id (DELETE)', () => {
@@ -38,9 +38,9 @@ describe('CategoriesController (e2e)', () => {
 
     it('should delete a category response with status 204', async () => {
       const categoryRepo = appHelper.app.get<ICategoryRepository>(
-        CATEGORY_PROVIDERS.REPOSITORIES.CATEGORY_REPOSITORY.provide,
+        CategoryProviders.REPOSITORIES.CATEGORY_REPOSITORY.provide,
       );
-      const category = CategoryFakeBuilder.aCategory().build();
+      const category = Category.fake().aCategory().build();
       await categoryRepo.insert(category);
 
       await request(appHelper.app.getHttpServer())

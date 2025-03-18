@@ -1,19 +1,18 @@
 import { Chance } from 'chance';
-import { Uuid } from '../../shared/domain/value-objects/uuid.vo';
-import { Category } from './category.aggregate';
+import { Category, CategoryId } from './category.aggregate';
 
 type PropOrFactory<T> = T | ((index: number) => T);
 
 export class CategoryFakeBuilder<TBuild = any> {
   // auto generated in entity
-  private _category_id: PropOrFactory<Uuid> | undefined = undefined;
-
-  private _name: PropOrFactory<string> = () => this.chance.word();
-
-  private _description: PropOrFactory<string | null> = () =>
+  private _category_id: PropOrFactory<CategoryId> | undefined = undefined;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private _name: PropOrFactory<string> = (_index) => this.chance.word();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private _description: PropOrFactory<string | null> = (_index) =>
     this.chance.paragraph();
-
-  private _is_active: PropOrFactory<boolean> = () => true;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private _is_active: PropOrFactory<boolean> = (_index) => true;
   // auto generated in entity
   private _created_at: PropOrFactory<Date> | undefined = undefined;
 
@@ -34,7 +33,7 @@ export class CategoryFakeBuilder<TBuild = any> {
     this.chance = Chance();
   }
 
-  withUuid(valueOrFactory: PropOrFactory<Uuid>) {
+  withCategoryId(valueOrFactory: PropOrFactory<CategoryId>) {
     this._category_id = valueOrFactory;
     return this;
   }
@@ -84,9 +83,7 @@ export class CategoryFakeBuilder<TBuild = any> {
             created_at: this.callFactory(this._created_at, index),
           }),
         });
-
         category.validate();
-
         return category;
       });
     return this.countObjs === 1 ? (categories[0] as any) : categories;

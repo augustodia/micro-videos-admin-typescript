@@ -2,8 +2,8 @@ import { CategoriesIdExistsInDatabaseValidator } from '../../../../category/appl
 import { ICategoryRepository } from '../../../../category/domain/category.repository';
 import { IUseCase } from '../../../../shared/application/use-case.interface';
 import { NotFoundError } from '../../../../shared/domain/errors/not-found.error';
-import { EntityValidationError } from '../../../../shared/domain/errors/validation.error';
 import { IUnitOfWork } from '../../../../shared/domain/repository/unit-of-work.interface';
+import { EntityValidationError } from '../../../../shared/domain/validators/validation.error';
 import { Genre, GenreId } from '../../../domain/genre.aggregate';
 import { IGenreRepository } from '../../../domain/genre.repository';
 import { GenreOutput, GenreOutputMapper } from '../common/genre-output';
@@ -39,19 +39,19 @@ export class UpdateGenreUseCase
 
     const notification = genre.notification;
 
-    if (input.categories_ids) {
+    if (input.categories_id) {
       const [categoriesId, errorsCategoriesId] = (
         await this.categoriesIdExistsInStorageValidator.validate(
-          input.categories_ids,
+          input.categories_id,
         )
       ).asArray();
 
-      categoriesId && genre.syncCategoriesIds(categoriesId);
+      categoriesId && genre.syncCategoriesId(categoriesId);
 
       errorsCategoriesId &&
         notification.setError(
           errorsCategoriesId.map((e) => e.message),
-          'categories_ids',
+          'categories_id',
         );
     }
 
@@ -64,7 +64,7 @@ export class UpdateGenreUseCase
     });
 
     const categories = await this.categoryRepo.findByIds(
-      Array.from(genre.categories_ids.values()),
+      Array.from(genre.categories_id.values()),
     );
 
     return GenreOutputMapper.toOutput(genre, categories);

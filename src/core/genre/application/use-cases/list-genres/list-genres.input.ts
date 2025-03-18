@@ -6,7 +6,7 @@ export class ListGenresFilter {
   name?: string;
   @IsUUID('4', { each: true })
   @IsArray()
-  categories_ids?: string[];
+  categories_id?: string[];
 }
 
 export class ListGenresInput implements SearchInput<ListGenresFilter> {

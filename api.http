@@ -1,26 +1,16 @@
+## valid uuid = 8f4b7b9c-3f7a-4b6c-8b0c-1c9c5b8b9b6a
+
 ### Create Category
 POST http://localhost:3000/categories
 Content-Type: application/json
 
 {
     "name": "Category 1",
-    "description": "Category 1 Description"
+    "description": "Description 1"
 }
 
-### List Categories
-GET http://localhost:3000/categories?filter=2
+###
+GET http://localhost:3000/categories
 
-### Create Cast Member
-POST http://localhost:3000/cast-members
-Content-Type: application/json
-
-{
-    "name": "Actor 3",
-    "type": 2
-}
-
-### List CastMembers with filter
-GET http://localhost:3000/cast-members?type=2
-
-### List CastMembers
-GET http://localhost:3000/cast-members?sort=name&sort_dir=asc
+###
+GET http://localhost:3000/categories/8f4b7b9c-3f7a-4b6c-8b0c-1c9c5b8b9b6a

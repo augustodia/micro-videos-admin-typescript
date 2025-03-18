@@ -11,7 +11,7 @@ export type GenreOutput = {
   id: string;
   name: string;
   categories: GenreCategoryOutput[];
-  categories_ids: string[];
+  categories_id: string[];
   is_active: boolean;
   created_at: Date;
 };
@@ -26,7 +26,7 @@ export class GenreOutputMapper {
         name: c.name,
         created_at: c.created_at,
       })),
-      categories_ids: categories.map((c) => c.category_id.id),
+      categories_id: categories.map((c) => c.category_id.id),
       is_active: entity.is_active,
       created_at: entity.created_at,
     };

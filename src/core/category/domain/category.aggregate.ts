@@ -1,22 +1,19 @@
 import { AggregateRoot } from '../../shared/domain/aggregate-root';
+import { ValueObject } from '../../shared/domain/value-object';
+//import ValidatorRules from "../../shared/domain/validators/validator-rules";
 import { Uuid } from '../../shared/domain/value-objects/uuid.vo';
+import { CategoryFakeBuilder } from './category-fake.builder';
 import { CategoryValidatorFactory } from './category.validator';
 
-export type CategoryProps = {
-  category_id?: CategoryId | null;
+export type CategoryConstructorProps = {
+  category_id?: CategoryId;
   name: string;
   description?: string | null;
   is_active?: boolean;
   created_at?: Date;
 };
 
-export type CategoryPropsUpdate = {
-  name?: string;
-  description?: string | null;
-  is_active?: boolean;
-};
-
-export type CategoryCreateProps = {
+export type CategoryCreateCommand = {
   name: string;
   description?: string | null;
   is_active?: boolean;
@@ -31,9 +28,8 @@ export class Category extends AggregateRoot {
   is_active: boolean;
   created_at: Date;
 
-  constructor(props: CategoryProps) {
+  constructor(props: CategoryConstructorProps) {
     super();
-
     this.category_id = props.category_id ?? new CategoryId();
     this.name = props.name;
     this.description = props.description ?? null;
@@ -41,58 +37,44 @@ export class Category extends AggregateRoot {
     this.created_at = props.created_at ?? new Date();
   }
 
-  get entity_id(): CategoryId {
+  get entity_id(): ValueObject {
     return this.category_id;
   }
 
-  static create(props: CategoryCreateProps): Category {
+  static create(props: CategoryCreateCommand): Category {
     const category = new Category(props);
-
-    category.validate();
-
+    //category.validate();
+    category.validate(['name']);
     return category;
   }
 
-  public changeName(name: string): void {
+  changeName(name: string): void {
     this.name = name;
     this.validate(['name']);
   }
 
-  public changeDescription(description: string | null): void {
+  changeDescription(description: string | null): void {
     this.description = description;
   }
 
-  public activate(): void {
+  activate() {
     this.is_active = true;
   }
 
-  public deactivate(): void {
+  deactivate() {
     this.is_active = false;
   }
 
-  public update(props: CategoryPropsUpdate): void {
-    props.name && this.changeName(props.name);
-
-    if ('description' in props && props.description !== undefined) {
-      this.changeDescription(props.description);
-    }
-
-    if (props.is_active === true) {
-      this.activate();
-    }
-
-    if (props.is_active === false) {
-      this.deactivate();
-    }
-  }
-
-  validate(fields?: [keyof Category]): boolean {
+  validate(fields?: string[]) {
     const validator = CategoryValidatorFactory.create();
-
     return validator.validate(this.notification, this, fields);
   }
 
-  public toJSON() {
+  static fake() {
+    return CategoryFakeBuilder;
+  }
+
+  toJSON() {
     return {
       category_id: this.category_id.id,
       name: this.name,

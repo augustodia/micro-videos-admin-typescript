@@ -4,27 +4,16 @@ import {
 } from '../../../../shared/application/pagination-output';
 import { IUseCase } from '../../../../shared/application/use-case.interface';
 import { SortDirection } from '../../../../shared/domain/repository/search-params';
-
 import {
-  ICategoryRepository,
+  CategoryFilter,
   CategorySearchParams,
   CategorySearchResult,
-  CategoryFilter,
+  ICategoryRepository,
 } from '../../../domain/category.repository';
 import {
-  CategoryOutputMapper,
   CategoryOutput,
+  CategoryOutputMapper,
 } from '../common/category-output';
-
-export type ListCategoriesInput = {
-  page?: number;
-  per_page?: number;
-  sort?: string;
-  sort_dir?: SortDirection;
-  filter?: CategoryFilter;
-};
-
-export type ListCategoriesOutput = PaginationOutput<CategoryOutput>;
 
 export class ListCategoriesUseCase
   implements IUseCase<ListCategoriesInput, ListCategoriesOutput>
@@ -32,7 +21,7 @@ export class ListCategoriesUseCase
   constructor(private categoryRepo: ICategoryRepository) {}
 
   async execute(input: ListCategoriesInput): Promise<ListCategoriesOutput> {
-    const params = CategorySearchParams.create(input);
+    const params = new CategorySearchParams(input);
     const searchResult = await this.categoryRepo.search(params);
     return this.toOutput(searchResult);
   }
@@ -45,3 +34,13 @@ export class ListCategoriesUseCase
     return PaginationOutputMapper.toOutput(items, searchResult);
   }
 }
+
+export type ListCategoriesInput = {
+  page?: number;
+  per_page?: number;
+  sort?: string | null;
+  sort_dir?: SortDirection | null;
+  filter?: CategoryFilter | null;
+};
+
+export type ListCategoriesOutput = PaginationOutput<CategoryOutput>;

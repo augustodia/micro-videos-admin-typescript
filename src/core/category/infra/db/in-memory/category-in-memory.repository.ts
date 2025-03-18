@@ -1,18 +1,20 @@
 import { SortDirection } from '../../../../shared/domain/repository/search-params';
-import { Uuid } from '../../../../shared/domain/value-objects/uuid.vo';
 import { InMemorySearchableRepository } from '../../../../shared/infra/db/in-memory/in-memory.repository';
-import { Category } from '../../../domain/category.aggregate';
-import { ICategoryRepository } from '../../../domain/category.repository';
+import { Category, CategoryId } from '../../../domain/category.aggregate';
+import {
+  CategoryFilter,
+  ICategoryRepository,
+} from '../../../domain/category.repository';
 
 export class CategoryInMemoryRepository
-  extends InMemorySearchableRepository<Category, Uuid, string>
+  extends InMemorySearchableRepository<Category, CategoryId>
   implements ICategoryRepository
 {
-  sortableFields: (keyof Category)[] = ['name', 'created_at'];
+  sortableFields: string[] = ['name', 'created_at'];
 
   protected async applyFilter(
     items: Category[],
-    filter: string | null,
+    filter: CategoryFilter | null,
   ): Promise<Category[]> {
     if (!filter) {
       return items;
@@ -22,19 +24,17 @@ export class CategoryInMemoryRepository
       return i.name.toLowerCase().includes(filter.toLowerCase());
     });
   }
+  getEntity(): new (...args: any[]) => Category {
+    return Category;
+  }
 
   protected applySort(
     items: Category[],
-    sort: keyof Category | null,
+    sort: string | null,
     sort_dir: SortDirection | null,
-    custom_getter?: ((sort: keyof Category, item: Category) => any) | undefined,
-  ): Category[] {
+  ) {
     return sort
-      ? super.applySort(items, sort, sort_dir, custom_getter)
-      : super.applySort(items, 'created_at', 'desc', custom_getter);
-  }
-
-  getEntity(): new (...args: any[]) => Category {
-    return Category;
+      ? super.applySort(items, sort, sort_dir)
+      : super.applySort(items, 'created_at', 'desc');
   }
 }

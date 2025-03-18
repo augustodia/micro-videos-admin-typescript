@@ -1,5 +1,4 @@
 import { NotFoundError } from '../../../shared/domain/errors/not-found.error';
-import { CategoryFakeBuilder } from '../../domain/category-fake.builder';
 import { Category, CategoryId } from '../../domain/category.aggregate';
 import { CategoryInMemoryRepository } from '../../infra/db/in-memory/category-in-memory.repository';
 import { CategoriesIdExistsInDatabaseValidator } from './categories-ids-exists-in-database.validator';
@@ -28,7 +27,7 @@ describe('CategoriesIdExistsInDatabaseValidator Unit Tests', () => {
 
     expect(spyExistsById).toHaveBeenCalledTimes(1);
 
-    const category1 = CategoryFakeBuilder.aCategory().build();
+    const category1 = Category.fake().aCategory().build();
     await categoryRepo.insert(category1);
 
     [categoriesId, errorsCategoriesId] = await validator.validate([
@@ -43,8 +42,8 @@ describe('CategoriesIdExistsInDatabaseValidator Unit Tests', () => {
   });
 
   it('should return a list of categories id', async () => {
-    const category1 = CategoryFakeBuilder.aCategory().build();
-    const category2 = CategoryFakeBuilder.aCategory().build();
+    const category1 = Category.fake().aCategory().build();
+    const category2 = Category.fake().aCategory().build();
     await categoryRepo.bulkInsert([category1, category2]);
     const [categoriesId, errorsCategoriesId] = await validator.validate([
       category1.category_id.id,

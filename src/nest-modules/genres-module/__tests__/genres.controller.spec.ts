@@ -27,7 +27,7 @@ describe('GenresController Unit Tests', () => {
         },
       ],
       is_active: true,
-      categories_ids: ['8d0b0c9e-9b1a-4e8a-9e1a-3b2c1d7c6b5a'],
+      categories_id: ['8d0b0c9e-9b1a-4e8a-9e1a-3b2c1d7c6b5a'],
       created_at: new Date(),
     };
     const mockCreateUseCase = {
@@ -37,7 +37,7 @@ describe('GenresController Unit Tests', () => {
     controller['createUseCase'] = mockCreateUseCase;
     const input: CreateGenreDto = {
       name: 'action',
-      categories_ids: ['8d0b0c9e-9b1a-4e8a-9e1a-3b2c1d7c6b5a'],
+      categories_id: ['8d0b0c9e-9b1a-4e8a-9e1a-3b2c1d7c6b5a'],
     };
     const presenter = await controller.create(input);
     expect(mockCreateUseCase.execute).toHaveBeenCalledWith(input);
@@ -58,7 +58,7 @@ describe('GenresController Unit Tests', () => {
         },
       ],
       is_active: true,
-      categories_ids: ['8d0b0c9e-9b1a-4e8a-9e1a-3b2c1d7c6b5a'],
+      categories_id: ['8d0b0c9e-9b1a-4e8a-9e1a-3b2c1d7c6b5a'],
       created_at: new Date(),
     };
     const mockUpdateUseCase = {
@@ -68,7 +68,7 @@ describe('GenresController Unit Tests', () => {
     controller['updateUseCase'] = mockUpdateUseCase;
     const input: UpdateGenreDto = {
       name: 'action',
-      categories_ids: ['8d0b0c9e-9b1a-4e8a-9e1a-3b2c1d7c6b5a'],
+      categories_id: ['8d0b0c9e-9b1a-4e8a-9e1a-3b2c1d7c6b5a'],
     };
     const presenter = await controller.update(id, input);
     expect(mockUpdateUseCase.execute).toHaveBeenCalledWith({ id, ...input });
@@ -103,7 +103,7 @@ describe('GenresController Unit Tests', () => {
         },
       ],
       is_active: true,
-      categories_ids: ['8d0b0c9e-9b1a-4e8a-9e1a-3b2c1d7c6b5a'],
+      categories_id: ['8d0b0c9e-9b1a-4e8a-9e1a-3b2c1d7c6b5a'],
       created_at: new Date(),
     };
     const mockGetUseCase = {
@@ -131,7 +131,7 @@ describe('GenresController Unit Tests', () => {
             },
           ],
           is_active: true,
-          categories_ids: ['8d0b0c9e-9b1a-4e8a-9e1a-3b2c1d7c6b5a'],
+          categories_id: ['8d0b0c9e-9b1a-4e8a-9e1a-3b2c1d7c6b5a'],
           created_at: new Date(),
         },
       ],

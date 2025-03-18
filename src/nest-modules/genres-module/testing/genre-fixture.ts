@@ -1,11 +1,11 @@
-import { CategoryFakeBuilder } from '../../../core/category/domain/category-fake.builder';
-import { GenreFakeBuilder } from '../../../core/genre/domain/genre-fake.builder';
+import { Category } from '../../../core/category/domain/category.aggregate';
+import { Genre } from '../../../core/genre/domain/genre.aggregate';
 import { SortDirection } from '../../../core/shared/domain/repository/search-params';
 
 const _keysInResponse = [
   'id',
   'name',
-  'categories_ids',
+  'categories_id',
   'categories',
   'is_active',
   'created_at',
@@ -19,9 +19,9 @@ export class CreateGenreFixture {
   static keysInResponse = _keysInResponse;
 
   static arrangeForSave() {
-    const faker = GenreFakeBuilder.aGenre().withName('test name');
+    const faker = Genre.fake().aGenre().withName('test name');
 
-    const category = CategoryFakeBuilder.aCategory().build();
+    const category = Category.fake().aCategory().build();
 
     const case1 = {
       relations: {
@@ -29,7 +29,7 @@ export class CreateGenreFixture {
       },
       send_data: {
         name: faker.name,
-        categories_ids: [category.category_id.id],
+        categories_id: [category.category_id.id],
       },
       expected: {
         name: faker.name,
@@ -40,19 +40,19 @@ export class CreateGenreFixture {
             created_at: category.created_at.toISOString(),
           },
         ]),
-        categories_ids: expect.arrayContaining([category.category_id.id]),
+        categories_id: expect.arrayContaining([category.category_id.id]),
         is_active: true,
       },
     };
 
-    const categories = CategoryFakeBuilder.theCategories(3).build();
+    const categories = Category.fake().theCategories(3).build();
     const case2 = {
       relations: {
         categories,
       },
       send_data: {
         name: faker.name,
-        categories_ids: [
+        categories_id: [
           categories[0].category_id.id,
           categories[1].category_id.id,
           categories[2].category_id.id,
@@ -78,7 +78,7 @@ export class CreateGenreFixture {
       },
       expected: {
         name: faker.name,
-        categories_ids: expect.arrayContaining([
+        categories_id: expect.arrayContaining([
           categories[0].category_id.id,
           categories[1].category_id.id,
           categories[2].category_id.id,
@@ -108,7 +108,7 @@ export class CreateGenreFixture {
   }
 
   static arrangeInvalidRequest() {
-    const faker = GenreFakeBuilder.aGenre();
+    const faker = Genre.fake().aGenre();
     const defaultExpected = {
       statusCode: 422,
       error: 'Unprocessable Entity',
@@ -121,9 +121,9 @@ export class CreateGenreFixture {
           message: [
             'name should not be empty',
             'name must be a string',
-            'categories_ids should not be empty',
-            'categories_ids must be an array',
-            'each value in categories_ids must be a UUID',
+            'categories_id should not be empty',
+            'categories_id must be an array',
+            'each value in categories_id must be a UUID',
           ],
           ...defaultExpected,
         },
@@ -131,7 +131,7 @@ export class CreateGenreFixture {
       NAME_UNDEFINED: {
         send_data: {
           name: undefined,
-          categories_ids: [faker.categories_ids[0].id],
+          categories_id: [faker.categories_id[0].id],
         },
         expected: {
           message: ['name should not be empty', 'name must be a string'],
@@ -141,7 +141,7 @@ export class CreateGenreFixture {
       NAME_NULL: {
         send_data: {
           name: null,
-          categories_ids: [faker.categories_ids[0].id],
+          categories_id: [faker.categories_id[0].id],
         },
         expected: {
           message: ['name should not be empty', 'name must be a string'],
@@ -151,7 +151,7 @@ export class CreateGenreFixture {
       NAME_EMPTY: {
         send_data: {
           name: '',
-          categories_ids: [faker.categories_ids[0].id],
+          categories_id: [faker.categories_id[0].id],
         },
         expected: {
           message: ['name should not be empty'],
@@ -161,13 +161,13 @@ export class CreateGenreFixture {
       CATEGORIES_ID_UNDEFINED: {
         send_data: {
           name: faker.name,
-          categories_ids: undefined,
+          categories_id: undefined,
         },
         expected: {
           message: [
-            'categories_ids should not be empty',
-            'categories_ids must be an array',
-            'each value in categories_ids must be a UUID',
+            'categories_id should not be empty',
+            'categories_id must be an array',
+            'each value in categories_id must be a UUID',
           ],
           ...defaultExpected,
         },
@@ -175,13 +175,13 @@ export class CreateGenreFixture {
       CATEGORIES_ID_NULL: {
         send_data: {
           name: faker.name,
-          categories_ids: null,
+          categories_id: null,
         },
         expected: {
           message: [
-            'categories_ids should not be empty',
-            'categories_ids must be an array',
-            'each value in categories_ids must be a UUID',
+            'categories_id should not be empty',
+            'categories_id must be an array',
+            'each value in categories_id must be a UUID',
           ],
           ...defaultExpected,
         },
@@ -189,13 +189,13 @@ export class CreateGenreFixture {
       CATEGORIES_ID_EMPTY: {
         send_data: {
           name: faker.name,
-          categories_ids: '',
+          categories_id: '',
         },
         expected: {
           message: [
-            'categories_ids should not be empty',
-            'categories_ids must be an array',
-            'each value in categories_ids must be a UUID',
+            'categories_id should not be empty',
+            'categories_id must be an array',
+            'each value in categories_id must be a UUID',
           ],
           ...defaultExpected,
         },
@@ -203,10 +203,10 @@ export class CreateGenreFixture {
       CATEGORIES_ID_NOT_VALID: {
         send_data: {
           name: faker.name,
-          categories_ids: ['a'],
+          categories_id: ['a'],
         },
         expected: {
-          message: ['each value in categories_ids must be a UUID'],
+          message: ['each value in categories_id must be a UUID'],
           ...defaultExpected,
         },
       },
@@ -214,7 +214,7 @@ export class CreateGenreFixture {
   }
 
   static arrangeForEntityValidationError() {
-    const faker = GenreFakeBuilder.aGenre();
+    const faker = Genre.fake().aGenre();
     const defaultExpected = {
       statusCode: 422,
       error: 'Unprocessable Entity',
@@ -224,7 +224,7 @@ export class CreateGenreFixture {
       NAME_TOO_LONG: {
         send_data: {
           name: faker.withInvalidNameTooLong().name,
-          categories_ids: ['d8952775-5f69-42d5-9e94-00f097e1b98c'],
+          categories_id: ['d8952775-5f69-42d5-9e94-00f097e1b98c'],
         },
         expected: {
           message: [
@@ -237,7 +237,7 @@ export class CreateGenreFixture {
       CATEGORIES_ID_NOT_EXISTS: {
         send_data: {
           name: faker.withName('action').name,
-          categories_ids: ['d8952775-5f69-42d5-9e94-00f097e1b98c'],
+          categories_id: ['d8952775-5f69-42d5-9e94-00f097e1b98c'],
         },
         expected: {
           message: [
@@ -254,9 +254,9 @@ export class UpdateGenreFixture {
   static keysInResponse = _keysInResponse;
 
   static arrangeForSave() {
-    const faker = GenreFakeBuilder.aGenre().withName('test name');
+    const faker = Genre.fake().aGenre().withName('test name');
 
-    const category = CategoryFakeBuilder.aCategory().build();
+    const category = Category.fake().aCategory().build();
 
     const case1 = {
       entity: faker.addCategoryId(category.category_id).build(),
@@ -265,11 +265,11 @@ export class UpdateGenreFixture {
       },
       send_data: {
         name: faker.name,
-        categories_ids: [category.category_id.id],
+        categories_id: [category.category_id.id],
       },
       expected: {
         name: faker.name,
-        categories_ids: expect.arrayContaining([category.category_id.id]),
+        categories_id: expect.arrayContaining([category.category_id.id]),
         categories: expect.arrayContaining([
           {
             id: category.category_id.id,
@@ -288,12 +288,12 @@ export class UpdateGenreFixture {
       },
       send_data: {
         name: faker.name,
-        categories_ids: [category.category_id.id],
+        categories_id: [category.category_id.id],
         is_active: false,
       },
       expected: {
         name: faker.name,
-        categories_ids: expect.arrayContaining([category.category_id.id]),
+        categories_id: expect.arrayContaining([category.category_id.id]),
         categories: expect.arrayContaining([
           {
             id: category.category_id.id,
@@ -305,7 +305,7 @@ export class UpdateGenreFixture {
       },
     };
 
-    const categories = CategoryFakeBuilder.theCategories(3).build();
+    const categories = Category.fake().theCategories(3).build();
     const case3 = {
       entity: faker.addCategoryId(category.category_id).build(),
       relations: {
@@ -313,7 +313,7 @@ export class UpdateGenreFixture {
       },
       send_data: {
         name: faker.name,
-        categories_ids: [
+        categories_id: [
           categories[0].category_id.id,
           categories[1].category_id.id,
           categories[2].category_id.id,
@@ -321,7 +321,7 @@ export class UpdateGenreFixture {
       },
       expected: {
         name: faker.name,
-        categories_ids: expect.arrayContaining([
+        categories_id: expect.arrayContaining([
           categories[0].category_id.id,
           categories[1].category_id.id,
           categories[2].category_id.id,
@@ -351,7 +351,7 @@ export class UpdateGenreFixture {
   }
 
   static arrangeInvalidRequest() {
-    const faker = GenreFakeBuilder.aGenre();
+    const faker = Genre.fake().aGenre();
     const defaultExpected = {
       statusCode: 422,
       error: 'Unprocessable Entity',
@@ -361,10 +361,10 @@ export class UpdateGenreFixture {
       CATEGORIES_ID_NOT_VALID: {
         send_data: {
           name: faker.name,
-          categories_ids: ['a'],
+          categories_id: ['a'],
         },
         expected: {
-          message: ['each value in categories_ids must be a UUID'],
+          message: ['each value in categories_id must be a UUID'],
           ...defaultExpected,
         },
       },
@@ -372,7 +372,7 @@ export class UpdateGenreFixture {
   }
 
   static arrangeForEntityValidationError() {
-    const faker = GenreFakeBuilder.aGenre();
+    const faker = Genre.fake().aGenre();
     const defaultExpected = {
       statusCode: 422,
       error: 'Unprocessable Entity',
@@ -382,7 +382,7 @@ export class UpdateGenreFixture {
       CATEGORIES_ID_NOT_EXISTS: {
         send_data: {
           name: faker.withName('action').name,
-          categories_ids: ['d8952775-5f69-42d5-9e94-00f097e1b98c'],
+          categories_id: ['d8952775-5f69-42d5-9e94-00f097e1b98c'],
         },
         expected: {
           message: [
@@ -397,8 +397,9 @@ export class UpdateGenreFixture {
 
 export class ListGenresFixture {
   static arrangeIncrementedWithCreatedAt() {
-    const category = CategoryFakeBuilder.aCategory().build();
-    const _entities = GenreFakeBuilder.theGenres(4)
+    const category = Category.fake().aCategory().build();
+    const _entities = Genre.fake()
+      .theGenres(4)
       .addCategoryId(category.category_id)
       .withName((i) => i + '')
       .withCreatedAt((i) => new Date(new Date().getTime() + i * 2000))
@@ -469,7 +470,7 @@ export class ListGenresFixture {
   }
 
   static arrangeUnsorted() {
-    const categories = CategoryFakeBuilder.theCategories(4).build();
+    const categories = Category.fake().theCategories(4).build();
 
     const relations = {
       categories: new Map(
@@ -480,31 +481,36 @@ export class ListGenresFixture {
     const created_at = new Date();
 
     const entitiesMap = {
-      test: GenreFakeBuilder.aGenre()
+      test: Genre.fake()
+        .aGenre()
         .addCategoryId(categories[0].category_id)
         .addCategoryId(categories[1].category_id)
         .withName('test')
         .withCreatedAt(new Date(created_at.getTime() + 1000))
         .build(),
-      a: GenreFakeBuilder.aGenre()
+      a: Genre.fake()
+        .aGenre()
         .addCategoryId(categories[0].category_id)
         .addCategoryId(categories[1].category_id)
         .withName('a')
         .withCreatedAt(new Date(created_at.getTime() + 2000))
         .build(),
-      TEST: GenreFakeBuilder.aGenre()
+      TEST: Genre.fake()
+        .aGenre()
         .addCategoryId(categories[0].category_id)
         .addCategoryId(categories[1].category_id)
         .addCategoryId(categories[2].category_id)
         .withName('TEST')
         .withCreatedAt(new Date(created_at.getTime() + 3000))
         .build(),
-      e: GenreFakeBuilder.aGenre()
+      e: Genre.fake()
+        .aGenre()
         .addCategoryId(categories[3].category_id)
         .withName('e')
         .withCreatedAt(new Date(created_at.getTime() + 4000))
         .build(),
-      TeSt: GenreFakeBuilder.aGenre()
+      TeSt: Genre.fake()
+        .aGenre()
         .addCategoryId(categories[1].category_id)
         .addCategoryId(categories[2].category_id)
         .withName('TeSt')
@@ -518,7 +524,6 @@ export class ListGenresFixture {
           page: 1,
           per_page: 2,
           sort: 'name',
-          sort_dir: 'asc' as SortDirection,
           filter: { name: 'TEST' },
         },
         get label() {
@@ -539,7 +544,6 @@ export class ListGenresFixture {
           page: 2,
           per_page: 2,
           sort: 'name',
-          sort_dir: 'asc' as SortDirection,
           filter: { name: 'TEST' },
         },
         get label() {
@@ -557,19 +561,19 @@ export class ListGenresFixture {
       },
     ];
 
-    const arrange_filter_by_categories_ids_and_sort_by_created_desc = [
+    const arrange_filter_by_categories_id_and_sort_by_created_desc = [
       {
         send_data: {
           page: 1,
           per_page: 2,
           sort: 'created_at',
           sort_dir: 'desc' as SortDirection,
-          filter: { categories_ids: [categories[0].category_id.id] },
+          filter: { categories_id: [categories[0].category_id.id] },
         },
         get label() {
           return JSON.stringify({
             ...this.send_data,
-            filter: { categories_ids_length: 1 },
+            filter: { categories_id_length: 1 },
           });
         },
         expected: {
@@ -588,12 +592,12 @@ export class ListGenresFixture {
           per_page: 2,
           sort: 'created_at',
           sort_dir: 'desc' as SortDirection,
-          filter: { categories_ids: [categories[0].category_id.id] },
+          filter: { categories_id: [categories[0].category_id.id] },
         },
         get label() {
           return JSON.stringify({
             ...this.send_data,
-            filter: { categories_ids_length: 1 },
+            filter: { categories_id_length: 1 },
           });
         },
         expected: {
@@ -613,7 +617,7 @@ export class ListGenresFixture {
           sort: 'created_at',
           sort_dir: 'desc' as SortDirection,
           filter: {
-            categories_ids: [
+            categories_id: [
               categories[0].category_id.id,
               categories[1].category_id.id,
             ],
@@ -622,7 +626,7 @@ export class ListGenresFixture {
         get label() {
           return JSON.stringify({
             ...this.send_data,
-            filter: { categories_ids_length: 2 },
+            filter: { categories_id_length: 2 },
           });
         },
         expected: {
@@ -642,7 +646,7 @@ export class ListGenresFixture {
           sort: 'created_at',
           sort_dir: 'desc' as SortDirection,
           filter: {
-            categories_ids: [
+            categories_id: [
               categories[0].category_id.id,
               categories[1].category_id.id,
             ],
@@ -651,7 +655,7 @@ export class ListGenresFixture {
         get label() {
           return JSON.stringify({
             ...this.send_data,
-            filter: { categories_ids_length: 2 },
+            filter: { categories_id_length: 2 },
           });
         },
         expected: {
@@ -669,7 +673,7 @@ export class ListGenresFixture {
     return {
       arrange: [
         ...arrange_filter_by_name_sort_name_asc,
-        ...arrange_filter_by_categories_ids_and_sort_by_created_desc,
+        ...arrange_filter_by_categories_id_and_sort_by_created_desc,
       ],
       entitiesMap,
       relations,

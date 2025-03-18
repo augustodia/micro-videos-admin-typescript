@@ -20,7 +20,7 @@ export class GetGenreUseCase
       throw new NotFoundError(input.id, Genre);
     }
     const categories = await this.categoryRepo.findByIds([
-      ...genre.categories_ids.values(),
+      ...genre.categories_id.values(),
     ]);
     return GenreOutputMapper.toOutput(genre, categories);
   }

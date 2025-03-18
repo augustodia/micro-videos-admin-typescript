@@ -4,9 +4,9 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { EntityValidationErrorFilter } from './shared/filters/entity-validation-error/entity-validation-error.filter';
-import { NotFoundErrorFilter } from './shared/filters/not-found-error/not-found-error.filter';
-import { WrapperDataInterceptor } from './shared/interceptors/wrapper-data/wrapper-data.interceptor';
+import { WrapperDataInterceptor } from './shared-module/interceptors/wrapper-data/wrapper-data.interceptor';
+import { EntityValidationErrorFilter } from './shared-module/filters/entity-validation-error.filter';
+import { NotFoundErrorFilter } from './shared-module/filters/not-found-error.filter';
 
 export function applyGlobalConfig(app: INestApplication) {
   app.useGlobalPipes(

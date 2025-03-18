@@ -16,7 +16,7 @@ class StubEntity extends Entity {
 
   constructor(props: StubEntityConstructor) {
     super();
-    this.entity_id = props.entity_id ?? new Uuid();
+    this.entity_id = props.entity_id || new Uuid();
     this.name = props.name;
     this.price = props.price;
   }

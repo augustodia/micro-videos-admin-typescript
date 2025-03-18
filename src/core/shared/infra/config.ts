@@ -2,7 +2,6 @@ import { config as readEnv } from 'dotenv';
 import { join } from 'path';
 
 export class Config {
-  // @ts-ignore
   static env: any = null;
 
   static db() {

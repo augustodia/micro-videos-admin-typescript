@@ -1,18 +1,13 @@
 import { IUseCase } from '../../../../shared/application/use-case.interface';
 import { NotFoundError } from '../../../../shared/domain/errors/not-found.error';
-import { EntityValidationError } from '../../../../shared/domain/errors/validation.error';
+import { EntityValidationError } from '../../../../shared/domain/validators/validation.error';
 import { Category, CategoryId } from '../../../domain/category.aggregate';
 import { ICategoryRepository } from '../../../domain/category.repository';
-import { CategoryOutputMapper } from '../common/category-output';
+import {
+  CategoryOutput,
+  CategoryOutputMapper,
+} from '../common/category-output';
 import { UpdateCategoryInput } from './update-category.input';
-
-export type UpdateCategoryOutput = {
-  id: string;
-  name: string;
-  description: string | null;
-  is_active: boolean;
-  created_at: Date;
-};
 
 export class UpdateCategoryUseCase
   implements IUseCase<UpdateCategoryInput, UpdateCategoryOutput>
@@ -20,18 +15,26 @@ export class UpdateCategoryUseCase
   constructor(private categoryRepo: ICategoryRepository) {}
 
   async execute(input: UpdateCategoryInput): Promise<UpdateCategoryOutput> {
-    const uuid = new CategoryId(input.id);
-    const category = await this.categoryRepo.findById(uuid);
+    const categoryId = new CategoryId(input.id);
+    const category = await this.categoryRepo.findById(categoryId);
 
     if (!category) {
       throw new NotFoundError(input.id, Category);
     }
 
-    category.update({
-      name: input.name,
-      description: input.description,
-      is_active: input.is_active,
-    });
+    input.name && category.changeName(input.name);
+
+    if (input.description !== undefined) {
+      category.changeDescription(input.description);
+    }
+
+    if (input.is_active === true) {
+      category.activate();
+    }
+
+    if (input.is_active === false) {
+      category.deactivate();
+    }
 
     if (category.notification.hasErrors()) {
       throw new EntityValidationError(category.notification.toJSON());
@@ -42,3 +45,5 @@ export class UpdateCategoryUseCase
     return CategoryOutputMapper.toOutput(category);
   }
 }
+
+export type UpdateCategoryOutput = CategoryOutput;

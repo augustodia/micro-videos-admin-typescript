@@ -1,8 +1,16 @@
-import { CategorySequelizeRepository } from '@core/category/infra/db/sequelize/category-sequelize.repository';
-import { CategoryModel } from '@core/category/infra/db/sequelize/category.model';
-import { GenreModel } from '@core/genre/infra/db/sequelize/genre-model';
-import { GenreSequelizeRepository } from '@core/genre/infra/db/sequelize/genre-sequelize.repository';
-import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
+import { CastMember } from '../../../../../cast-member/domain/cast-member.aggregate';
+import {
+  CastMemberModel,
+  CastMemberSequelizeRepository,
+} from '../../../../../cast-member/infra/db/sequelize/cast-member-sequelize';
+import { Category } from '../../../../../category/domain/category.aggregate';
+import { CategorySequelizeRepository } from '../../../../../category/infra/db/sequelize/category-sequelize.repository';
+import { CategoryModel } from '../../../../../category/infra/db/sequelize/category.model';
+import { Genre } from '../../../../../genre/domain/genre.aggregate';
+import { GenreModel } from '../../../../../genre/infra/db/sequelize/genre-model';
+import { GenreSequelizeRepository } from '../../../../../genre/infra/db/sequelize/genre-sequelize.repository';
+import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
+import { UnitOfWorkSequelize } from '../../../../../shared/infra/db/sequelize/unit-of-work-sequelize';
 import { Video, VideoId } from '../../../../domain/video.aggregate';
 import {
   VideoSearchParams,
@@ -19,14 +27,6 @@ import {
   VideoGenreModel,
   VideoModel,
 } from '../video.model';
-import { VideoFakeBuilder } from '../../../../domain/video-fake.builder';
-import { CategoryFakeBuilder } from '@core/category/domain/category-fake.builder';
-import { GenreFakeBuilder } from '@core/genre/domain/genre-fake.builder';
-import { CastMemberFakeBuilder } from '@core/cast-member/domain/cast-member-fake.builder';
-import { CastMemberSequelizeRepository } from '@core/cast-member/infra/db/sequelize/cast-member-sequelize.repository';
-import { UnitOfWorkSequelize } from '@core/shared/infra/db/sequelize/unit-of-work.sequelize';
-import { CastMemberModel } from '@core/cast-member/infra/db/sequelize/cast-member.model';
-import { CastMemberType } from '@core/cast-member/domain/cast-member-type';
 
 describe('VideoSequelizeRepository Integration Tests', () => {
   const sequelizeHelper = setupSequelizeForVideo();
@@ -47,7 +47,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
   it('should inserts a new entity without medias', async () => {
     const { category, genre, castMember } = await createRelations();
 
-    const video = VideoFakeBuilder.aVideoWithoutMedias()
+    const video = Video.fake()
+      .aVideoWithoutMedias()
       .addCategoryId(category.category_id)
       .addGenreId(genre.genre_id)
       .addCastMemberId(castMember.cast_member_id)
@@ -60,7 +61,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
   it('should inserts a new entity with medias', async () => {
     const { category, genre, castMember } = await createRelations();
 
-    const video = VideoFakeBuilder.aVideoWithAllMedias()
+    const video = Video.fake()
+      .aVideoWithAllMedias()
       .addCategoryId(category.category_id)
       .addGenreId(genre.genre_id)
       .addCastMemberId(castMember.cast_member_id)
@@ -73,7 +75,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
   it('should bulk inserts new entities without medias', async () => {
     const { category, genre, castMember } = await createRelations();
 
-    const videos = VideoFakeBuilder.theVideosWithoutMedias(2)
+    const videos = Video.fake()
+      .theVideosWithoutMedias(2)
       .addCategoryId(category.category_id)
       .addGenreId(genre.genre_id)
       .addCastMemberId(castMember.cast_member_id)
@@ -88,7 +91,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
   it('should bulk inserts new entities with medias', async () => {
     const { category, genre, castMember } = await createRelations();
 
-    const videos = VideoFakeBuilder.theVideosWithAllMedias(2)
+    const videos = Video.fake()
+      .theVideosWithAllMedias(2)
       .addCategoryId(category.category_id)
       .addGenreId(genre.genre_id)
       .addCastMemberId(castMember.cast_member_id)
@@ -102,7 +106,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
 
   it('should finds a entity by id without medias', async () => {
     const { category, genre, castMember } = await createRelations();
-    const video = VideoFakeBuilder.aVideoWithoutMedias()
+    const video = Video.fake()
+      .aVideoWithoutMedias()
       .addCategoryId(category.category_id)
       .addGenreId(genre.genre_id)
       .addCastMemberId(castMember.cast_member_id)
@@ -115,7 +120,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
 
   it('should finds a entity by id with medias', async () => {
     const { category, genre, castMember } = await createRelations();
-    const video = VideoFakeBuilder.aVideoWithAllMedias()
+    const video = Video.fake()
+      .aVideoWithAllMedias()
       .addCategoryId(category.category_id)
       .addGenreId(genre.genre_id)
       .addCastMemberId(castMember.cast_member_id)
@@ -128,7 +134,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
 
   it('should return all videos without medias', async () => {
     const { category, genre, castMember } = await createRelations();
-    const video = VideoFakeBuilder.aVideoWithoutMedias()
+    const video = Video.fake()
+      .aVideoWithoutMedias()
       .addCategoryId(category.category_id)
       .addGenreId(genre.genre_id)
       .addCastMemberId(castMember.cast_member_id)
@@ -141,7 +148,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
 
   it('should return all videos with medias', async () => {
     const { category, genre, castMember } = await createRelations();
-    const video = VideoFakeBuilder.aVideoWithAllMedias()
+    const video = Video.fake()
+      .aVideoWithAllMedias()
       .addCategoryId(category.category_id)
       .addGenreId(genre.genre_id)
       .addCastMemberId(castMember.cast_member_id)
@@ -153,23 +161,25 @@ describe('VideoSequelizeRepository Integration Tests', () => {
   });
 
   it('should throw error on update when a entity not found', async () => {
-    const entity = VideoFakeBuilder.aVideoWithoutMedias().build();
+    const entity = Video.fake().aVideoWithoutMedias().build();
     await expect(videoRepo.update(entity)).rejects.toThrow(
       new NotFoundError(entity.video_id.id, Video),
     );
   });
 
   it('should update a entity', async () => {
-    const categories = CategoryFakeBuilder.theCategories(3).build();
+    const categories = Category.fake().theCategories(3).build();
     await categoryRepo.bulkInsert(categories);
-    const genres = GenreFakeBuilder.theGenres(3)
+    const genres = Genre.fake()
+      .theGenres(3)
       .addCategoryId(categories[0].category_id)
       .build();
     await genreRepo.bulkInsert(genres);
-    const castMembers = CastMemberFakeBuilder.theCastMembers(3).build();
+    const castMembers = CastMember.fake().theCastMembers(3).build();
     await castMemberRepo.bulkInsert(castMembers);
-    const fakerVideo = VideoFakeBuilder.aVideoWithoutMedias();
-    const video = VideoFakeBuilder.aVideoWithoutMedias()
+    const fakerVideo = Video.fake().aVideoWithoutMedias();
+    const video = Video.fake()
+      .aVideoWithoutMedias()
       .addCategoryId(categories[0].category_id)
       .addGenreId(genres[0].genre_id)
       .addCastMemberId(castMembers[0].cast_member_id)
@@ -236,7 +246,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
 
   it('should delete a entity', async () => {
     const { category, genre, castMember } = await createRelations();
-    let video = VideoFakeBuilder.aVideoWithoutMedias()
+    let video = Video.fake()
+      .aVideoWithoutMedias()
       .addCategoryId(category.category_id)
       .addGenreId(genre.genre_id)
       .addCastMemberId(castMember.cast_member_id)
@@ -250,7 +261,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
     await expect(VideoGenreModel.count()).resolves.toBe(0);
     await expect(VideoCastMemberModel.count()).resolves.toBe(0);
 
-    video = VideoFakeBuilder.aVideoWithAllMedias()
+    video = Video.fake()
+      .aVideoWithAllMedias()
       .addCategoryId(category.category_id)
       .addGenreId(genre.genre_id)
       .addCastMemberId(castMember.cast_member_id)
@@ -270,7 +282,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
     it('should order by created_at DESC when search params are null', async () => {
       const { category, genre, castMember } = await createRelations();
 
-      const videos = VideoFakeBuilder.theVideosWithAllMedias(16)
+      const videos = Video.fake()
+        .theVideosWithAllMedias(16)
         .withCreatedAt((index) => new Date(new Date().getTime() + 100 + index))
         .addCategoryId(category.category_id)
         .addGenreId(genre.genre_id)
@@ -303,28 +316,32 @@ describe('VideoSequelizeRepository Integration Tests', () => {
     it('should apply paginate and filter by title', async () => {
       const { category, genre, castMember } = await createRelations();
       const videos = [
-        VideoFakeBuilder.aVideoWithAllMedias()
+        Video.fake()
+          .aVideoWithAllMedias()
           .withTitle('test')
           .withCreatedAt(new Date(new Date().getTime() + 4000))
           .addCategoryId(category.category_id)
           .addGenreId(genre.genre_id)
           .addCastMemberId(castMember.cast_member_id)
           .build(),
-        VideoFakeBuilder.aVideoWithAllMedias()
+        Video.fake()
+          .aVideoWithAllMedias()
           .withTitle('a')
           .withCreatedAt(new Date(new Date().getTime() + 3000))
           .addCategoryId(category.category_id)
           .addGenreId(genre.genre_id)
           .addCastMemberId(castMember.cast_member_id)
           .build(),
-        VideoFakeBuilder.aVideoWithAllMedias()
+        Video.fake()
+          .aVideoWithAllMedias()
           .withTitle('TEST')
           .withCreatedAt(new Date(new Date().getTime() + 2000))
           .addCategoryId(category.category_id)
           .addGenreId(genre.genre_id)
           .addCastMemberId(castMember.cast_member_id)
           .build(),
-        VideoFakeBuilder.aVideoWithAllMedias()
+        Video.fake()
+          .aVideoWithAllMedias()
           .withTitle('TeSt')
           .withCreatedAt(new Date(new Date().getTime() + 1000))
           .addCategoryId(category.category_id)
@@ -391,33 +408,33 @@ describe('VideoSequelizeRepository Integration Tests', () => {
     });
   });
   //TODO - fazer testes para buscas de categories_id, genres_id e cast_members
-  //     const categories = CategoryFakeBuilder.theCategories(4).build();
+  //     const categories = Category.fake().theCategories(4).build();
   //     await categoryRepo.bulkInsert(categories);
   //     const genres = [
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[0].category_id)
   //         .withCreatedAt(new Date(new Date().getTime() + 1000))
   //         .build(),
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[0].category_id)
   //         .addCategoryId(categories[1].category_id)
   //         .withCreatedAt(new Date(new Date().getTime() + 2000))
   //         .build(),
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[0].category_id)
   //         .addCategoryId(categories[1].category_id)
   //         .addCategoryId(categories[2].category_id)
   //         .withCreatedAt(new Date(new Date().getTime() + 3000))
   //         .build(),
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[3].category_id)
   //         .withCreatedAt(new Date(new Date().getTime() + 4000))
   //         .build(),
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[1].category_id)
   //         .addCategoryId(categories[2].category_id)
@@ -512,38 +529,38 @@ describe('VideoSequelizeRepository Integration Tests', () => {
   //   it('should apply paginate and sort', async () => {
   //     expect(video.sortableFields).toStrictEqual(['name', 'created_at']);
 
-  //     const categories = CategoryFakeBuilder.theCategories(4).build();
+  //     const categories = Category.fake().theCategories(4).build();
   //     await categoryRepo.bulkInsert(categories);
   //     const genres = [
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[0].category_id)
   //         .addCategoryId(categories[1].category_id)
   //         .addCategoryId(categories[2].category_id)
   //         .withName('b')
   //         .build(),
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[0].category_id)
   //         .addCategoryId(categories[1].category_id)
   //         .addCategoryId(categories[2].category_id)
   //         .withName('a')
   //         .build(),
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[0].category_id)
   //         .addCategoryId(categories[1].category_id)
   //         .addCategoryId(categories[2].category_id)
   //         .withName('d')
   //         .build(),
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[0].category_id)
   //         .addCategoryId(categories[1].category_id)
   //         .addCategoryId(categories[2].category_id)
   //         .withName('e')
   //         .build(),
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[0].category_id)
   //         .addCategoryId(categories[1].category_id)
@@ -625,38 +642,38 @@ describe('VideoSequelizeRepository Integration Tests', () => {
   //   });
 
   //   describe('should search using filter by name, sort and paginate', () => {
-  //     const categories = CategoryFakeBuilder.theCategories(3).build();
+  //     const categories = Category.fake().theCategories(3).build();
 
   //     const genres = [
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[0].category_id)
   //         .addCategoryId(categories[1].category_id)
   //         .addCategoryId(categories[2].category_id)
   //         .withName('test')
   //         .build(),
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[0].category_id)
   //         .addCategoryId(categories[1].category_id)
   //         .addCategoryId(categories[2].category_id)
   //         .withName('a')
   //         .build(),
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[0].category_id)
   //         .addCategoryId(categories[1].category_id)
   //         .addCategoryId(categories[2].category_id)
   //         .withName('TEST')
   //         .build(),
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[0].category_id)
   //         .addCategoryId(categories[1].category_id)
   //         .addCategoryId(categories[2].category_id)
   //         .withName('e')
   //         .build(),
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[0].category_id)
   //         .addCategoryId(categories[1].category_id)
@@ -718,33 +735,33 @@ describe('VideoSequelizeRepository Integration Tests', () => {
   //   });
 
   //   describe('should search using filter by categories_id, sort and paginate', () => {
-  //     const categories = CategoryFakeBuilder.theCategories(4).build();
+  //     const categories = Category.fake().theCategories(4).build();
 
   //     const genres = [
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[0].category_id)
   //         .withName('test')
   //         .build(),
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[0].category_id)
   //         .addCategoryId(categories[1].category_id)
   //         .withName('a')
   //         .build(),
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[0].category_id)
   //         .addCategoryId(categories[1].category_id)
   //         .addCategoryId(categories[2].category_id)
   //         .withName('TEST')
   //         .build(),
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[3].category_id)
   //         .withName('e')
   //         .build(),
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[1].category_id)
   //         .addCategoryId(categories[2].category_id)
@@ -805,34 +822,34 @@ describe('VideoSequelizeRepository Integration Tests', () => {
   //   });
 
   //   describe('should search using filter by name and categories_id, sort and paginate', () => {
-  //     const categories = CategoryFakeBuilder.theCategories(4).build();
+  //     const categories = Category.fake().theCategories(4).build();
 
   //     const genres = [
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[0].category_id)
   //         .addCategoryId(categories[1].category_id)
   //         .withName('test')
   //         .build(),
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[0].category_id)
   //         .addCategoryId(categories[1].category_id)
   //         .withName('a')
   //         .build(),
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[0].category_id)
   //         .addCategoryId(categories[1].category_id)
   //         .addCategoryId(categories[2].category_id)
   //         .withName('TEST')
   //         .build(),
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[3].category_id)
   //         .withName('e')
   //         .build(),
-  //       VideoFakeBuilder
+  //       Video.fake()
   //         .aVideo()
   //         .addCategoryId(categories[1].category_id)
   //         .addCategoryId(categories[2].category_id)
@@ -903,7 +920,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
     describe('insert method', () => {
       it('should insert a genre', async () => {
         const { category, genre, castMember } = await createRelations();
-        const video = VideoFakeBuilder.aVideoWithAllMedias()
+        const video = Video.fake()
+          .aVideoWithAllMedias()
           .addCategoryId(category.category_id)
           .addGenreId(genre.genre_id)
           .addCastMemberId(castMember.cast_member_id)
@@ -918,7 +936,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
 
       it('rollback the insertion', async () => {
         const { category, genre, castMember } = await createRelations();
-        const video = VideoFakeBuilder.aVideoWithAllMedias()
+        const video = Video.fake()
+          .aVideoWithAllMedias()
           .addCategoryId(category.category_id)
           .addGenreId(genre.genre_id)
           .addCastMemberId(castMember.cast_member_id)
@@ -940,7 +959,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
     describe('bulkInsert method', () => {
       it('should insert a list of videos', async () => {
         const { category, genre, castMember } = await createRelations();
-        const videos = VideoFakeBuilder.theVideosWithAllMedias(2)
+        const videos = Video.fake()
+          .theVideosWithAllMedias(2)
           .addCategoryId(category.category_id)
           .addGenreId(genre.genre_id)
           .addCastMemberId(castMember.cast_member_id)
@@ -959,7 +979,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
 
       it('rollback the bulk insertion', async () => {
         const { category, genre, castMember } = await createRelations();
-        const videos = VideoFakeBuilder.theVideosWithAllMedias(2)
+        const videos = Video.fake()
+          .theVideosWithAllMedias(2)
           .addCategoryId(category.category_id)
           .addGenreId(genre.genre_id)
           .addCastMemberId(castMember.cast_member_id)
@@ -985,7 +1006,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
     describe('findById method', () => {
       it('should return a video', async () => {
         const { category, genre, castMember } = await createRelations();
-        const video = VideoFakeBuilder.aVideoWithAllMedias()
+        const video = Video.fake()
+          .aVideoWithAllMedias()
           .addCategoryId(category.category_id)
           .addGenreId(genre.genre_id)
           .addCastMemberId(castMember.cast_member_id)
@@ -1001,7 +1023,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
     describe('findAll method', () => {
       it('should return a list of videos', async () => {
         const { category, genre, castMember } = await createRelations();
-        const videos = VideoFakeBuilder.theVideosWithAllMedias(2)
+        const videos = Video.fake()
+          .theVideosWithAllMedias(2)
           .addCategoryId(category.category_id)
           .addGenreId(genre.genre_id)
           .addCastMemberId(castMember.cast_member_id)
@@ -1017,7 +1040,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
     describe('findByIds method', () => {
       it('should return a list of videos', async () => {
         const { category, genre, castMember } = await createRelations();
-        const videos = VideoFakeBuilder.theVideosWithAllMedias(2)
+        const videos = Video.fake()
+          .theVideosWithAllMedias(2)
           .addCategoryId(category.category_id)
           .addGenreId(genre.genre_id)
           .addCastMemberId(castMember.cast_member_id)
@@ -1033,7 +1057,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
     describe('existsById method', () => {
       it('should return true if the video exists', async () => {
         const { category, genre, castMember } = await createRelations();
-        const video = VideoFakeBuilder.aVideoWithAllMedias()
+        const video = Video.fake()
+          .aVideoWithAllMedias()
           .addCategoryId(category.category_id)
           .addGenreId(genre.genre_id)
           .addCastMemberId(castMember.cast_member_id)
@@ -1049,7 +1074,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
     describe('update method', () => {
       it('should update a video', async () => {
         const { category, genre, castMember } = await createRelations();
-        const video = VideoFakeBuilder.aVideoWithAllMedias()
+        const video = Video.fake()
+          .aVideoWithAllMedias()
           .addCategoryId(category.category_id)
           .addGenreId(genre.genre_id)
           .addCastMemberId(castMember.cast_member_id)
@@ -1065,7 +1091,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
 
       it('rollback the update', async () => {
         const { category, genre, castMember } = await createRelations();
-        const video = VideoFakeBuilder.aVideoWithAllMedias()
+        const video = Video.fake()
+          .aVideoWithAllMedias()
           .addCategoryId(category.category_id)
           .addGenreId(genre.genre_id)
           .addCastMemberId(castMember.cast_member_id)
@@ -1083,7 +1110,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
     describe('delete method', () => {
       it('should delete a video', async () => {
         const { category, genre, castMember } = await createRelations();
-        const video = VideoFakeBuilder.aVideoWithAllMedias()
+        const video = Video.fake()
+          .aVideoWithAllMedias()
           .addCategoryId(category.category_id)
           .addGenreId(genre.genre_id)
           .addCastMemberId(castMember.cast_member_id)
@@ -1102,7 +1130,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
 
       it('rollback the deletion', async () => {
         const { category, genre, castMember } = await createRelations();
-        const video = VideoFakeBuilder.aVideoWithAllMedias()
+        const video = Video.fake()
+          .aVideoWithAllMedias()
           .addCategoryId(category.category_id)
           .addGenreId(genre.genre_id)
           .addCastMemberId(castMember.cast_member_id)
@@ -1124,7 +1153,8 @@ describe('VideoSequelizeRepository Integration Tests', () => {
     describe('search method', () => {
       it('should return a list of genres', async () => {
         const { category, genre, castMember } = await createRelations();
-        const genres = VideoFakeBuilder.theVideosWithAllMedias(2)
+        const genres = Video.fake()
+          .theVideosWithAllMedias(2)
           .withTitle('movie')
           .addCategoryId(category.category_id)
           .addGenreId(genre.genre_id)
@@ -1144,15 +1174,14 @@ describe('VideoSequelizeRepository Integration Tests', () => {
   });
 
   async function createRelations() {
-    const category = CategoryFakeBuilder.aCategory().build();
+    const category = Category.fake().aCategory().build();
     await categoryRepo.insert(category);
-    const genre = GenreFakeBuilder.aGenre()
+    const genre = Genre.fake()
+      .aGenre()
       .addCategoryId(category.category_id)
       .build();
     await genreRepo.insert(genre);
-    const castMember = CastMemberFakeBuilder.aCastMember()
-      .withType(CastMemberType.ACTOR)
-      .build();
+    const castMember = CastMember.fake().anActor().build();
     await castMemberRepo.insert(castMember);
     return { category, genre, castMember };
   }

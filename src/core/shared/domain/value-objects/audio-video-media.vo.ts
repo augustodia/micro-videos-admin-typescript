@@ -9,11 +9,11 @@ export enum AudioVideoMediaStatus {
 
 export abstract class AudioVideoMedia extends ValueObject {
   readonly name: string;
-  readonly raw_location: string;
+  readonly raw_location: string; //mp4
   readonly encoded_location: string | null;
   readonly status: AudioVideoMediaStatus;
 
-  protected constructor({
+  constructor({
     name,
     raw_location,
     encoded_location,
@@ -21,7 +21,7 @@ export abstract class AudioVideoMedia extends ValueObject {
   }: {
     name: string;
     raw_location: string;
-    encoded_location?: string;
+    encoded_location?: string | null;
     status: AudioVideoMediaStatus;
   }) {
     super();
@@ -38,8 +38,7 @@ export abstract class AudioVideoMedia extends ValueObject {
   toJSON() {
     return {
       name: this.name,
-      location: this.raw_location,
-      raw_location: this.encoded_location,
+      raw_location: this.raw_location,
       encoded_location: this.encoded_location,
       status: this.status,
     };

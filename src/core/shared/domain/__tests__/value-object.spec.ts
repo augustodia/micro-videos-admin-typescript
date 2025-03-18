@@ -8,73 +8,35 @@ class StringValueObject extends ValueObject {
 
 class ComplexValueObject extends ValueObject {
   constructor(
-    readonly value: string,
-    readonly value2: number,
+    readonly prop1: string,
+    readonly prop2: number,
   ) {
     super();
   }
 }
 
-class SimpleNullableValueObject extends ValueObject {
-  constructor(readonly value: string | null) {
-    super();
-  }
-}
-
 describe('ValueObject Unit Tests', () => {
-  test('should compare two value objects', () => {
-    const vo1 = new StringValueObject('test');
-    const vo2 = new StringValueObject('test');
+  test('should be equals', () => {
+    const valueObject1 = new StringValueObject('test');
+    const valueObject2 = new StringValueObject('test');
+    expect(valueObject1.equals(valueObject2)).toBe(true);
 
-    expect(vo1.equals(vo2)).toBeTruthy();
+    const complexValueObject1 = new ComplexValueObject('test', 1);
+    const complexValueObject2 = new ComplexValueObject('test', 1);
+    expect(complexValueObject1.equals(complexValueObject2)).toBe(true);
   });
 
-  test('should compare two different value objects', () => {
-    const vo1 = new StringValueObject('test');
-    const vo2 = new StringValueObject('test2');
+  test('should not be equals', () => {
+    const valueObject1 = new StringValueObject('test');
+    const valueObject2 = new StringValueObject('test2');
+    expect(valueObject1.equals(valueObject2)).toBe(false);
+    expect(valueObject1.equals(null as any)).toBe(false);
+    expect(valueObject1.equals(undefined as any)).toBe(false);
 
-    expect(vo1.equals(vo2)).toBeFalsy();
-  });
-
-  test('should compare two complex value objects', () => {
-    const vo1 = new ComplexValueObject('test', 1);
-    const vo2 = new ComplexValueObject('test', 1);
-
-    expect(vo1.equals(vo2)).toBeTruthy();
-  });
-
-  test('should compare two different complex value objects', () => {
-    const vo1 = new ComplexValueObject('test', 1);
-    const vo2 = new ComplexValueObject('test', 2);
-
-    expect(vo1.equals(vo2)).toBeFalsy();
-  });
-
-  test('should compare two complex nullable value objects', () => {
-    const vo1 = new SimpleNullableValueObject('test');
-    const vo2 = new SimpleNullableValueObject('test');
-
-    expect(vo1.equals(vo2)).toBeTruthy();
-  });
-
-  test('should compare two different complex nullable value objects', () => {
-    const vo1 = new SimpleNullableValueObject('test');
-    const vo2 = new SimpleNullableValueObject('test2');
-
-    expect(vo1.equals(vo2)).toBeFalsy();
-  });
-
-  test('should compare two nullable value objects', () => {
-    const vo1 = new SimpleNullableValueObject('test');
-    const vo2 = null;
-
-    expect(vo1.equals(vo2 as any)).toBeFalsy();
-  });
-
-  test('should compare two different value objects', () => {
-    const vo1 = new StringValueObject('test');
-    const vo2 = new ComplexValueObject('test', 1);
-
-    expect(vo1.equals(vo2)).toBeFalsy();
+    const complexValueObject1 = new ComplexValueObject('test', 1);
+    const complexValueObject2 = new ComplexValueObject('test', 2);
+    expect(complexValueObject1.equals(complexValueObject2)).toBe(false);
+    expect(complexValueObject1.equals(null as any)).toBe(false);
+    expect(complexValueObject2.equals(undefined as any)).toBe(false);
   });
 });

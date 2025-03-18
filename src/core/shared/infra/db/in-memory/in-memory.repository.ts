@@ -1,13 +1,16 @@
 import { Entity } from '../../../domain/entity';
+import { InvalidArgumentError } from '../../../domain/errors/invalid-argument.error';
 import { NotFoundError } from '../../../domain/errors/not-found.error';
 import {
   IRepository,
   ISearchableRepository,
 } from '../../../domain/repository/repository-interface';
-import { ValueObject } from '../../../domain/value-object';
-import { SearchParams } from '../../../domain/repository/search-params';
+import {
+  SearchParams,
+  SortDirection,
+} from '../../../domain/repository/search-params';
 import { SearchResult } from '../../../domain/repository/search-result';
-import { InvalidArgumentError } from '../../../domain/errors/invalid-argument.error';
+import { ValueObject } from '../../../domain/value-object';
 
 export abstract class InMemoryRepository<
   E extends Entity,
@@ -19,43 +22,38 @@ export abstract class InMemoryRepository<
   async insert(entity: E): Promise<void> {
     this.items.push(entity);
   }
-
-  async bulkInsert(entities: E[]): Promise<void> {
+  async bulkInsert(entities: any[]): Promise<void> {
     this.items.push(...entities);
   }
 
   async update(entity: E): Promise<void> {
-    const indexItem = this.items.findIndex((item) =>
+    const indexFound = this.items.findIndex((item) =>
       item.entity_id.equals(entity.entity_id),
     );
-
-    if (indexItem === -1)
+    if (indexFound === -1) {
       throw new NotFoundError(entity.entity_id, this.getEntity());
-
-    this.items[indexItem] = entity;
+    }
+    this.items[indexFound] = entity;
   }
 
   async delete(entity_id: EntityId): Promise<void> {
-    const indexItem = this.items.findIndex((item) =>
+    const indexFound = this.items.findIndex((item) =>
       item.entity_id.equals(entity_id),
     );
-
-    if (indexItem === -1) throw new NotFoundError(entity_id, this.getEntity());
-
-    this.items.splice(indexItem, 1);
+    if (indexFound === -1) {
+      throw new NotFoundError(entity_id, this.getEntity());
+    }
+    this.items.splice(indexFound, 1);
   }
 
   async findById(entity_id: EntityId): Promise<E | null> {
     const item = this.items.find((item) => item.entity_id.equals(entity_id));
-
     return typeof item === 'undefined' ? null : item;
   }
 
-  async findAll(): Promise<E[]> {
+  async findAll(): Promise<any[]> {
     return this.items;
   }
-
-  abstract getEntity(): new (...args: any[]) => E;
 
   async findByIds(ids: EntityId[]): Promise<E[]> {
     //avoid to return repeated items
@@ -91,6 +89,8 @@ export abstract class InMemoryRepository<
       not_exists: Array.from(notExistsId.values()),
     };
   }
+
+  abstract getEntity(): new (...args: any[]) => E;
 }
 
 export abstract class InMemorySearchableRepository<
@@ -114,7 +114,6 @@ export abstract class InMemorySearchableRepository<
       props.page,
       props.per_page,
     );
-
     return new SearchResult({
       items: itemsPaginated,
       total: itemsFiltered.length,
@@ -130,29 +129,34 @@ export abstract class InMemorySearchableRepository<
 
   protected applyPaginate(
     items: E[],
-    page: SearchParams<E>['page'],
-    per_page: SearchParams<E>['per_page'],
+    page: SearchParams['page'],
+    per_page: SearchParams['per_page'],
   ) {
-    const start = (page - 1) * per_page;
-    const end = start + per_page;
-
-    return items.slice(start, end);
+    const start = (page - 1) * per_page; // 0 * 15 = 0
+    const limit = start + per_page; // 0 + 15 = 15
+    return items.slice(start, limit);
   }
 
   protected applySort(
     items: E[],
     sort: string | null,
-    sort_dir: SearchParams<E>['sort_dir'] | null,
+    sort_dir: SortDirection | null,
     custom_getter?: (sort: string, item: E) => any,
   ) {
-    if (!sort || !this.sortableFields.includes(sort)) return items;
+    if (!sort || !this.sortableFields.includes(sort)) {
+      return items;
+    }
 
     return [...items].sort((a, b) => {
       const aValue = custom_getter ? custom_getter(sort, a) : a[sort];
       const bValue = custom_getter ? custom_getter(sort, b) : b[sort];
-      if (aValue < bValue) return sort_dir === 'asc' ? -1 : 1;
+      if (aValue < bValue) {
+        return sort_dir === 'asc' ? -1 : 1;
+      }
 
-      if (aValue > bValue) return sort_dir === 'asc' ? 1 : -1;
+      if (aValue > bValue) {
+        return sort_dir === 'asc' ? 1 : -1;
+      }
 
       return 0;
     });

@@ -1,6 +1,5 @@
 import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
 import { UnitOfWorkFakeInMemory } from '../../../../../shared/infra/db/in-memory/fake-unit-of-work-in-memory';
-import { GenreFakeBuilder } from '../../../../domain/genre-fake.builder';
 import { Genre, GenreId } from '../../../../domain/genre.aggregate';
 import { GenreInMemoryRepository } from '../../../../infra/db/in-memory/genre-in-memory.repository';
 import { DeleteGenreUseCase } from '../delete-genre.use-case';
@@ -25,7 +24,7 @@ describe('DeleteGenreUseCase Unit Tests', () => {
   });
 
   it('should delete a genre', async () => {
-    const items = [GenreFakeBuilder.aGenre().build()];
+    const items = [Genre.fake().aGenre().build()];
     repository.items = items;
     const spyOnDo = jest.spyOn(uow, 'do');
     await useCase.execute({

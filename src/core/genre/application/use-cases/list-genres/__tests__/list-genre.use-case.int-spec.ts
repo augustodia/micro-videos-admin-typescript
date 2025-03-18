@@ -1,9 +1,9 @@
-import { CategoryFakeBuilder } from '../../../../../category/domain/category-fake.builder';
+import { Category } from '../../../../../category/domain/category.aggregate';
 import { CategorySequelizeRepository } from '../../../../../category/infra/db/sequelize/category-sequelize.repository';
 import { CategoryModel } from '../../../../../category/infra/db/sequelize/category.model';
-import { UnitOfWorkSequelize } from '../../../../../shared/infra/db/sequelize/unit-of-work.sequelize';
+import { UnitOfWorkSequelize } from '../../../../../shared/infra/db/sequelize/unit-of-work-sequelize';
 import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
-import { GenreFakeBuilder } from '../../../../domain/genre-fake.builder';
+import { Genre } from '../../../../domain/genre.aggregate';
 import {
   GenreCategoryModel,
   GenreModel,
@@ -30,9 +30,10 @@ describe('ListGenresUseCase Integration Tests', () => {
   });
 
   it('should return output sorted by created_at when input param is empty', async () => {
-    const categories = CategoryFakeBuilder.theCategories(3).build();
+    const categories = Category.fake().theCategories(3).build();
     await categoryRepo.bulkInsert(categories);
-    const genres = GenreFakeBuilder.theGenres(16)
+    const genres = Genre.fake()
+      .theGenres(16)
       .withCreatedAt((index) => new Date(new Date().getTime() + 1000 + index))
       .addCategoryId(categories[0].category_id)
       .addCategoryId(categories[1].category_id)
@@ -53,30 +54,34 @@ describe('ListGenresUseCase Integration Tests', () => {
   });
 
   describe('should search applying filter by name, sort and paginate', () => {
-    const categories = CategoryFakeBuilder.theCategories(3).build();
+    const categories = Category.fake().theCategories(3).build();
     const genres = [
-      GenreFakeBuilder.aGenre()
+      Genre.fake()
+        .aGenre()
         .withName('test')
         .withCreatedAt(new Date(new Date().getTime() + 4000))
         .addCategoryId(categories[0].category_id)
         .addCategoryId(categories[1].category_id)
         .addCategoryId(categories[2].category_id)
         .build(),
-      GenreFakeBuilder.aGenre()
+      Genre.fake()
+        .aGenre()
         .withName('a')
         .withCreatedAt(new Date(new Date().getTime() + 3000))
         .addCategoryId(categories[0].category_id)
         .addCategoryId(categories[1].category_id)
         .addCategoryId(categories[2].category_id)
         .build(),
-      GenreFakeBuilder.aGenre()
+      Genre.fake()
+        .aGenre()
         .withName('TEST')
         .withCreatedAt(new Date(new Date().getTime() + 2000))
         .addCategoryId(categories[0].category_id)
         .addCategoryId(categories[1].category_id)
         .addCategoryId(categories[2].category_id)
         .build(),
-      GenreFakeBuilder.aGenre()
+      Genre.fake()
+        .aGenre()
         .withName('TeSt')
         .withCreatedAt(new Date(new Date().getTime() + 1000))
         .addCategoryId(categories[0].category_id)
@@ -132,30 +137,35 @@ describe('ListGenresUseCase Integration Tests', () => {
     );
   });
 
-  describe('should search applying filter by categories_ids, sort and paginate', () => {
-    const categories = CategoryFakeBuilder.theCategories(4).build();
+  describe('should search applying filter by categories_id, sort and paginate', () => {
+    const categories = Category.fake().theCategories(4).build();
 
     const genres = [
-      GenreFakeBuilder.aGenre()
+      Genre.fake()
+        .aGenre()
         .addCategoryId(categories[0].category_id)
         .withName('test')
         .build(),
-      GenreFakeBuilder.aGenre()
+      Genre.fake()
+        .aGenre()
         .addCategoryId(categories[0].category_id)
         .addCategoryId(categories[1].category_id)
         .withName('a')
         .build(),
-      GenreFakeBuilder.aGenre()
+      Genre.fake()
+        .aGenre()
         .addCategoryId(categories[0].category_id)
         .addCategoryId(categories[1].category_id)
         .addCategoryId(categories[2].category_id)
         .withName('TEST')
         .build(),
-      GenreFakeBuilder.aGenre()
+      Genre.fake()
+        .aGenre()
         .addCategoryId(categories[3].category_id)
         .withName('e')
         .build(),
-      GenreFakeBuilder.aGenre()
+      Genre.fake()
+        .aGenre()
         .addCategoryId(categories[1].category_id)
         .addCategoryId(categories[2].category_id)
         .withName('TeSt')
@@ -168,7 +178,7 @@ describe('ListGenresUseCase Integration Tests', () => {
           page: 1,
           per_page: 2,
           sort: 'name',
-          filter: { categories_ids: [categories[0].category_id.id] },
+          filter: { categories_id: [categories[0].category_id.id] },
         },
         output: {
           items: [
@@ -190,7 +200,7 @@ describe('ListGenresUseCase Integration Tests', () => {
           page: 2,
           per_page: 2,
           sort: 'name',
-          filter: { categories_ids: [categories[0].category_id.id] },
+          filter: { categories_id: [categories[0].category_id.id] },
         },
         output: {
           items: [formatOutput(genres[0], [categories[0]])],
@@ -216,31 +226,36 @@ describe('ListGenresUseCase Integration Tests', () => {
     );
   });
 
-  describe('should search using filter by name and categories_ids, sort and paginate', () => {
-    const categories = CategoryFakeBuilder.theCategories(4).build();
+  describe('should search using filter by name and categories_id, sort and paginate', () => {
+    const categories = Category.fake().theCategories(4).build();
 
     const genres = [
-      GenreFakeBuilder.aGenre()
+      Genre.fake()
+        .aGenre()
         .addCategoryId(categories[0].category_id)
         .addCategoryId(categories[1].category_id)
         .withName('test')
         .build(),
-      GenreFakeBuilder.aGenre()
+      Genre.fake()
+        .aGenre()
         .addCategoryId(categories[0].category_id)
         .addCategoryId(categories[1].category_id)
         .withName('a')
         .build(),
-      GenreFakeBuilder.aGenre()
+      Genre.fake()
+        .aGenre()
         .addCategoryId(categories[0].category_id)
         .addCategoryId(categories[1].category_id)
         .addCategoryId(categories[2].category_id)
         .withName('TEST')
         .build(),
-      GenreFakeBuilder.aGenre()
+      Genre.fake()
+        .aGenre()
         .addCategoryId(categories[3].category_id)
         .withName('e')
         .build(),
-      GenreFakeBuilder.aGenre()
+      Genre.fake()
+        .aGenre()
         .addCategoryId(categories[1].category_id)
         .addCategoryId(categories[2].category_id)
         .withName('TeSt')
@@ -255,7 +270,7 @@ describe('ListGenresUseCase Integration Tests', () => {
           sort: 'name',
           filter: {
             name: 'TEST',
-            categories_ids: [categories[1].category_id.id],
+            categories_id: [categories[1].category_id.id],
           },
         },
         output: {
@@ -280,7 +295,7 @@ describe('ListGenresUseCase Integration Tests', () => {
           sort: 'name',
           filter: {
             name: 'TEST',
-            categories_ids: [categories[1].category_id.id],
+            categories_id: [categories[1].category_id.id],
           },
         },
         output: {
@@ -315,6 +330,6 @@ function formatOutput(genre, categories) {
     categories: expect.arrayContaining(
       output.categories.map((c) => expect.objectContaining(c)),
     ),
-    categories_ids: expect.arrayContaining(output.categories_ids),
+    categories_id: expect.arrayContaining(output.categories_id),
   };
 }

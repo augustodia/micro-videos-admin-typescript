@@ -6,13 +6,14 @@ import { CastMemberId } from '../../cast-member/domain/cast-member.aggregate';
 import { Rating } from './rating.vo';
 import { Banner } from './banner.vo';
 import { Thumbnail } from './thumbnail.vo';
-import { VideoMedia } from '@core/video/domain/video-media.vo';
-import { Trailer } from '@core/video/domain/trailer.vo';
-import VideoValidatorFactory from '@core/video/domain/video.validator';
-import { ThumbnailHalf } from '@core/video/domain/thumbnail-half.vo';
-import { AudioVideoMediaStatus } from '@core/shared/domain/value-objects/audio-video-media.vo';
-import { VideoCreatedEvent } from '@core/video/domain/domain-events/video-created.event';
-import { VideoAudioMediaReplaced } from '../../../../video-audio-media-replaced';
+import { Trailer } from './trailer.vo';
+import { VideoMedia } from './video-media.vo';
+import VideoValidatorFactory from './video.validator';
+import { ThumbnailHalf } from './thumbnail-half.vo';
+import { AudioVideoMediaStatus } from '../../shared/domain/value-objects/audio-video-media.vo';
+import { VideoFakeBuilder } from './video-fake.builder';
+import { VideoCreatedEvent } from './domain-events/video-created.event';
+import { VideoAudioMediaReplaced } from './domain-events/video-audio-media-replaced.event';
 
 export type VideoConstructorProps = {
   video_id?: VideoId;
@@ -27,8 +28,8 @@ export type VideoConstructorProps = {
   banner?: Banner | null;
   thumbnail?: Thumbnail | null;
   thumbnail_half?: ThumbnailHalf | null;
-  trailer?: Trailer;
-  video?: VideoMedia;
+  trailer?: Trailer | null;
+  video?: VideoMedia | null;
 
   categories_id: Map<string, CategoryId>;
   genres_id: Map<string, GenreId>;
@@ -67,11 +68,12 @@ export class Video extends AggregateRoot {
   is_opened: boolean;
   is_published: boolean; //uploads
 
-  banner?: Banner | null;
-  thumbnail?: Thumbnail | null;
-  thumbnail_half?: Thumbnail | null;
-  trailer?: Trailer | null;
-  video?: VideoMedia | null;
+  banner: Banner | null;
+  thumbnail: Thumbnail | null;
+  thumbnail_half: ThumbnailHalf | null;
+  trailer: Trailer | null;
+  video: VideoMedia | null;
+
   categories_id: Map<string, CategoryId>;
   genres_id: Map<string, GenreId>;
   cast_members_id: Map<string, CastMemberId>;
@@ -118,7 +120,6 @@ export class Video extends AggregateRoot {
       cast_members_id: new Map(props.cast_members_id.map((id) => [id.id, id])),
       is_published: false,
     });
-
     video.validate(['title']);
     video.applyEvent(
       new VideoCreatedEvent({
@@ -130,18 +131,17 @@ export class Video extends AggregateRoot {
         rating: video.rating,
         is_opened: video.is_opened,
         is_published: video.is_published,
-        banner: video.banner ?? null,
-        thumbnail: video.thumbnail ?? null,
-        thumbnail_half: video.thumbnail_half ?? null,
-        trailer: video.trailer ?? null,
-        video: video.video ?? null,
+        banner: video.banner,
+        thumbnail: video.thumbnail,
+        thumbnail_half: video.thumbnail_half,
+        trailer: video.trailer,
+        video: video.video,
         categories_id: Array.from(video.categories_id.values()),
         genres_id: Array.from(video.genres_id.values()),
         cast_members_id: Array.from(video.cast_members_id.values()),
         created_at: video.created_at,
       }),
     );
-
     return video;
   }
 
@@ -206,17 +206,6 @@ export class Video extends AggregateRoot {
         media_type: 'video',
       }),
     );
-  }
-
-  private markAsPublished(): void {
-    if (
-      this.trailer &&
-      this.video &&
-      this.trailer.status === AudioVideoMediaStatus.COMPLETED &&
-      this.video.status === AudioVideoMediaStatus.COMPLETED
-    ) {
-      this.is_published = true;
-    }
   }
 
   addCategoryId(categoryId: CategoryId): void {
@@ -297,6 +286,10 @@ export class Video extends AggregateRoot {
   validate(fields?: string[]) {
     const validator = VideoValidatorFactory.create();
     return validator.validate(this.notification, this, fields);
+  }
+
+  static fake() {
+    return VideoFakeBuilder;
   }
 
   get entity_id() {

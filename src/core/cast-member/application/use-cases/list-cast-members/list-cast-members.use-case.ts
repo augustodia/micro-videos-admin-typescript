@@ -1,20 +1,18 @@
 import {
-  PaginationOutput,
-  PaginationOutputMapper,
-} from '../../../../shared/application/pagination-output';
-import { IUseCase } from '../../../../shared/application/use-case.interface';
-import {
-  CastMemberSearchParams,
-  CastMemberSearchResult,
-  ICastMemberRepository,
-} from '../../../domain/cast-member.repository';
-import {
   CastMemberOutput,
   CastMemberOutputMapper,
 } from '../common/cast-member-output';
+import { IUseCase } from '../../../../shared/application/use-case.interface';
+import {
+  PaginationOutput,
+  PaginationOutputMapper,
+} from '../../../../shared/application/pagination-output';
+import {
+  ICastMemberRepository,
+  CastMemberSearchParams,
+  CastMemberSearchResult,
+} from '../../../domain/cast-member.repository';
 import { ListCastMembersInput } from './list-cast-members.input';
-
-export type ListCastMembersOutput = PaginationOutput<CastMemberOutput>;
 
 export class ListCastMembersUseCase
   implements IUseCase<ListCastMembersInput, ListCastMembersOutput>
@@ -37,3 +35,5 @@ export class ListCastMembersUseCase
     return PaginationOutputMapper.toOutput(items, searchResult);
   }
 }
+
+export type ListCastMembersOutput = PaginationOutput<CastMemberOutput>;

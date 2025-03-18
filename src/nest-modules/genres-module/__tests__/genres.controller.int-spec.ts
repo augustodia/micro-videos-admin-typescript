@@ -1,33 +1,30 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { IGenreRepository } from '@core/genre/domain/genre.repository';
+import { IGenreRepository } from '../../../core/genre/domain/genre.repository';
 import { GenresController } from '../genres.controller';
 import { GenresModule } from '../genres.module';
-import { CreateGenreUseCase } from '@core/genre/application/use-cases/create-genre/create-genre.use-case';
-import { UpdateGenreUseCase } from '@core/genre/application/use-cases/update-genre/update-genre.use-case';
-import { ListGenresUseCase } from '@core/genre/application/use-cases/list-genres/list-genres.use-case';
-import { GetGenreUseCase } from '@core/genre/application/use-cases/get-genre/get-genre.use-case';
-import { DeleteGenreUseCase } from '@core/genre/application/use-cases/delete-genre/delete-genre.use-case';
-import { Uuid } from '@core/shared/domain/value-objects/uuid.vo';
+import { CreateGenreUseCase } from '../../../core/genre/application/use-cases/create-genre/create-genre.use-case';
+import { UpdateGenreUseCase } from '../../../core/genre/application/use-cases/update-genre/update-genre.use-case';
+import { ListGenresUseCase } from '../../../core/genre/application/use-cases/list-genres/list-genres.use-case';
+import { GetGenreUseCase } from '../../../core/genre/application/use-cases/get-genre/get-genre.use-case';
+import { DeleteGenreUseCase } from '../../../core/genre/application/use-cases/delete-genre/delete-genre.use-case';
+import { Uuid } from '../../../core/shared/domain/value-objects/uuid.vo';
 import { GenreCollectionPresenter } from '../genres.presenter';
 import {
   CreateGenreFixture,
   ListGenresFixture,
   UpdateGenreFixture,
 } from '../testing/genre-fixture';
-
+import { DatabaseModule } from '../../database-module/database.module';
+import { ConfigModule } from '../../config-module/config.module';
+import { ICategoryRepository } from '../../../core/category/domain/category.repository';
+import { UnitOfWorkSequelize } from '../../../core/shared/infra/db/sequelize/unit-of-work-sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import { getConnectionToken } from '@nestjs/sequelize';
-import { GenreId } from '@core/genre/domain/genre.aggregate';
+import { Genre, GenreId } from '../../../core/genre/domain/genre.aggregate';
+import { Category } from '../../../core/category/domain/category.aggregate';
 import { GENRES_PROVIDERS } from '../genres.providers';
-
-import { GenreOutputMapper } from '@core/genre/application/use-cases/common/genre-output';
-import { ICategoryRepository } from '@core/category/domain/category.repository';
-import { DatabaseModule } from '../../database/database.module';
-import { ConfigModule } from '../../config/config.module';
-import { UnitOfWorkSequelize } from '@core/shared/infra/db/sequelize/unit-of-work.sequelize';
-import { CATEGORY_PROVIDERS } from '../../categories/categories.providers';
-import { CategoryFakeBuilder } from '@core/category/domain/category-fake.builder';
-import { GenreFakeBuilder } from '@core/genre/domain/genre-fake.builder';
+import { CATEGORY_PROVIDERS } from '../../categories-module/categories.providers';
+import { GenreOutputMapper } from '../../../core/genre/application/use-cases/common/genre-output';
 
 describe('GenresController Integration Tests', () => {
   let controller: GenresController;
@@ -78,7 +75,7 @@ describe('GenresController Integration Tests', () => {
           genre_id: presenter.id,
           created_at: presenter.created_at,
           name: expected.name,
-          categories_ids: expected.categories_ids,
+          categories_id: expected.categories_id,
           is_active: expected.is_active,
         });
 
@@ -88,8 +85,8 @@ describe('GenresController Integration Tests', () => {
         expectedPresenter.categories = expect.arrayContaining(
           expectedPresenter.categories,
         );
-        expectedPresenter.categories_ids = expect.arrayContaining(
-          expectedPresenter.categories_ids,
+        expectedPresenter.categories_id = expect.arrayContaining(
+          expectedPresenter.categories_id,
         );
         expect(presenter).toEqual(expectedPresenter);
       },
@@ -113,16 +110,16 @@ describe('GenresController Integration Tests', () => {
           genre_id: presenter.id,
           created_at: presenter.created_at,
           name: expected.name ?? genre.name,
-          categories_ids: expected.categories_ids
-            ? expected.categories_ids
-            : genre.categories_ids,
+          categories_id: expected.categories_id
+            ? expected.categories_id
+            : genre.categories_id,
           is_active:
-            expected.is_active || !expected.is_active
+            expected.is_active === true || expected.is_active === false
               ? expected.is_active
               : genre.is_active,
         });
         const categoriesOfGenre = relations.categories.filter((c) =>
-          genreUpdated!.categories_ids.has(c.category_id.id),
+          genreUpdated!.categories_id.has(c.category_id.id),
         );
 
         const expectedPresenter = GenresController.serialize(
@@ -131,8 +128,8 @@ describe('GenresController Integration Tests', () => {
         expectedPresenter.categories = expect.arrayContaining(
           expectedPresenter.categories,
         );
-        expectedPresenter.categories_ids = expect.arrayContaining(
-          expectedPresenter.categories_ids,
+        expectedPresenter.categories_id = expect.arrayContaining(
+          expectedPresenter.categories_id,
         );
         expect(presenter).toEqual(expectedPresenter);
       },
@@ -140,9 +137,10 @@ describe('GenresController Integration Tests', () => {
   });
 
   it('should delete a genre', async () => {
-    const category = CategoryFakeBuilder.aCategory().build();
+    const category = Category.fake().aCategory().build();
     await categoryRepo.insert(category);
-    const genre = GenreFakeBuilder.aGenre()
+    const genre = Genre.fake()
+      .aGenre()
       .addCategoryId(category.category_id)
       .build();
     await genreRepo.insert(genre);
@@ -152,9 +150,10 @@ describe('GenresController Integration Tests', () => {
   });
 
   it('should get a genre', async () => {
-    const category = CategoryFakeBuilder.aCategory().build();
+    const category = Category.fake().aCategory().build();
     await categoryRepo.insert(category);
-    const genre = GenreFakeBuilder.aGenre()
+    const genre = Genre.fake()
+      .aGenre()
       .addCategoryId(category.category_id)
       .build();
     await genreRepo.insert(genre);
@@ -168,8 +167,8 @@ describe('GenresController Integration Tests', () => {
         created_at: category.created_at,
       },
     ]);
-    expect(presenter.categories_ids).toEqual(
-      expect.arrayContaining(Array.from(genre.categories_ids.keys())),
+    expect(presenter.categories_id).toEqual(
+      expect.arrayContaining(Array.from(genre.categories_id.keys())),
     );
     expect(presenter.created_at).toStrictEqual(genre.created_at);
   });
@@ -195,10 +194,10 @@ describe('GenresController Integration Tests', () => {
             items: entities.map((e) => ({
               ...e.toJSON(),
               id: e.genre_id.id,
-              categories_ids: expect.arrayContaining(
-                Array.from(e.categories_ids.keys()),
+              categories_id: expect.arrayContaining(
+                Array.from(e.categories_id.keys()),
               ),
-              categories: Array.from(e.categories_ids.keys()).map((id) => ({
+              categories: Array.from(e.categories_id.keys()).map((id) => ({
                 id: relations.categories.get(id)!.category_id.id,
                 name: relations.categories.get(id)!.name,
                 created_at: relations.categories.get(id)!.created_at,
@@ -235,10 +234,10 @@ describe('GenresController Integration Tests', () => {
             items: entities.map((e) => ({
               ...e.toJSON(),
               id: e.genre_id.id,
-              categories_ids: expect.arrayContaining(
-                Array.from(e.categories_ids.keys()),
+              categories_id: expect.arrayContaining(
+                Array.from(e.categories_id.keys()),
               ),
-              categories: Array.from(e.categories_ids.keys()).map((id) => ({
+              categories: Array.from(e.categories_id.keys()).map((id) => ({
                 id: relations.categories.get(id)!.category_id.id,
                 name: relations.categories.get(id)!.name,
                 created_at: relations.categories.get(id)!.created_at,

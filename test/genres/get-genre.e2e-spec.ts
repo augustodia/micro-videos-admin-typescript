@@ -1,15 +1,15 @@
 import request from 'supertest';
 import { instanceToPlain } from 'class-transformer';
 import { IGenreRepository } from '../../src/core/genre/domain/genre.repository';
+import { Genre } from '../../src/core/genre/domain/genre.aggregate';
+import { startApp } from '../../src/nest-modules/shared-module/testing/helpers';
 import { GENRES_PROVIDERS } from '../../src/nest-modules/genres-module/genres.providers';
 import { GenresController } from '../../src/nest-modules/genres-module/genres.controller';
 import { GetGenreFixture } from '../../src/nest-modules/genres-module/testing/genre-fixture';
 import { ICategoryRepository } from '../../src/core/category/domain/category.repository';
+import { CATEGORY_PROVIDERS } from '../../src/nest-modules/categories-module/categories.providers';
+import { Category } from '../../src/core/category/domain/category.aggregate';
 import { GenreOutputMapper } from '../../src/core/genre/application/use-cases/common/genre-output';
-import { startApp } from '../../src/nest-modules/shared/testing/helpers';
-import { CATEGORY_PROVIDERS } from '../../src/nest-modules/categories/categories.providers';
-import { CategoryFakeBuilder } from '../../src/core/category/domain/category-fake.builder';
-import { GenreFakeBuilder } from '../../src/core/genre/domain/genre-fake.builder';
 
 describe('GenresController (e2e)', () => {
   const nestApp = startApp();
@@ -50,9 +50,10 @@ describe('GenresController (e2e)', () => {
       const categoryRepo = nestApp.app.get<ICategoryRepository>(
         CATEGORY_PROVIDERS.REPOSITORIES.CATEGORY_REPOSITORY.provide,
       );
-      const categories = CategoryFakeBuilder.theCategories(3).build();
+      const categories = Category.fake().theCategories(3).build();
       await categoryRepo.bulkInsert(categories);
-      const genre = GenreFakeBuilder.aGenre()
+      const genre = Genre.fake()
+        .aGenre()
         .addCategoryId(categories[0].category_id)
         .addCategoryId(categories[1].category_id)
         .addCategoryId(categories[2].category_id)
@@ -70,8 +71,8 @@ describe('GenresController (e2e)', () => {
         GenreOutputMapper.toOutput(genre, categories),
       );
       const serialized = instanceToPlain(presenter);
-      serialized.categories_ids = expect.arrayContaining(
-        serialized.categories_ids,
+      serialized.categories_id = expect.arrayContaining(
+        serialized.categories_id,
       );
       serialized.categories = expect.arrayContaining(
         serialized.categories.map((category) => ({

@@ -1,11 +1,11 @@
 import { Transform, Type } from 'class-transformer';
 
+import { CollectionPresenter } from '../shared-module/collection.presenter';
 import { ListGenresOutput } from '../../core/genre/application/use-cases/list-genres/list-genres.use-case';
 import {
   GenreCategoryOutput,
   GenreOutput,
 } from '../../core/genre/application/use-cases/common/genre-output';
-import { CollectionPresenter } from '../shared/collection.presenter';
 
 export class GenreCategoryPresenter {
   id: string;
@@ -25,7 +25,7 @@ export class GenreCategoryPresenter {
 export class GenrePresenter {
   id: string;
   name: string;
-  categories_ids: string[];
+  categories_id: string[];
   @Type(() => GenreCategoryPresenter)
   categories: GenreCategoryPresenter[];
   is_active: boolean;
@@ -37,7 +37,7 @@ export class GenrePresenter {
   constructor(output: GenreOutput) {
     this.id = output.id;
     this.name = output.name;
-    this.categories_ids = output.categories_ids;
+    this.categories_id = output.categories_id;
     this.categories = output.categories.map((item) => {
       return new GenreCategoryPresenter(item);
     });

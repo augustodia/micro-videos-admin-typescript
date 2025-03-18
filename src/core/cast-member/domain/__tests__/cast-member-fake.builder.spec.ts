@@ -1,15 +1,14 @@
-import { CastMemberFakeBuilder } from './../cast-member-fake.builder';
 import { Chance } from 'chance';
+import { CastMemberFakeBuilder } from '../cast-member-fake.builder';
+import { CastMemberType, CastMemberTypes } from '../cast-member-type.vo';
+import { CastMemberId } from '../cast-member.aggregate';
 
-import { Uuid } from '../../../shared/domain/value-objects/uuid.vo';
-import { CastMemberType } from '../cast-member-type';
-
-describe('CategoryFakerBuilder Unit Tests', () => {
+describe('CastMemberFakerBuilder Unit Tests', () => {
   describe('cast_member_id prop', () => {
-    const faker = CastMemberFakeBuilder.aCastMember();
+    const faker = CastMemberFakeBuilder.anActor();
 
     test('should throw error when any with methods has called', () => {
-      expect(() => faker.cast_member_id).toThrow(
+      expect(() => faker.cast_member_id).toThrowError(
         new Error(
           "Property cast_member_id not have a factory, use 'with' methods",
         ),
@@ -20,29 +19,29 @@ describe('CategoryFakerBuilder Unit Tests', () => {
       expect(faker['_cast_member_id']).toBeUndefined();
     });
 
-    test('withUuid', () => {
-      const cast_member_id = new Uuid();
-      const $this = faker.withUuid(cast_member_id);
+    test('withCastMemberId', () => {
+      const cast_member_id = new CastMemberId();
+      const $this = faker.withCastMemberId(cast_member_id);
       expect($this).toBeInstanceOf(CastMemberFakeBuilder);
       expect(faker['_cast_member_id']).toBe(cast_member_id);
 
-      faker.withUuid(() => cast_member_id);
+      faker.withCastMemberId(() => cast_member_id);
       //@ts-expect-error _cast_member_id is a callable
       expect(faker['_cast_member_id']()).toBe(cast_member_id);
 
       expect(faker.cast_member_id).toBe(cast_member_id);
     });
 
-    test('should assign correct castMember IDs when multiple castMembers are created', () => {
-      let mockFactory = jest.fn(() => new Uuid());
-      faker.withUuid(mockFactory);
+    test('should pass index to cast_member_id factory', () => {
+      let mockFactory = jest.fn(() => new CastMemberId());
+      faker.withCastMemberId(mockFactory);
       faker.build();
       expect(mockFactory).toHaveBeenCalledTimes(1);
 
-      const castMemberId = new Uuid();
+      const castMemberId = new CastMemberId();
       mockFactory = jest.fn(() => castMemberId);
       const fakerMany = CastMemberFakeBuilder.theCastMembers(2);
-      fakerMany.withUuid(mockFactory);
+      fakerMany.withCastMemberId(mockFactory);
       fakerMany.build();
 
       expect(mockFactory).toHaveBeenCalledTimes(2);
@@ -52,7 +51,7 @@ describe('CategoryFakerBuilder Unit Tests', () => {
   });
 
   describe('name prop', () => {
-    const faker = CastMemberFakeBuilder.aCastMember();
+    const faker = CastMemberFakeBuilder.anActor();
     test('should be a function', () => {
       expect(typeof faker['_name']).toBe('function');
     });
@@ -104,38 +103,31 @@ describe('CategoryFakerBuilder Unit Tests', () => {
   });
 
   describe('type prop', () => {
-    const faker = CastMemberFakeBuilder.aCastMember();
-    test('should be a function', () => {
-      expect(typeof faker['_type']).toBe('function');
-    });
-
-    test('should call the pickone method', () => {
-      const chance = Chance();
-      const spyParagraphMethod = jest.spyOn(chance, 'pickone');
-      faker['chance'] = chance;
-      faker.build();
-      expect(spyParagraphMethod).toHaveBeenCalled();
+    const faker = CastMemberFakeBuilder.anActor();
+    it('should be a CastMemberType', () => {
+      expect(faker['_type']).toBeInstanceOf(CastMemberType);
     });
 
     test('withType', () => {
-      const $this = faker.withType(CastMemberType.DIRECTOR);
+      const director = CastMemberType.createADirector();
+      const $this = faker.withType(director);
       expect($this).toBeInstanceOf(CastMemberFakeBuilder);
-      expect(faker['_type']).toBe(CastMemberType.DIRECTOR);
+      expect(faker.type).toEqual(director);
 
-      faker.withType(() => CastMemberType.DIRECTOR);
-      //@ts-expect-error type is callable
-      expect(faker['_type']()).toBe(CastMemberType.DIRECTOR);
-
-      expect(faker.type).toBe(CastMemberType.DIRECTOR);
+      const actor = CastMemberType.createAnActor();
+      faker.withType(() => actor);
+      //@ts-expect-error name is callable
+      expect(faker['_type']()).toEqual(actor);
+      expect(faker.type).toEqual(actor);
     });
   });
 
   describe('created_at prop', () => {
-    const faker = CastMemberFakeBuilder.aCastMember();
+    const faker = CastMemberFakeBuilder.anActor();
 
     test('should throw error when any with methods has called', () => {
-      const fakerCategory = CastMemberFakeBuilder.aCastMember();
-      expect(() => fakerCategory.created_at).toThrow(
+      const fakerCastMember = CastMemberFakeBuilder.anActor();
+      expect(() => fakerCastMember.created_at).toThrowError(
         new Error("Property created_at not have a factory, use 'with' methods"),
       );
     });
@@ -160,65 +152,65 @@ describe('CategoryFakerBuilder Unit Tests', () => {
       const date = new Date();
       faker.withCreatedAt((index) => new Date(date.getTime() + index + 2));
       const castMember = faker.build();
-      expect(castMember.created_at?.getTime()).toBe(date.getTime() + 2);
+      expect(castMember.created_at.getTime()).toBe(date.getTime() + 2);
 
       const fakerMany = CastMemberFakeBuilder.theCastMembers(2);
       fakerMany.withCreatedAt((index) => new Date(date.getTime() + index + 2));
       const castMembers = fakerMany.build();
 
-      expect(castMembers[0].created_at?.getTime()).toBe(date.getTime() + 2);
-      expect(castMembers[1].created_at?.getTime()).toBe(date.getTime() + 3);
+      expect(castMembers[0].created_at.getTime()).toBe(date.getTime() + 2);
+      expect(castMembers[1].created_at.getTime()).toBe(date.getTime() + 3);
     });
   });
 
-  test('should create a castMember', () => {
-    const faker = CastMemberFakeBuilder.aCastMember();
+  test('should create a cast member', () => {
+    const faker = CastMemberFakeBuilder.anActor();
     let castMember = faker.build();
 
-    expect(castMember.cast_member_id).toBeInstanceOf(Uuid);
+    expect(castMember.cast_member_id).toBeInstanceOf(CastMemberId);
     expect(typeof castMember.name === 'string').toBeTruthy();
-    expect(typeof castMember.type === 'number').toBeTruthy();
+    expect(castMember.type.type).toBe(CastMemberTypes.ACTOR);
     expect(castMember.created_at).toBeInstanceOf(Date);
 
     const created_at = new Date();
-    const cast_member_id = new Uuid();
+    const cast_member_id = new CastMemberId();
     castMember = faker
-      .withUuid(cast_member_id)
+      .withCastMemberId(cast_member_id)
       .withName('name test')
-      .withType(CastMemberType.DIRECTOR)
+      .withType(CastMemberType.createADirector())
       .withCreatedAt(created_at)
       .build();
 
     expect(castMember.cast_member_id.id).toBe(cast_member_id.id);
     expect(castMember.name).toBe('name test');
-    expect(castMember.type).toBe(CastMemberType.DIRECTOR);
+    expect(castMember.type.type).toBe(CastMemberTypes.DIRECTOR);
     expect(castMember.created_at).toBe(created_at);
   });
 
-  test('should create many castMembers', () => {
+  test('should create many categories', () => {
     const faker = CastMemberFakeBuilder.theCastMembers(2);
     let castMembers = faker.build();
 
     castMembers.forEach((castMember) => {
-      expect(castMember.cast_member_id).toBeInstanceOf(Uuid);
+      expect(castMember.cast_member_id).toBeInstanceOf(CastMemberId);
       expect(typeof castMember.name === 'string').toBeTruthy();
-      expect(typeof castMember.type === 'number').toBeTruthy();
+      expect(castMember.type.type).toBe(CastMemberTypes.ACTOR);
       expect(castMember.created_at).toBeInstanceOf(Date);
     });
 
     const created_at = new Date();
-    const cast_member_id = new Uuid();
+    const cast_member_id = new CastMemberId();
     castMembers = faker
-      .withUuid(cast_member_id)
+      .withCastMemberId(cast_member_id)
       .withName('name test')
-      .withType(CastMemberType.ACTOR)
+      .withType(CastMemberType.createADirector())
       .withCreatedAt(created_at)
       .build();
 
     castMembers.forEach((castMember) => {
       expect(castMember.cast_member_id.id).toBe(cast_member_id.id);
       expect(castMember.name).toBe('name test');
-      expect(castMember.type).toBe(CastMemberType.ACTOR);
+      expect(castMember.type.type).toBe(CastMemberTypes.DIRECTOR);
       expect(castMember.created_at).toBe(created_at);
     });
   });

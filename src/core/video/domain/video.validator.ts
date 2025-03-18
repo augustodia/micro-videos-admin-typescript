@@ -1,7 +1,7 @@
 import { MaxLength } from 'class-validator';
+import { ClassValidatorFields } from '../../shared/domain/validators/class-validator-fields';
 import { Video } from './video.aggregate';
 import { Notification } from '../../shared/domain/validators/notification';
-import { ClassValidatorFields } from '@core/shared/domain/validators/class-validator-field';
 
 export class VideoRules {
   @MaxLength(255, { groups: ['title'] })

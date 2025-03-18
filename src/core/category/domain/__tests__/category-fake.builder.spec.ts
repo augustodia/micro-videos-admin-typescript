@@ -1,14 +1,13 @@
 import { Chance } from 'chance';
-
-import { Uuid } from '../../../shared/domain/value-objects/uuid.vo';
 import { CategoryFakeBuilder } from '../category-fake.builder';
+import { CategoryId } from '../category.aggregate';
 
 describe('CategoryFakerBuilder Unit Tests', () => {
   describe('category_id prop', () => {
     const faker = CategoryFakeBuilder.aCategory();
 
     test('should throw error when any with methods has called', () => {
-      expect(() => faker.category_id).toThrow(
+      expect(() => faker.category_id).toThrowError(
         new Error(
           "Property category_id not have a factory, use 'with' methods",
         ),
@@ -19,29 +18,30 @@ describe('CategoryFakerBuilder Unit Tests', () => {
       expect(faker['_category_id']).toBeUndefined();
     });
 
-    test('withUuid', () => {
-      const category_id = new Uuid();
-      const $this = faker.withUuid(category_id);
+    test('withCategoryId', () => {
+      const category_id = new CategoryId();
+      const $this = faker.withCategoryId(category_id);
       expect($this).toBeInstanceOf(CategoryFakeBuilder);
       expect(faker['_category_id']).toBe(category_id);
 
-      faker.withUuid(() => category_id);
+      faker.withCategoryId(() => category_id);
       //@ts-expect-error _category_id is a callable
       expect(faker['_category_id']()).toBe(category_id);
 
       expect(faker.category_id).toBe(category_id);
     });
 
-    test('should assign correct category IDs when multiple categories are created', () => {
-      let mockFactory = jest.fn(() => new Uuid());
-      faker.withUuid(mockFactory);
+    //TODO - melhorar este nome
+    test('should pass index to category_id factory', () => {
+      let mockFactory = jest.fn(() => new CategoryId());
+      faker.withCategoryId(mockFactory);
       faker.build();
       expect(mockFactory).toHaveBeenCalledTimes(1);
 
-      const categoryId = new Uuid();
+      const categoryId = new CategoryId();
       mockFactory = jest.fn(() => categoryId);
       const fakerMany = CategoryFakeBuilder.theCategories(2);
-      fakerMany.withUuid(mockFactory);
+      fakerMany.withCategoryId(mockFactory);
       fakerMany.build();
 
       expect(mockFactory).toHaveBeenCalledTimes(2);
@@ -168,7 +168,7 @@ describe('CategoryFakerBuilder Unit Tests', () => {
 
     test('should throw error when any with methods has called', () => {
       const fakerCategory = CategoryFakeBuilder.aCategory();
-      expect(() => fakerCategory.created_at).toThrow(
+      expect(() => fakerCategory.created_at).toThrowError(
         new Error("Property created_at not have a factory, use 'with' methods"),
       );
     });
@@ -193,14 +193,14 @@ describe('CategoryFakerBuilder Unit Tests', () => {
       const date = new Date();
       faker.withCreatedAt((index) => new Date(date.getTime() + index + 2));
       const category = faker.build();
-      expect(category.created_at?.getTime()).toBe(date.getTime() + 2);
+      expect(category.created_at.getTime()).toBe(date.getTime() + 2);
 
       const fakerMany = CategoryFakeBuilder.theCategories(2);
       fakerMany.withCreatedAt((index) => new Date(date.getTime() + index + 2));
       const categories = fakerMany.build();
 
-      expect(categories[0].created_at?.getTime()).toBe(date.getTime() + 2);
-      expect(categories[1].created_at?.getTime()).toBe(date.getTime() + 3);
+      expect(categories[0].created_at.getTime()).toBe(date.getTime() + 2);
+      expect(categories[1].created_at.getTime()).toBe(date.getTime() + 3);
     });
   });
 
@@ -208,16 +208,16 @@ describe('CategoryFakerBuilder Unit Tests', () => {
     const faker = CategoryFakeBuilder.aCategory();
     let category = faker.build();
 
-    expect(category.category_id).toBeInstanceOf(Uuid);
+    expect(category.category_id).toBeInstanceOf(CategoryId);
     expect(typeof category.name === 'string').toBeTruthy();
     expect(typeof category.description === 'string').toBeTruthy();
     expect(category.is_active).toBe(true);
     expect(category.created_at).toBeInstanceOf(Date);
 
     const created_at = new Date();
-    const category_id = new Uuid();
+    const category_id = new CategoryId();
     category = faker
-      .withUuid(category_id)
+      .withCategoryId(category_id)
       .withName('name test')
       .withDescription('description test')
       .deactivate()
@@ -236,7 +236,7 @@ describe('CategoryFakerBuilder Unit Tests', () => {
     let categories = faker.build();
 
     categories.forEach((category) => {
-      expect(category.category_id).toBeInstanceOf(Uuid);
+      expect(category.category_id).toBeInstanceOf(CategoryId);
       expect(typeof category.name === 'string').toBeTruthy();
       expect(typeof category.description === 'string').toBeTruthy();
       expect(category.is_active).toBe(true);
@@ -244,9 +244,9 @@ describe('CategoryFakerBuilder Unit Tests', () => {
     });
 
     const created_at = new Date();
-    const category_id = new Uuid();
+    const category_id = new CategoryId();
     categories = faker
-      .withUuid(category_id)
+      .withCategoryId(category_id)
       .withName('name test')
       .withDescription('description test')
       .deactivate()

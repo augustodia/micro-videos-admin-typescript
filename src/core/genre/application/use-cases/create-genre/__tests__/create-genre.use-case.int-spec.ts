@@ -1,6 +1,8 @@
 import { CreateGenreUseCase } from '../create-genre.use-case';
 import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
 import { Genre, GenreId } from '../../../../domain/genre.aggregate';
+import { UnitOfWorkSequelize } from '../../../../../shared/infra/db/sequelize/unit-of-work-sequelize';
+import { Category } from '../../../../../category/domain/category.aggregate';
 import { DatabaseError } from 'sequelize';
 import { GenreSequelizeRepository } from '../../../../infra/db/sequelize/genre-sequelize.repository';
 import { CategorySequelizeRepository } from '../../../../../category/infra/db/sequelize/category-sequelize.repository';
@@ -10,9 +12,6 @@ import {
   GenreModel,
 } from '../../../../infra/db/sequelize/genre-model';
 import { CategoryModel } from '../../../../../category/infra/db/sequelize/category.model';
-import { GenreFakeBuilder } from '../../../../domain/genre-fake.builder';
-import { CategoryFakeBuilder } from '../../../../../category/domain/category-fake.builder';
-import { UnitOfWorkSequelize } from '../../../../../shared/infra/db/sequelize/unit-of-work.sequelize';
 
 describe('CreateGenreUseCase Integration Tests', () => {
   let uow: UnitOfWorkSequelize;
@@ -40,13 +39,13 @@ describe('CreateGenreUseCase Integration Tests', () => {
   });
 
   it('should create a genre', async () => {
-    const categories = CategoryFakeBuilder.theCategories(2).build();
+    const categories = Category.fake().theCategories(2).build();
     await categoryRepo.bulkInsert(categories);
     const categoriesId = categories.map((c) => c.category_id.id);
 
     let output = await useCase.execute({
       name: 'test genre',
-      categories_ids: categoriesId,
+      categories_id: categoriesId,
     });
 
     let entity = await genreRepo.findById(new GenreId(output.id));
@@ -60,14 +59,14 @@ describe('CreateGenreUseCase Integration Tests', () => {
           created_at: e.created_at,
         })),
       ),
-      categories_ids: expect.arrayContaining(categoriesId),
+      categories_id: expect.arrayContaining(categoriesId),
       is_active: true,
       created_at: entity!.created_at,
     });
 
     output = await useCase.execute({
       name: 'test genre',
-      categories_ids: [categories[0].category_id.id],
+      categories_id: [categories[0].category_id.id],
       is_active: true,
     });
 
@@ -82,18 +81,18 @@ describe('CreateGenreUseCase Integration Tests', () => {
           created_at: e.created_at,
         })),
       ),
-      categories_ids: expect.arrayContaining([categories[0].category_id.id]),
+      categories_id: expect.arrayContaining([categories[0].category_id.id]),
       is_active: true,
       created_at: entity!.created_at,
     });
   });
 
   it('rollback transaction', async () => {
-    const categories = CategoryFakeBuilder.theCategories(2).build();
+    const categories = Category.fake().theCategories(2).build();
     await categoryRepo.bulkInsert(categories);
     const categoriesId = categories.map((c) => c.category_id.id);
 
-    const genre = GenreFakeBuilder.aGenre().build();
+    const genre = Genre.fake().aGenre().build();
     genre.name = 't'.repeat(256);
 
     const mockCreate = jest
@@ -103,7 +102,7 @@ describe('CreateGenreUseCase Integration Tests', () => {
     await expect(
       useCase.execute({
         name: 'test genre',
-        categories_ids: categoriesId,
+        categories_id: categoriesId,
       }),
     ).rejects.toThrow(DatabaseError);
 

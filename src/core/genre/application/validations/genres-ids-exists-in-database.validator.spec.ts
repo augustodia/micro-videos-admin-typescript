@@ -1,5 +1,4 @@
 import { NotFoundError } from '../../../shared/domain/errors/not-found.error';
-import { GenreFakeBuilder } from '../../domain/genre-fake.builder';
 import { Genre, GenreId } from '../../domain/genre.aggregate';
 import { GenreInMemoryRepository } from '../../infra/db/in-memory/genre-in-memory.repository';
 import { GenresIdExistsInDatabaseValidator } from './genres-ids-exists-in-database.validator';
@@ -28,7 +27,7 @@ describe('GenresIdExistsInDatabaseValidator Unit Tests', () => {
 
     expect(spyExistsById).toHaveBeenCalledTimes(1);
 
-    const genre1 = GenreFakeBuilder.aGenre().build();
+    const genre1 = Genre.fake().aGenre().build();
     await genreRepo.insert(genre1);
 
     [castMembersId, errorsGenresId] = await validator.validate([
@@ -43,8 +42,8 @@ describe('GenresIdExistsInDatabaseValidator Unit Tests', () => {
   });
 
   it('should return a list of categories id', async () => {
-    const genreId1 = GenreFakeBuilder.aGenre().build();
-    const castMember2 = GenreFakeBuilder.aGenre().build();
+    const genreId1 = Genre.fake().aGenre().build();
+    const castMember2 = Genre.fake().aGenre().build();
     await genreRepo.bulkInsert([genreId1, castMember2]);
     const [castMembersId, errorsGenresId] = await validator.validate([
       genreId1.genre_id.id,

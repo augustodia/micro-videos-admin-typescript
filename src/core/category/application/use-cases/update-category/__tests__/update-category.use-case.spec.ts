@@ -1,9 +1,6 @@
 import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
-import {
-  InvalidUuidError,
-  Uuid,
-} from '../../../../../shared/domain/value-objects/uuid.vo';
-import { Category } from '../../../../domain/category.aggregate';
+import { InvalidUuidError } from '../../../../../shared/domain/value-objects/uuid.vo';
+import { Category, CategoryId } from '../../../../domain/category.aggregate';
 import { CategoryInMemoryRepository } from '../../../../infra/db/in-memory/category-in-memory.repository';
 import { UpdateCategoryUseCase } from '../update-category.use-case';
 
@@ -16,6 +13,18 @@ describe('UpdateCategoryUseCase Unit Tests', () => {
     useCase = new UpdateCategoryUseCase(repository);
   });
 
+  it('should throws error when entity not found', async () => {
+    await expect(() =>
+      useCase.execute({ id: 'fake id', name: 'fake' }),
+    ).rejects.toThrow(new InvalidUuidError());
+
+    const categoryId = new CategoryId();
+
+    await expect(() =>
+      useCase.execute({ id: categoryId.id, name: 'fake' }),
+    ).rejects.toThrow(new NotFoundError(categoryId.id, Category));
+  });
+
   it('should throw an error when aggregate is not valid', async () => {
     const aggregate = new Category({ name: 'Movie' });
     repository.items = [aggregate];
@@ -24,19 +33,7 @@ describe('UpdateCategoryUseCase Unit Tests', () => {
         id: aggregate.category_id.id,
         name: 't'.repeat(256),
       }),
-    ).rejects.toThrow('Entity Validation Error');
-  });
-
-  it('should throws error when entity not found', async () => {
-    await expect(() =>
-      useCase.execute({ id: 'fake id', name: 'fake' }),
-    ).rejects.toThrow(new InvalidUuidError('fake id'));
-
-    const uuid = new Uuid();
-
-    await expect(() =>
-      useCase.execute({ id: uuid.id, name: 'fake' }),
-    ).rejects.toThrow(new NotFoundError(uuid.id, Category));
+    ).rejects.toThrowError('Entity Validation Error');
   });
 
   it('should update a category', async () => {
@@ -165,7 +162,6 @@ describe('UpdateCategoryUseCase Unit Tests', () => {
         ...('description' in i.input && { description: i.input.description }),
         ...('is_active' in i.input && { is_active: i.input.is_active }),
       });
-
       expect(output).toStrictEqual({
         id: entity.category_id.id,
         name: i.expected.name,

@@ -1,12 +1,12 @@
 import request from 'supertest';
-import { startApp } from '../../src/nest-modules/shared/testing/helpers';
-import { CAST_MEMBER_PROVIDERS } from '../../src/nest-modules/cast-members/cast-members.providers';
-import { CastMemberFakeBuilder } from '../../src/core/cast-member/domain/cast-member-fake.builder';
 import { ICastMemberRepository } from '../../src/core/cast-member/domain/cast-member.repository';
+import { CastMember } from '../../src/core/cast-member/domain/cast-member.aggregate';
+import { startApp } from '../../src/nest-modules/shared-module/testing/helpers';
+import { CAST_MEMBERS_PROVIDERS } from '../../src/nest-modules/cast-members-module/cast-members.providers';
 
 describe('CastMembersController (e2e)', () => {
   describe('/delete/:id (DELETE)', () => {
-    const appHelper = startApp();
+    const nestApp = startApp();
     describe('should a response error when id is invalid or not found', () => {
       const arrange = [
         {
@@ -29,21 +29,21 @@ describe('CastMembersController (e2e)', () => {
       ];
 
       test.each(arrange)('when id is $id', async ({ id, expected }) => {
-        return request(appHelper.app.getHttpServer())
+        return request(nestApp.app.getHttpServer())
           .delete(`/cast-members/${id}`)
           .expect(expected.statusCode)
           .expect(expected);
       });
     });
 
-    it('should delete a castMember response with status 204', async () => {
-      const castMemberRepo = appHelper.app.get<ICastMemberRepository>(
-        CAST_MEMBER_PROVIDERS.REPOSITORIES.CAST_MEMBER_REPOSITORY.provide,
+    it('should delete a cast member response with status 204', async () => {
+      const castMemberRepo = nestApp.app.get<ICastMemberRepository>(
+        CAST_MEMBERS_PROVIDERS.REPOSITORIES.CAST_MEMBER_REPOSITORY.provide,
       );
-      const castMember = CastMemberFakeBuilder.aCastMember().build();
+      const castMember = CastMember.fake().anActor().build();
       await castMemberRepo.insert(castMember);
 
-      await request(appHelper.app.getHttpServer())
+      await request(nestApp.app.getHttpServer())
         .delete(`/cast-members/${castMember.cast_member_id.id}`)
         .expect(204);
 

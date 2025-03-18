@@ -1,31 +1,34 @@
-import { AggregateRoot } from '@core/shared/domain/aggregate-root';
-import { Uuid } from '@core/shared/domain/value-objects/uuid.vo';
-import { IDomainEvent } from '@core/shared/domain/events/domain-event.interface';
-import { ValueObject } from '@core/shared/domain/value-object';
+import { AggregateRoot } from '../aggregate-root';
+import { IDomainEvent } from '../events/domain-event.interface';
+import { Uuid } from '../value-objects/uuid.vo';
 
 class StubEvent implements IDomainEvent {
-  aggregate_id: Uuid;
-  name: string;
-  event_version: number = 1;
   occurred_on: Date;
+  event_version: number = 1;
 
-  constructor(aggregate_id: Uuid, name: string) {
-    this.aggregate_id = aggregate_id;
+  constructor(
+    public aggregate_id: Uuid,
+    public name: string,
+  ) {
     this.occurred_on = new Date();
-    this.name = name;
+    this.name;
   }
 }
 
 class StubAggregateRoot extends AggregateRoot {
   aggregate_id: Uuid;
   name: string;
-  properties: any;
+  field1: string;
 
-  constructor(props: { name: string; id: Uuid }) {
+  constructor(name: string, id: Uuid) {
     super();
-    this.aggregate_id = props.id;
-    this.name = props.name;
+    this.aggregate_id = id;
+    this.name = name;
     this.registerHandler(StubEvent.name, this.onStubEvent.bind(this));
+  }
+
+  get entity_id() {
+    return this.aggregate_id;
   }
 
   operation() {
@@ -34,22 +37,23 @@ class StubAggregateRoot extends AggregateRoot {
   }
 
   onStubEvent(event: StubEvent) {
-    this.properties = { name: event.name }; // Mudança qualquer no agregado
+    this.field1 = event.name;
   }
 
-  get entity_id(): ValueObject {
-    return this.aggregate_id;
+  toJSON() {
+    return {
+      aggregate_id: this.aggregate_id,
+      name: this.name,
+      field1: this.field1,
+    };
   }
-
-  toJSON(): any {}
 }
 
-describe('Aggregate Root Unit Tests', () => {
-  test('dispatches events', () => {
+describe('AggregateRoot Unit Tests', () => {
+  test('dispatch events', () => {
     const id = new Uuid();
-    const aggregate = new StubAggregateRoot({ name: 'test name', id });
+    const aggregate = new StubAggregateRoot('test name', id);
     aggregate.operation();
-
-    expect(aggregate.properties).toEqual({ name: 'TEST NAME' });
+    expect(aggregate.field1).toBe('TEST NAME');
   });
 });

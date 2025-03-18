@@ -1,11 +1,11 @@
 import request from 'supertest';
 import { IGenreRepository } from '../../src/core/genre/domain/genre.repository';
+import { Genre } from '../../src/core/genre/domain/genre.aggregate';
+import { startApp } from '../../src/nest-modules/shared-module/testing/helpers';
 import { GENRES_PROVIDERS } from '../../src/nest-modules/genres-module/genres.providers';
 import { ICategoryRepository } from '../../src/core/category/domain/category.repository';
-import { startApp } from '../../src/nest-modules/shared/testing/helpers';
-import { CATEGORY_PROVIDERS } from '../../src/nest-modules/categories/categories.providers';
-import { CategoryFakeBuilder } from '../../src/core/category/domain/category-fake.builder';
-import { GenreFakeBuilder } from '../../src/core/genre/domain/genre-fake.builder';
+import { CATEGORY_PROVIDERS } from '../../src/nest-modules/categories-module/categories.providers';
+import { Category } from '../../src/core/category/domain/category.aggregate';
 
 describe('GenresController (e2e)', () => {
   describe('/delete/:id (DELETE)', () => {
@@ -46,9 +46,10 @@ describe('GenresController (e2e)', () => {
       const categoryRepo = nestApp.app.get<ICategoryRepository>(
         CATEGORY_PROVIDERS.REPOSITORIES.CATEGORY_REPOSITORY.provide,
       );
-      const category = CategoryFakeBuilder.aCategory().build();
+      const category = Category.fake().aCategory().build();
       await categoryRepo.insert(category);
-      const genre = GenreFakeBuilder.aGenre()
+      const genre = Genre.fake()
+        .aGenre()
         .addCategoryId(category.category_id)
         .build();
       await genreRepo.insert(genre);

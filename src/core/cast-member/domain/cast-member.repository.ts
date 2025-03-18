@@ -1,26 +1,24 @@
+import { Either } from '../../shared/domain/either';
 import { ISearchableRepository } from '../../shared/domain/repository/repository-interface';
 import {
-  SearchParams,
+  SearchParams as DefaultSearchParams,
   SearchParamsConstructorProps,
 } from '../../shared/domain/repository/search-params';
-import { SearchResult } from '../../shared/domain/repository/search-result';
+import { SearchResult as DefaultSearchResult } from '../../shared/domain/repository/search-result';
+import { SearchValidationError } from '../../shared/domain/validators/validation.error';
+import {
+  CastMemberType,
+  CastMemberTypes,
+  InvalidCastMemberTypeError,
+} from './cast-member-type.vo';
 import { CastMember, CastMemberId } from './cast-member.aggregate';
-import { CastMemberType } from './cast-member-type';
 
 export type CastMemberFilter = {
   name?: string | null;
   type?: CastMemberType | null;
 };
 
-export type CastMemberSearchParamsProps = {
-  page?: number;
-  per_page?: number;
-  filter?: CastMemberFilter;
-  sort?: string;
-  sort_dir?: 'asc' | 'desc';
-};
-
-export class CastMemberSearchParams extends SearchParams<CastMemberFilter> {
+export class CastMemberSearchParams extends DefaultSearchParams<CastMemberFilter> {
   private constructor(
     props: SearchParamsConstructorProps<CastMemberFilter> = {},
   ) {
@@ -29,34 +27,33 @@ export class CastMemberSearchParams extends SearchParams<CastMemberFilter> {
 
   static create(
     props: Omit<SearchParamsConstructorProps<CastMemberFilter>, 'filter'> & {
-      name?: string | null;
-      type?: CastMemberType | null;
+      filter?: {
+        name?: string | null;
+        type?: CastMemberTypes | null;
+      };
     } = {},
   ) {
-    const sortProps = CastMemberSearchParams.determineSortProps({
-      sort: props.sort,
-      sort_dir: props.sort_dir,
-    });
+    const [type, errorCastMemberType] = Either.of(props.filter?.type)
+      .map((type) => type || null)
+      .chain<CastMemberType | null, InvalidCastMemberTypeError>((type) =>
+        type ? CastMemberType.create(type) : Either.of(null),
+      )
+      .asArray();
+
+    if (errorCastMemberType) {
+      const error = new SearchValidationError([
+        { type: [errorCastMemberType.message] },
+      ]);
+      throw error;
+    }
 
     return new CastMemberSearchParams({
       ...props,
-      sort: sortProps.sort,
-      sort_dir: sortProps.sort_dir,
       filter: {
-        name: props.name,
-        type: props.type || null,
+        name: props.filter?.name,
+        type: type,
       },
     });
-  }
-
-  private static determineSortProps(
-    props?: SearchParamsConstructorProps<CastMemberFilter>,
-  ): CastMemberSearchParamsProps {
-    if (!props?.sort || (!props?.sort && !props?.sort_dir)) {
-      return { sort: 'created_at', sort_dir: 'desc' };
-    }
-
-    return { sort: props.sort, sort_dir: props.sort_dir ?? 'asc' };
   }
 
   get filter(): CastMemberFilter | null {
@@ -70,15 +67,15 @@ export class CastMemberSearchParams extends SearchParams<CastMemberFilter> {
         : value;
 
     const filter = {
-      ...(value?.name && { name: `${value.name}` }),
-      ...(_value?.type && { type: _value.type }),
+      ...(_value && _value.name && { name: `${_value?.name}` }),
+      ...(_value && _value.type && { type: _value.type }),
     };
 
     this._filter = Object.keys(filter).length === 0 ? null : filter;
   }
 }
 
-export class CastMemberSearchResult extends SearchResult<CastMember> {}
+export class CastMemberSearchResult extends DefaultSearchResult<CastMember> {}
 
 export interface ICastMemberRepository
   extends ISearchableRepository<

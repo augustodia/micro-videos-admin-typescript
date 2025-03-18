@@ -1,19 +1,23 @@
-import { IsEnum, IsOptional, validateSync } from 'class-validator';
-import { CastMemberType } from '../../../domain/cast-member-type';
-import { SortDirection } from '../../../../shared/domain/repository/search-params';
 import { SearchInput } from '../../../../shared/application/search-input';
-import { Transform } from 'class-transformer';
+import { SortDirection } from '../../../../shared/domain/repository/search-params';
+import { CastMemberTypes } from '../../../domain/cast-member-type.vo';
+import { IsInt, ValidateNested, validateSync } from 'class-validator';
 
-export class ListCastMembersInput implements SearchInput {
+export class ListCastMembersFilter {
+  name?: string | null;
+  @IsInt()
+  type?: CastMemberTypes | null;
+}
+
+export class ListCastMembersInput
+  implements SearchInput<ListCastMembersFilter>
+{
   page?: number;
   per_page?: number;
   sort?: string;
   sort_dir?: SortDirection;
-  name?: string | null;
-  @IsOptional()
-  @Transform(({ value }) => parseInt(value))
-  @IsEnum(CastMemberType)
-  type?: CastMemberType | null;
+  @ValidateNested()
+  filter?: ListCastMembersFilter;
 }
 
 export class ValidateListCastMembersInput {

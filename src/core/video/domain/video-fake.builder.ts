@@ -59,9 +59,10 @@ export class VideoFakeBuilder<TBuild = any> {
   private _genres_id: PropOrFactory<GenreId>[] = [];
   private _cast_members_id: PropOrFactory<CastMemberId>[] = [];
 
+  // auto generated in entity
   private _created_at: PropOrFactory<Date> | undefined = undefined;
 
-  private readonly countObjs: number;
+  private countObjs;
 
   static aVideoWithoutMedias() {
     return new VideoFakeBuilder<Video>()

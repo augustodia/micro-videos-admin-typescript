@@ -1,15 +1,16 @@
-import { instanceToPlain } from 'class-transformer';
 import request from 'supertest';
-import { startApp } from '../../src/nest-modules/shared/testing/helpers';
+import { instanceToPlain } from 'class-transformer';
 import { ICastMemberRepository } from '../../src/core/cast-member/domain/cast-member.repository';
-import { ListCastMembersFixture } from '../../src/nest-modules/cast-members/testing/fixture/cast-member.fixture';
-import { CAST_MEMBER_PROVIDERS } from '../../src/nest-modules/cast-members/cast-members.providers';
+import qs from 'qs';
+import { startApp } from '../../src/nest-modules/shared-module/testing/helpers';
+import { ListCastMembersFixture } from '../../src/nest-modules/cast-members-module/testing/cast-member-fixtures';
+import { CastMembersController } from '../../src/nest-modules/cast-members-module/cast-members.controller';
+import { CAST_MEMBERS_PROVIDERS } from '../../src/nest-modules/cast-members-module/cast-members.providers';
 import { CastMemberOutputMapper } from '../../src/core/cast-member/application/use-cases/common/cast-member-output';
-import { CastMembersController } from '../../src/nest-modules/cast-members/cast-members.controller';
 
 describe('CastMembersController (e2e)', () => {
   describe('/cast-members (GET)', () => {
-    describe('should return cast-members sorted by created_at when request query is empty', () => {
+    describe('should return cast members sorted by created_at when request query is empty', () => {
       let castMemberRepo: ICastMemberRepository;
       const nestApp = startApp();
       const { entitiesMap, arrange } =
@@ -17,7 +18,7 @@ describe('CastMembersController (e2e)', () => {
 
       beforeEach(async () => {
         castMemberRepo = nestApp.app.get<ICastMemberRepository>(
-          CAST_MEMBER_PROVIDERS.REPOSITORIES.CAST_MEMBER_REPOSITORY.provide,
+          CAST_MEMBERS_PROVIDERS.REPOSITORIES.CAST_MEMBER_REPOSITORY.provide,
         );
         await castMemberRepo.bulkInsert(Object.values(entitiesMap));
       });
@@ -43,14 +44,14 @@ describe('CastMembersController (e2e)', () => {
       );
     });
 
-    describe('should return cast-members using paginate, filter and sort', () => {
+    describe('should return cast members using paginate, filter and sort', () => {
       let castMemberRepo: ICastMemberRepository;
       const nestApp = startApp();
       const { entitiesMap, arrange } = ListCastMembersFixture.arrangeUnsorted();
 
       beforeEach(async () => {
         castMemberRepo = nestApp.app.get<ICastMemberRepository>(
-          CAST_MEMBER_PROVIDERS.REPOSITORIES.CAST_MEMBER_REPOSITORY.provide,
+          CAST_MEMBERS_PROVIDERS.REPOSITORIES.CAST_MEMBER_REPOSITORY.provide,
         );
         await castMemberRepo.bulkInsert(Object.values(entitiesMap));
       });
@@ -58,7 +59,7 @@ describe('CastMembersController (e2e)', () => {
       test.each([arrange[0]])(
         'when query params is $send_data',
         async ({ send_data, expected }) => {
-          const queryParams = new URLSearchParams(send_data as any).toString();
+          const queryParams = qs.stringify(send_data as any);
           return request(nestApp.app.getHttpServer())
             .get(`/cast-members/?${queryParams}`)
             .expect(200)

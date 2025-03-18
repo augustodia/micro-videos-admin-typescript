@@ -26,19 +26,19 @@ import { GenreOutput } from '../../core/genre/application/use-cases/common/genre
 @Controller('genres')
 export class GenresController {
   @Inject(CreateGenreUseCase)
-  private readonly createUseCase: CreateGenreUseCase;
+  private createUseCase: CreateGenreUseCase;
 
   @Inject(UpdateGenreUseCase)
-  private readonly updateUseCase: UpdateGenreUseCase;
+  private updateUseCase: UpdateGenreUseCase;
 
   @Inject(DeleteGenreUseCase)
-  private readonly deleteUseCase: DeleteGenreUseCase;
+  private deleteUseCase: DeleteGenreUseCase;
 
   @Inject(GetGenreUseCase)
-  private readonly getUseCase: GetGenreUseCase;
+  private getUseCase: GetGenreUseCase;
 
   @Inject(ListGenresUseCase)
-  private readonly listUseCase: ListGenresUseCase;
+  private listUseCase: ListGenresUseCase;
 
   @Post()
   async create(@Body() createGenreDto: CreateGenreDto) {

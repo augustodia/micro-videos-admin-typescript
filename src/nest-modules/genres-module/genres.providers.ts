@@ -6,14 +6,13 @@ import { ListGenresUseCase } from '../../core/genre/application/use-cases/list-g
 import { GetGenreUseCase } from '../../core/genre/application/use-cases/get-genre/get-genre.use-case';
 import { DeleteGenreUseCase } from '../../core/genre/application/use-cases/delete-genre/delete-genre.use-case';
 import { IGenreRepository } from '../../core/genre/domain/genre.repository';
+import { UnitOfWorkSequelize } from '../../core/shared/infra/db/sequelize/unit-of-work-sequelize';
 import { IUnitOfWork } from '../../core/shared/domain/repository/unit-of-work.interface';
 import { ICategoryRepository } from '../../core/category/domain/category.repository';
+import { CATEGORY_PROVIDERS } from '../categories-module/categories.providers';
 import { GenreSequelizeRepository } from '../../core/genre/infra/db/sequelize/genre-sequelize.repository';
 import { GenreModel } from '../../core/genre/infra/db/sequelize/genre-model';
 import { CategoriesIdExistsInDatabaseValidator } from '../../core/category/application/validations/categories-ids-exists-in-database.validator';
-import { GenresIdExistsInDatabaseValidator } from '../../core/genre/application/validations/genres-ids-exists-in-database.validator';
-import { UnitOfWorkSequelize } from '../../core/shared/infra/db/sequelize/unit-of-work.sequelize';
-import { CATEGORY_PROVIDERS } from '../categories/categories.providers';
 
 export const REPOSITORIES = {
   GENRE_REPOSITORY: {
@@ -115,18 +114,7 @@ export const USE_CASES = {
   },
 };
 
-export const VALIDATIONS = {
-  GENRES_IDS_EXISTS_IN_DATABASE_VALIDATOR: {
-    provide: GenresIdExistsInDatabaseValidator,
-    useFactory: (genreRepo: IGenreRepository) => {
-      return new GenresIdExistsInDatabaseValidator(genreRepo);
-    },
-    inject: [REPOSITORIES.GENRE_REPOSITORY.provide],
-  },
-};
-
 export const GENRES_PROVIDERS = {
   REPOSITORIES,
   USE_CASES,
-  VALIDATIONS,
 };

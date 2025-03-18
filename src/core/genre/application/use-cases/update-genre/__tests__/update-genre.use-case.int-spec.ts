@@ -2,21 +2,20 @@ import {
   UpdateGenreOutput,
   UpdateGenreUseCase,
 } from '../update-genre.use-case';
-import { setupSequelize } from '@core/shared/infra/testing/helpers';
-import { GenreId } from '../../../../domain/genre.aggregate';
+import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
+import { Genre, GenreId } from '../../../../domain/genre.aggregate';
 
+import { UnitOfWorkSequelize } from '../../../../../shared/infra/db/sequelize/unit-of-work-sequelize';
+import { Category } from '../../../../../category/domain/category.aggregate';
 import { UpdateGenreInput } from '../update-genre.input';
 import { GenreSequelizeRepository } from '../../../../infra/db/sequelize/genre-sequelize.repository';
-import { CategorySequelizeRepository } from '@core/category/infra/db/sequelize/category-sequelize.repository';
-import { CategoriesIdExistsInDatabaseValidator } from '@core/category/application/validations/categories-ids-exists-in-database.validator';
+import { CategorySequelizeRepository } from '../../../../../category/infra/db/sequelize/category-sequelize.repository';
+import { CategoriesIdExistsInDatabaseValidator } from '../../../../../category/application/validations/categories-ids-exists-in-database.validator';
 import {
   GenreCategoryModel,
   GenreModel,
 } from '../../../../infra/db/sequelize/genre-model';
-import { CategoryModel } from '@core/category/infra/db/sequelize/category.model';
-import { UnitOfWorkSequelize } from '@core/shared/infra/db/sequelize/unit-of-work.sequelize';
-import { CategoryFakeBuilder } from '@core/category/domain/category-fake.builder';
-import { GenreFakeBuilder } from '@core/genre/domain/genre-fake.builder';
+import { CategoryModel } from '../../../../../category/infra/db/sequelize/category.model';
 
 describe('UpdateGenreUseCase Integration Tests', () => {
   let uow: UnitOfWorkSequelize;
@@ -44,9 +43,10 @@ describe('UpdateGenreUseCase Integration Tests', () => {
   });
 
   it('should update a genre', async () => {
-    const categories = CategoryFakeBuilder.theCategories(3).build();
+    const categories = Category.fake().theCategories(3).build();
     await categoryRepo.bulkInsert(categories);
-    const entity = GenreFakeBuilder.aGenre()
+    const entity = Genre.fake()
+      .aGenre()
       .addCategoryId(categories[1].category_id)
       .build();
     await genreRepo.insert(entity);
@@ -55,7 +55,7 @@ describe('UpdateGenreUseCase Integration Tests', () => {
       new UpdateGenreInput({
         id: entity.genre_id.id,
         name: 'test',
-        categories_ids: [categories[0].category_id.id],
+        categories_id: [categories[0].category_id.id],
       }),
     );
     expect(output).toStrictEqual({
@@ -68,7 +68,7 @@ describe('UpdateGenreUseCase Integration Tests', () => {
           created_at: e.created_at,
         })),
       ),
-      categories_ids: expect.arrayContaining([categories[0].category_id.id]),
+      categories_id: expect.arrayContaining([categories[0].category_id.id]),
       is_active: true,
       created_at: entity.created_at,
     });
@@ -82,7 +82,7 @@ describe('UpdateGenreUseCase Integration Tests', () => {
       {
         input: {
           id: entity.genre_id.id,
-          categories_ids: [
+          categories_id: [
             categories[1].category_id.id,
             categories[2].category_id.id,
           ],
@@ -98,7 +98,7 @@ describe('UpdateGenreUseCase Integration Tests', () => {
               created_at: e.created_at,
             })),
           ),
-          categories_ids: expect.arrayContaining([
+          categories_id: expect.arrayContaining([
             categories[1].category_id.id,
             categories[2].category_id.id,
           ]),
@@ -110,7 +110,7 @@ describe('UpdateGenreUseCase Integration Tests', () => {
         input: {
           id: entity.genre_id.id,
           name: 'test changed',
-          categories_ids: [
+          categories_id: [
             categories[1].category_id.id,
             categories[2].category_id.id,
           ],
@@ -126,7 +126,7 @@ describe('UpdateGenreUseCase Integration Tests', () => {
               created_at: e.created_at,
             })),
           ),
-          categories_ids: expect.arrayContaining([
+          categories_id: expect.arrayContaining([
             categories[1].category_id.id,
             categories[2].category_id.id,
           ]),
@@ -143,14 +143,14 @@ describe('UpdateGenreUseCase Integration Tests', () => {
         id: entity.genre_id.id,
         name: i.expected.name,
         categories: i.expected.categories,
-        categories_ids: i.expected.categories_ids,
+        categories_id: i.expected.categories_id,
         is_active: i.expected.is_active,
         created_at: i.expected.created_at,
       });
       expect(entityUpdated!.toJSON()).toStrictEqual({
         genre_id: entity.genre_id.id,
         name: i.expected.name,
-        categories_ids: i.expected.categories_ids,
+        categories_id: i.expected.categories_id,
         is_active: i.expected.is_active,
         created_at: i.expected.created_at,
       });
@@ -158,9 +158,10 @@ describe('UpdateGenreUseCase Integration Tests', () => {
   });
 
   it('rollback transaction', async () => {
-    const category = CategoryFakeBuilder.aCategory().build();
+    const category = Category.fake().aCategory().build();
     await categoryRepo.insert(category);
-    const entity = GenreFakeBuilder.aGenre()
+    const entity = Genre.fake()
+      .aGenre()
       .addCategoryId(category.category_id)
       .build();
     await genreRepo.insert(entity);
@@ -174,7 +175,7 @@ describe('UpdateGenreUseCase Integration Tests', () => {
         new UpdateGenreInput({
           id: entity.genre_id.id,
           name: 'test',
-          categories_ids: [category.category_id.id],
+          categories_id: [category.category_id.id],
         }),
       ),
     ).rejects.toThrow(new Error('Generic Error'));

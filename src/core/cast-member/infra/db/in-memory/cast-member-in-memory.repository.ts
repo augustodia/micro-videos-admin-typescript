@@ -1,20 +1,27 @@
-import { SortDirection } from '../../../../shared/domain/repository/search-params';
-import { Uuid } from '../../../../shared/domain/value-objects/uuid.vo';
 import { InMemorySearchableRepository } from '../../../../shared/infra/db/in-memory/in-memory.repository';
-import { CastMemberType } from '../../../domain/cast-member-type';
-import { CastMember } from '../../../domain/cast-member.aggregate';
-import { ICastMemberRepository } from '../../../domain/cast-member.repository';
-
-type CastMemberFilter = {
-  name?: string | null;
-  type?: CastMemberType | null;
-};
+import { SortDirection } from '../../../../shared/domain/repository/search-params';
+import {
+  CastMember,
+  CastMemberId,
+} from '../../../domain/cast-member.aggregate';
+import {
+  ICastMemberRepository,
+  CastMemberFilter,
+} from '../../../domain/cast-member.repository';
 
 export class CastMemberInMemoryRepository
-  extends InMemorySearchableRepository<CastMember, Uuid, CastMemberFilter>
+  extends InMemorySearchableRepository<
+    CastMember,
+    CastMemberId,
+    CastMemberFilter
+  >
   implements ICastMemberRepository
 {
-  sortableFields: (keyof CastMember)[] = ['name', 'type', 'created_at'];
+  sortableFields: string[] = ['name', 'created_at'];
+
+  getEntity(): new (...args: any[]) => CastMember {
+    return CastMember;
+  }
 
   protected async applyFilter(
     items: CastMember[],
@@ -24,36 +31,25 @@ export class CastMemberInMemoryRepository
       return items;
     }
 
-    return items.filter((item) => {
-      if (
-        filter.name &&
-        !item.name.toLocaleLowerCase().includes(filter.name.toLocaleLowerCase())
-      ) {
-        return false;
-      }
-
-      if (filter.type && item.type !== filter.type) {
-        return false;
-      }
-
-      return true;
+    return items.filter((i) => {
+      const containsName =
+        filter.name && i.name.toLowerCase().includes(filter.name.toLowerCase());
+      const hasType = filter.type && i.type.equals(filter.type);
+      return filter.name && filter.type
+        ? containsName && hasType
+        : filter.name
+        ? containsName
+        : hasType;
     });
   }
 
   protected applySort(
     items: CastMember[],
-    sort: keyof CastMember | null,
+    sort: string | null,
     sort_dir: SortDirection | null,
-    custom_getter?:
-      | ((sort: keyof CastMember, item: CastMember) => any)
-      | undefined,
   ): CastMember[] {
-    return sort
-      ? super.applySort(items, sort, sort_dir, custom_getter)
-      : super.applySort(items, 'created_at', 'desc', custom_getter);
-  }
-
-  getEntity(): new (...args: any[]) => CastMember {
-    return CastMember;
+    return !sort
+      ? super.applySort(items, 'created_at', 'desc')
+      : super.applySort(items, sort, sort_dir);
   }
 }

@@ -11,7 +11,7 @@ import {
 export type UpdateGenreInputConstructorProps = {
   id: string;
   name?: string;
-  categories_ids?: string[];
+  categories_id?: string[];
   is_active?: boolean;
 };
 
@@ -27,7 +27,7 @@ export class UpdateGenreInput {
   @IsUUID('4', { each: true })
   @IsArray()
   @IsOptional()
-  categories_ids?: string[];
+  categories_id?: string[];
 
   @IsBoolean()
   @IsOptional()
@@ -37,9 +37,9 @@ export class UpdateGenreInput {
     if (!props) return;
     this.id = props.id;
     props.name && (this.name = props.name);
-    props.categories_ids &&
-      props.categories_ids.length > 0 &&
-      (this.categories_ids = props.categories_ids);
+    props.categories_id &&
+      props.categories_id.length > 0 &&
+      (this.categories_id = props.categories_id);
     props.is_active !== null &&
       props.is_active !== undefined &&
       (this.is_active = props.is_active);

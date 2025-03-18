@@ -1,16 +1,15 @@
 import request from 'supertest';
 import { instanceToPlain } from 'class-transformer';
-import { GenreId } from '../../src/core/genre/domain/genre.aggregate';
+import { Genre, GenreId } from '../../src/core/genre/domain/genre.aggregate';
 import { IGenreRepository } from '../../src/core/genre/domain/genre.repository';
+import { startApp } from '../../src/nest-modules/shared-module/testing/helpers';
 import { UpdateGenreFixture } from '../../src/nest-modules/genres-module/testing/genre-fixture';
 import { GENRES_PROVIDERS } from '../../src/nest-modules/genres-module/genres.providers';
 import { GenresController } from '../../src/nest-modules/genres-module/genres.controller';
 import { ICategoryRepository } from '../../src/core/category/domain/category.repository';
+import { CATEGORY_PROVIDERS } from '../../src/nest-modules/categories-module/categories.providers';
+import { Category } from '../../src/core/category/domain/category.aggregate';
 import { GenreOutputMapper } from '../../src/core/genre/application/use-cases/common/genre-output';
-import { startApp } from '../../src/nest-modules/shared/testing/helpers';
-import { GenreFakeBuilder } from '../../src/core/genre/domain/genre-fake.builder';
-import { CATEGORY_PROVIDERS } from '../../src/nest-modules/categories/categories.providers';
-import { CategoryFakeBuilder } from '../../src/core/category/domain/category-fake.builder';
 
 describe('GenresController (e2e)', () => {
   const uuid = '9366b7dc-2d71-4799-b91c-c64adb205104';
@@ -18,7 +17,7 @@ describe('GenresController (e2e)', () => {
   describe('/genres/:id (PATCH)', () => {
     describe('should a response error when id is invalid or not found', () => {
       const nestApp = startApp();
-      const faker = GenreFakeBuilder.aGenre();
+      const faker = Genre.fake().aGenre();
       const arrange = [
         {
           id: '88ff2587-ce5a-4769-a8c6-1d63d29c5f7a',
@@ -89,9 +88,10 @@ describe('GenresController (e2e)', () => {
         );
       });
       test.each(arrange)('when body is $label', async ({ value }) => {
-        const category = CategoryFakeBuilder.aCategory().build();
+        const category = Category.fake().aCategory().build();
         await categoryRepo.insert(category);
-        const genre = GenreFakeBuilder.aGenre()
+        const genre = Genre.fake()
+          .aGenre()
           .addCategoryId(category.category_id)
           .build();
         await genreRepo.insert(genre);
@@ -119,9 +119,10 @@ describe('GenresController (e2e)', () => {
       test.each(arrange)(
         'when body is $send_data',
         async ({ send_data, expected, relations }) => {
-          const category = CategoryFakeBuilder.aCategory().build();
+          const category = Category.fake().aCategory().build();
           await categoryRepo.bulkInsert([category, ...relations.categories]);
-          const genreCreated = GenreFakeBuilder.aGenre()
+          const genreCreated = Genre.fake()
+            .aGenre()
             .addCategoryId(category.category_id)
             .build();
           await genreRepo.insert(genreCreated);

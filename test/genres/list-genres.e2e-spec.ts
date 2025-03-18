@@ -2,10 +2,10 @@ import request from 'supertest';
 import qs from 'qs';
 import { IGenreRepository } from '../../src/core/genre/domain/genre.repository';
 import { ICategoryRepository } from '../../src/core/category/domain/category.repository';
+import { startApp } from '../../src/nest-modules/shared-module/testing/helpers';
 import { ListGenresFixture } from '../../src/nest-modules/genres-module/testing/genre-fixture';
 import { GENRES_PROVIDERS } from '../../src/nest-modules/genres-module/genres.providers';
-import { startApp } from '../../src/nest-modules/shared/testing/helpers';
-import { CATEGORY_PROVIDERS } from '../../src/nest-modules/categories/categories.providers';
+import { CATEGORY_PROVIDERS } from '../../src/nest-modules/categories-module/categories.providers';
 
 describe('GenresController (e2e)', () => {
   describe('/genres (GET)', () => {
@@ -37,12 +37,12 @@ describe('GenresController (e2e)', () => {
             id: e.genre_id.id,
             name: e.name,
             is_active: e.is_active,
-            categories_ids: expect.arrayContaining(
-              Array.from(e.categories_ids.keys()),
+            categories_id: expect.arrayContaining(
+              Array.from(e.categories_id.keys()),
             ),
             categories: expect.arrayContaining(
               Array.from(relations.categories.values())
-                .filter((c) => e.categories_ids.has(c.category_id.id))
+                .filter((c) => e.categories_id.has(c.category_id.id))
                 .map((c) => ({
                   id: c.category_id.id,
                   name: c.name,
@@ -91,12 +91,12 @@ describe('GenresController (e2e)', () => {
             id: e.genre_id.id,
             name: e.name,
             is_active: e.is_active,
-            categories_ids: expect.arrayContaining(
-              Array.from(e.categories_ids.keys()),
+            categories_id: expect.arrayContaining(
+              Array.from(e.categories_id.keys()),
             ),
             categories: expect.arrayContaining(
               Array.from(relations.categories.values())
-                .filter((c) => e.categories_ids.has(c.category_id.id))
+                .filter((c) => e.categories_id.has(c.category_id.id))
                 .map((c) => ({
                   id: c.category_id.id,
                   name: c.name,

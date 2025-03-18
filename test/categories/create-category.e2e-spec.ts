@@ -1,12 +1,12 @@
-import { instanceToPlain } from 'class-transformer';
 import request from 'supertest';
-import { CategoryOutputMapper } from '../../src/core/category/application/use-cases/common/category-output';
+import { CreateCategoryFixture } from '../../src/nest-modules/categories-module/testing/category-fixture';
 import { ICategoryRepository } from '../../src/core/category/domain/category.repository';
+import { CATEGORY_PROVIDERS } from '../../src/nest-modules/categories-module/categories.providers';
+import { startApp } from '../../src/nest-modules/shared-module/testing/helpers';
 import { Uuid } from '../../src/core/shared/domain/value-objects/uuid.vo';
-import { CategoriesController } from '../../src/nest-modules/categories/categories.controller';
-import { CATEGORY_PROVIDERS } from '../../src/nest-modules/categories/categories.providers';
-import { CreateCategoryFixture } from '../../src/nest-modules/categories/testing/fixture/category.fixture';
-import { startApp } from '../../src/nest-modules/shared/testing/helpers';
+import { CategoriesController } from '../../src/nest-modules/categories-module/categories.controller';
+import { CategoryOutputMapper } from '../../src/core/category/application/use-cases/common/category-output';
+import { instanceToPlain } from 'class-transformer';
 
 describe('CategoriesController (e2e)', () => {
   const appHelper = startApp();
@@ -63,7 +63,6 @@ describe('CategoriesController (e2e)', () => {
             .expect(201);
 
           const keysInResponse = CreateCategoryFixture.keysInResponse;
-
           expect(Object.keys(res.body)).toStrictEqual(['data']);
           expect(Object.keys(res.body.data)).toStrictEqual(keysInResponse);
           const id = res.body.data.id;

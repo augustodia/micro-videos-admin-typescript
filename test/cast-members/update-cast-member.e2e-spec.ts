@@ -1,13 +1,13 @@
 import request from 'supertest';
 import { instanceToPlain } from 'class-transformer';
-import { startApp } from '../../src/nest-modules/shared/testing/helpers';
-import { CAST_MEMBER_PROVIDERS } from '../../src/nest-modules/cast-members/cast-members.providers';
-import { CastMemberFakeBuilder } from '../../src/core/cast-member/domain/cast-member-fake.builder';
-import { UpdateCastMemberFixture } from '../../src/nest-modules/cast-members/testing/fixture/cast-member.fixture';
+import { CastMember } from '../../src/core/cast-member/domain/cast-member.aggregate';
 import { ICastMemberRepository } from '../../src/core/cast-member/domain/cast-member.repository';
+import { Uuid } from '../../src/core/shared/domain/value-objects/uuid.vo';
+import { startApp } from '../../src/nest-modules/shared-module/testing/helpers';
+import { UpdateCastMemberFixture } from '../../src/nest-modules/cast-members-module/testing/cast-member-fixtures';
+import { CastMembersController } from '../../src/nest-modules/cast-members-module/cast-members.controller';
+import { CAST_MEMBERS_PROVIDERS } from '../../src/nest-modules/cast-members-module/cast-members.providers';
 import { CastMemberOutputMapper } from '../../src/core/cast-member/application/use-cases/common/cast-member-output';
-import { CastMembersController } from '../../src/nest-modules/cast-members/cast-members.controller';
-import { CastMemberId } from '../../src/core/cast-member/domain/cast-member.aggregate';
 
 describe('CastMembersController (e2e)', () => {
   const uuid = '9366b7dc-2d71-4799-b91c-c64adb205104';
@@ -15,7 +15,7 @@ describe('CastMembersController (e2e)', () => {
   describe('/cast-members/:id (PATCH)', () => {
     describe('should a response error when id is invalid or not found', () => {
       const nestApp = startApp();
-      const faker = CastMemberFakeBuilder.aCastMember();
+      const faker = CastMember.fake().anActor();
       const arrange = [
         {
           id: '88ff2587-ce5a-4769-a8c6-1d63d29c5f7a',
@@ -78,11 +78,11 @@ describe('CastMembersController (e2e)', () => {
 
       beforeEach(() => {
         castMemberRepo = app.app.get<ICastMemberRepository>(
-          CAST_MEMBER_PROVIDERS.REPOSITORIES.CAST_MEMBER_REPOSITORY.provide,
+          CAST_MEMBERS_PROVIDERS.REPOSITORIES.CAST_MEMBER_REPOSITORY.provide,
         );
       });
       test.each(arrange)('when body is $label', async ({ value }) => {
-        const castMember = CastMemberFakeBuilder.aCastMember().build();
+        const castMember = CastMember.fake().anActor().build();
         await castMemberRepo.insert(castMember);
         return request(app.app.getHttpServer())
           .patch(`/cast-members/${castMember.cast_member_id.id}`)
@@ -92,23 +92,23 @@ describe('CastMembersController (e2e)', () => {
       });
     });
 
-    describe('should update a castMember', () => {
-      const appHelper = startApp();
+    describe('should update a cast member', () => {
+      const app = startApp();
       const arrange = UpdateCastMemberFixture.arrangeForUpdate();
       let castMemberRepo: ICastMemberRepository;
 
       beforeEach(async () => {
-        castMemberRepo = appHelper.app.get<ICastMemberRepository>(
-          CAST_MEMBER_PROVIDERS.REPOSITORIES.CAST_MEMBER_REPOSITORY.provide,
+        castMemberRepo = app.app.get<ICastMemberRepository>(
+          CAST_MEMBERS_PROVIDERS.REPOSITORIES.CAST_MEMBER_REPOSITORY.provide,
         );
       });
       test.each(arrange)(
         'when body is $send_data',
         async ({ send_data, expected }) => {
-          const castMemberCreated = CastMemberFakeBuilder.aCastMember().build();
+          const castMemberCreated = CastMember.fake().anActor().build();
           await castMemberRepo.insert(castMemberCreated);
 
-          const res = await request(appHelper.app.getHttpServer())
+          const res = await request(app.app.getHttpServer())
             .patch(`/cast-members/${castMemberCreated.cast_member_id.id}`)
             .send(send_data)
             .expect(200);
@@ -116,9 +116,7 @@ describe('CastMembersController (e2e)', () => {
           expect(Object.keys(res.body)).toStrictEqual(['data']);
           expect(Object.keys(res.body.data)).toStrictEqual(keyInResponse);
           const id = res.body.data.id;
-          const castMemberUpdated = await castMemberRepo.findById(
-            new CastMemberId(id),
-          );
+          const castMemberUpdated = await castMemberRepo.findById(new Uuid(id));
           const presenter = CastMembersController.serialize(
             CastMemberOutputMapper.toOutput(castMemberUpdated!),
           );
@@ -127,8 +125,8 @@ describe('CastMembersController (e2e)', () => {
           expect(res.body.data).toStrictEqual({
             id: serialized.id,
             created_at: serialized.created_at,
-            name: expected.name ?? castMemberUpdated!.name,
-            type: 'type' in expected ? expected.type : castMemberUpdated!.type,
+            name: expected.name ?? castMemberCreated.name,
+            type: expected.type ?? castMemberCreated.type.type,
           });
         },
       );

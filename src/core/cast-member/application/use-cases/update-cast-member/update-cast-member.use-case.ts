@@ -1,21 +1,17 @@
 import { IUseCase } from '../../../../shared/application/use-case.interface';
 import { NotFoundError } from '../../../../shared/domain/errors/not-found.error';
-import { EntityValidationError } from '../../../../shared/domain/errors/validation.error';
-import { CastMemberType } from '../../../domain/cast-member-type';
+import { EntityValidationError } from '../../../../shared/domain/validators/validation.error';
+import { CastMemberType } from '../../../domain/cast-member-type.vo';
 import {
   CastMember,
   CastMemberId,
 } from '../../../domain/cast-member.aggregate';
 import { ICastMemberRepository } from '../../../domain/cast-member.repository';
-import { CastMemberOutputMapper } from '../common/cast-member-output';
+import {
+  CastMemberOutput,
+  CastMemberOutputMapper,
+} from '../common/cast-member-output';
 import { UpdateCastMemberInput } from './update-cast-member.input';
-
-export type UpdateCastMemberOutput = {
-  id: string;
-  name: string;
-  type: CastMemberType;
-  created_at: Date;
-};
 
 export class UpdateCastMemberUseCase
   implements IUseCase<UpdateCastMemberInput, UpdateCastMemberOutput>
@@ -23,17 +19,25 @@ export class UpdateCastMemberUseCase
   constructor(private castMemberRepo: ICastMemberRepository) {}
 
   async execute(input: UpdateCastMemberInput): Promise<UpdateCastMemberOutput> {
-    const uuid = new CastMemberId(input.id);
-    const castMember = await this.castMemberRepo.findById(uuid);
+    const castMemberId = new CastMemberId(input.id);
+    const castMember = await this.castMemberRepo.findById(castMemberId);
 
     if (!castMember) {
       throw new NotFoundError(input.id, CastMember);
     }
 
-    castMember.update({
-      name: input.name,
-      type: input.type,
-    });
+    input.name && castMember.changeName(input.name);
+
+    if (input.type) {
+      const [type, errorCastMemberType] = CastMemberType.create(
+        input.type,
+      ).asArray();
+
+      castMember.changeType(type);
+
+      errorCastMemberType &&
+        castMember.notification.setError(errorCastMemberType.message, 'type');
+    }
 
     if (castMember.notification.hasErrors()) {
       throw new EntityValidationError(castMember.notification.toJSON());
@@ -44,3 +48,5 @@ export class UpdateCastMemberUseCase
     return CastMemberOutputMapper.toOutput(castMember);
   }
 }
+
+export type UpdateCastMemberOutput = CastMemberOutput;

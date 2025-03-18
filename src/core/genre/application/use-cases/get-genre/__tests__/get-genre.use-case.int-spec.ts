@@ -2,7 +2,8 @@ import { GetGenreUseCase } from '../get-genre.use-case';
 import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
 import { Genre, GenreId } from '../../../../domain/genre.aggregate';
 import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
-
+import { UnitOfWorkSequelize } from '../../../../../shared/infra/db/sequelize/unit-of-work-sequelize';
+import { Category } from '../../../../../category/domain/category.aggregate';
 import { GenreSequelizeRepository } from '../../../../infra/db/sequelize/genre-sequelize.repository';
 import { CategorySequelizeRepository } from '../../../../../category/infra/db/sequelize/category-sequelize.repository';
 import {
@@ -10,9 +11,6 @@ import {
   GenreModel,
 } from '../../../../infra/db/sequelize/genre-model';
 import { CategoryModel } from '../../../../../category/infra/db/sequelize/category.model';
-import { CategoryFakeBuilder } from '../../../../../category/domain/category-fake.builder';
-import { GenreFakeBuilder } from '../../../../domain/genre-fake.builder';
-import { UnitOfWorkSequelize } from '../../../../../shared/infra/db/sequelize/unit-of-work.sequelize';
 
 describe('GetGenreUseCase Integration Tests', () => {
   let uow: UnitOfWorkSequelize;
@@ -39,9 +37,10 @@ describe('GetGenreUseCase Integration Tests', () => {
   });
 
   it('should returns a genre', async () => {
-    const categories = CategoryFakeBuilder.theCategories(2).build();
+    const categories = Category.fake().theCategories(2).build();
     await categoryRepo.bulkInsert(categories);
-    const genre = GenreFakeBuilder.aGenre()
+    const genre = Genre.fake()
+      .aGenre()
       .addCategoryId(categories[0].category_id)
       .addCategoryId(categories[1].category_id)
       .build();
@@ -62,7 +61,7 @@ describe('GetGenreUseCase Integration Tests', () => {
           created_at: categories[1].created_at,
         }),
       ]),
-      categories_ids: expect.arrayContaining([
+      categories_id: expect.arrayContaining([
         categories[0].category_id.id,
         categories[1].category_id.id,
       ]),

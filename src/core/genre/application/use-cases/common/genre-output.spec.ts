@@ -1,12 +1,13 @@
-import { CategoryFakeBuilder } from '../../../../category/domain/category-fake.builder';
-import { GenreFakeBuilder } from '../../../domain/genre-fake.builder';
+import { Category } from '../../../../category/domain/category.aggregate';
+import { Genre } from '../../../domain/genre.aggregate';
 import { GenreOutputMapper } from './genre-output';
 
 describe('GenreOutputMapper Unit Tests', () => {
   it('should convert a genre in output', () => {
-    const categories = CategoryFakeBuilder.theCategories(2).build();
+    const categories = Category.fake().theCategories(2).build();
     const created_at = new Date();
-    const entity = GenreFakeBuilder.aGenre()
+    const entity = Genre.fake()
+      .aGenre()
       .withName('test')
       .addCategoryId(categories[0].category_id)
       .addCategoryId(categories[1].category_id)
@@ -28,7 +29,7 @@ describe('GenreOutputMapper Unit Tests', () => {
           created_at: categories[1].created_at,
         },
       ],
-      categories_ids: [
+      categories_id: [
         categories[0].category_id.id,
         categories[1].category_id.id,
       ],

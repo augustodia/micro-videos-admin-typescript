@@ -1,7 +1,6 @@
-import { CategoryFakeBuilder } from '../../../../../category/domain/category-fake.builder';
+import { Category } from '../../../../../category/domain/category.aggregate';
 import { CategoryInMemoryRepository } from '../../../../../category/infra/db/in-memory/category-in-memory.repository';
 import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
-import { GenreFakeBuilder } from '../../../../domain/genre-fake.builder';
 import { Genre, GenreId } from '../../../../domain/genre.aggregate';
 import { GenreInMemoryRepository } from '../../../../infra/db/in-memory/genre-in-memory.repository';
 import { GetGenreUseCase } from '../get-genre.use-case';
@@ -25,9 +24,10 @@ describe('GetGenreUseCase Unit Tests', () => {
   });
 
   it('should returns a genre', async () => {
-    const categories = CategoryFakeBuilder.theCategories(3).build();
+    const categories = Category.fake().theCategories(3).build();
     await categoryRepo.bulkInsert(categories);
-    const genre = GenreFakeBuilder.aGenre()
+    const genre = Genre.fake()
+      .aGenre()
       .addCategoryId(categories[0].category_id)
       .addCategoryId(categories[2].category_id)
       .build();
@@ -52,7 +52,7 @@ describe('GetGenreUseCase Unit Tests', () => {
           created_at: categories[2].created_at,
         },
       ],
-      categories_ids: [...genre.categories_ids.keys()],
+      categories_id: [...genre.categories_id.keys()],
       is_active: true,
       created_at: genre.created_at,
     });

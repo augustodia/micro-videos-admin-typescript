@@ -1,8 +1,8 @@
 import { CategoriesIdExistsInDatabaseValidator } from '../../../../category/application/validations/categories-ids-exists-in-database.validator';
 import { ICategoryRepository } from '../../../../category/domain/category.repository';
 import { IUseCase } from '../../../../shared/application/use-case.interface';
-import { EntityValidationError } from '../../../../shared/domain/errors/validation.error';
 import { IUnitOfWork } from '../../../../shared/domain/repository/unit-of-work.interface';
+import { EntityValidationError } from '../../../../shared/domain/validators/validation.error';
 import { Genre } from '../../../domain/genre.aggregate';
 import { IGenreRepository } from '../../../domain/genre.repository';
 import { GenreOutput, GenreOutputMapper } from '../common/genre-output';
@@ -20,14 +20,14 @@ export class CreateGenreUseCase
 
   async execute(input: CreateGenreInput): Promise<CreateGenreOutput> {
     const [categoriesId, errorsCategoriesIds] = (
-      await this.categoriesIdExistsInStorage.validate(input.categories_ids)
+      await this.categoriesIdExistsInStorage.validate(input.categories_id)
     ).asArray();
 
     const { name, is_active } = input;
 
     const entity = Genre.create({
       name,
-      categories_ids: errorsCategoriesIds ? [] : categoriesId,
+      categories_id: errorsCategoriesIds ? [] : categoriesId,
       is_active,
     });
 
@@ -36,7 +36,7 @@ export class CreateGenreUseCase
     if (errorsCategoriesIds) {
       notification.setError(
         errorsCategoriesIds.map((e) => e.message),
-        'categories_ids',
+        'categories_id',
       );
     }
 
@@ -49,7 +49,7 @@ export class CreateGenreUseCase
     });
 
     const categories = await this.categoryRepo.findByIds(
-      Array.from(entity.categories_ids.values()),
+      Array.from(entity.categories_id.values()),
     );
 
     return GenreOutputMapper.toOutput(entity, categories);
