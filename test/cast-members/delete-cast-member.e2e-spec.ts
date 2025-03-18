@@ -1,6 +1,6 @@
 import request from 'supertest';
-import { ICastMemberRepository } from '../../src/core/cast-member/domain/cast-member.repository';
-import { CastMember } from '../../src/core/cast-member/domain/cast-member.aggregate';
+import { ICastMemberRepository } from '@core/cast-member/domain/cast-member.repository';
+import { CastMember } from '@core/cast-member/domain/cast-member.aggregate';
 import { startApp } from '../../src/nest-modules/shared-module/testing/helpers';
 import { CAST_MEMBERS_PROVIDERS } from '../../src/nest-modules/cast-members-module/cast-members.providers';
 

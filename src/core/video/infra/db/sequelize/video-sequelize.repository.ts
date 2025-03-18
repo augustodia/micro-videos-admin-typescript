@@ -1,8 +1,8 @@
 import { literal } from 'sequelize';
-import { InvalidArgumentError } from '../../../../shared/domain/errors/invalid-argument.error';
-import { NotFoundError } from '../../../../shared/domain/errors/not-found.error';
-import { SortDirection } from '../../../../shared/domain/repository/search-params';
-import { UnitOfWorkSequelize } from '../../../../shared/infra/db/sequelize/unit-of-work-sequelize';
+import { InvalidArgumentError } from '@core/shared/domain/errors/invalid-argument.error';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
+import { SortDirection } from '@core/shared/domain/repository/search-params';
+import { UnitOfWorkSequelize } from '@core/shared/infra/db/sequelize/unit-of-work-sequelize';
 import { Video, VideoId } from '../../../domain/video.aggregate';
 import {
   IVideoRepository,

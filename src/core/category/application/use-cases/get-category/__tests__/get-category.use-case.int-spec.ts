@@ -1,5 +1,5 @@
-import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
-import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
+import { setupSequelize } from '@core/shared/infra/testing/helpers';
 import { Category, CategoryId } from '../../../../domain/category.aggregate';
 import { CategorySequelizeRepository } from '../../../../infra/db/sequelize/category-sequelize.repository';
 import { CategoryModel } from '../../../../infra/db/sequelize/category.model';

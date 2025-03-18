@@ -1,17 +1,17 @@
 import { CreateGenreUseCase } from '../create-genre.use-case';
-import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
+import { setupSequelize } from '@core/shared/infra/testing/helpers';
 import { Genre, GenreId } from '../../../../domain/genre.aggregate';
-import { UnitOfWorkSequelize } from '../../../../../shared/infra/db/sequelize/unit-of-work-sequelize';
-import { Category } from '../../../../../category/domain/category.aggregate';
+import { UnitOfWorkSequelize } from '@core/shared/infra/db/sequelize/unit-of-work-sequelize';
+import { Category } from '@core/category/domain/category.aggregate';
 import { DatabaseError } from 'sequelize';
 import { GenreSequelizeRepository } from '../../../../infra/db/sequelize/genre-sequelize.repository';
-import { CategorySequelizeRepository } from '../../../../../category/infra/db/sequelize/category-sequelize.repository';
-import { CategoriesIdExistsInDatabaseValidator } from '../../../../../category/application/validations/categories-ids-exists-in-database.validator';
+import { CategorySequelizeRepository } from '@core/category/infra/db/sequelize/category-sequelize.repository';
+import { CategoriesIdExistsInDatabaseValidator } from '@core/category/application/validations/categories-ids-exists-in-database.validator';
 import {
   GenreCategoryModel,
   GenreModel,
 } from '../../../../infra/db/sequelize/genre-model';
-import { CategoryModel } from '../../../../../category/infra/db/sequelize/category.model';
+import { CategoryModel } from '@core/category/infra/db/sequelize/category.model';
 
 describe('CreateGenreUseCase Integration Tests', () => {
   let uow: UnitOfWorkSequelize;

@@ -1,6 +1,6 @@
-import { IUseCase } from '../../../../shared/application/use-case.interface';
-import { NotFoundError } from '../../../../shared/domain/errors/not-found.error';
-import { EntityValidationError } from '../../../../shared/domain/validators/validation.error';
+import { IUseCase } from '@core/shared/application/use-case.interface';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
+import { EntityValidationError } from '@core/shared/domain/validators/validation.error';
 import { CastMemberType } from '../../../domain/cast-member-type.vo';
 import {
   CastMember,

@@ -1,4 +1,4 @@
-import { CategoryId } from '../../../../category/domain/category.aggregate';
+import { CategoryId } from '@core/category/domain/category.aggregate';
 import { Genre } from '../../../domain/genre.aggregate';
 import { GenreInMemoryRepository } from './genre-in-memory.repository';
 
@@ -141,7 +141,7 @@ describe('GenreInMemoryRepository', () => {
         .build(),
     ];
 
-    const itemsSorted = await repository['applySort'](items, null, null);
+    const itemsSorted = repository['applySort'](items, null, null);
     expect(itemsSorted).toStrictEqual([items[2], items[1], items[0]]);
   });
 
@@ -152,10 +152,10 @@ describe('GenreInMemoryRepository', () => {
       Genre.fake().aGenre().withName('a').build(),
     ];
 
-    let itemsSorted = await repository['applySort'](items, 'name', 'asc');
+    let itemsSorted = repository['applySort'](items, 'name', 'asc');
     expect(itemsSorted).toStrictEqual([items[2], items[1], items[0]]);
 
-    itemsSorted = await repository['applySort'](items, 'name', 'desc');
+    itemsSorted = repository['applySort'](items, 'name', 'desc');
     expect(itemsSorted).toStrictEqual([items[0], items[1], items[2]]);
   });
 });

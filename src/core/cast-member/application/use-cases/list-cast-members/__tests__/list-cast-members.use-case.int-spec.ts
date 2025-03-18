@@ -1,5 +1,5 @@
 import { ListCastMembersUseCase } from '../list-cast-members.use-case';
-import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
+import { setupSequelize } from '@core/shared/infra/testing/helpers';
 import { CastMember } from '../../../../domain/cast-member.aggregate';
 import { CastMemberOutputMapper } from '../../common/cast-member-output';
 import {

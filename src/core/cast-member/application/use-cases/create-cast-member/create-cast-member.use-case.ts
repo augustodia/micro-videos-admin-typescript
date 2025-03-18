@@ -1,4 +1,4 @@
-import { IUseCase } from '../../../../shared/application/use-case.interface';
+import { IUseCase } from '@core/shared/application/use-case.interface';
 import { ICastMemberRepository } from '../../../domain/cast-member.repository';
 import { CastMember } from '../../../domain/cast-member.aggregate';
 import {
@@ -6,7 +6,7 @@ import {
   CastMemberOutputMapper,
 } from '../common/cast-member-output';
 import { CastMemberType } from '../../../domain/cast-member-type.vo';
-import { EntityValidationError } from '../../../../shared/domain/validators/validation.error';
+import { EntityValidationError } from '@core/shared/domain/validators/validation.error';
 import { CreateCastMemberInput } from './create-cast-member.input';
 
 export class CreateCastMemberUseCase

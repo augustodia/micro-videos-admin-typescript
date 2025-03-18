@@ -1,4 +1,4 @@
-import { SortDirection } from '../../../../../shared/domain/repository/search-params';
+import { SortDirection } from '@core/shared/domain/repository/search-params';
 import { CastMemberTypes } from '../../../../domain/cast-member-type.vo';
 import { CastMember } from '../../../../domain/cast-member.aggregate';
 import { CastMemberSearchResult } from '../../../../domain/cast-member.repository';

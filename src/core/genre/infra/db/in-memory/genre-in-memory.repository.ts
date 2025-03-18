@@ -3,8 +3,8 @@ import {
   IGenreRepository,
   GenreFilter,
 } from '../../../domain/genre.repository';
-import { SortDirection } from '../../../../shared/domain/repository/search-params';
-import { InMemorySearchableRepository } from '../../../../shared/infra/db/in-memory/in-memory.repository';
+import { SortDirection } from '@core/shared/domain/repository/search-params';
+import { InMemorySearchableRepository } from '@core/shared/infra/db/in-memory/in-memory.repository';
 
 export class GenreInMemoryRepository
   extends InMemorySearchableRepository<Genre, GenreId, GenreFilter>

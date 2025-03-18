@@ -11,9 +11,9 @@ import {
   CastMember,
   CastMemberId,
 } from '../../../domain/cast-member.aggregate';
-import { SortDirection } from '../../../../shared/domain/repository/search-params';
-import { LoadEntityError } from '../../../../shared/domain/validators/validation.error';
-import { NotFoundError } from '../../../../shared/domain/errors/not-found.error';
+import { SortDirection } from '@core/shared/domain/repository/search-params';
+import { LoadEntityError } from '@core/shared/domain/validators/validation.error';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
 import {
   ICastMemberRepository,
   CastMemberSearchParams,
@@ -23,7 +23,7 @@ import {
   CastMemberType,
   CastMemberTypes,
 } from '../../../domain/cast-member-type.vo';
-import { InvalidArgumentError } from '../../../../shared/domain/errors/invalid-argument.error';
+import { InvalidArgumentError } from '@core/shared/domain/errors/invalid-argument.error';
 
 export type CastMemberModelProps = {
   cast_member_id: string;

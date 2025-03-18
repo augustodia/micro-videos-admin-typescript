@@ -1,6 +1,6 @@
-import { CastMemberId } from '../../../cast-member/domain/cast-member.aggregate';
-import { CategoryId } from '../../../category/domain/category.aggregate';
-import { GenreId } from '../../../genre/domain/genre.aggregate';
+import { CastMemberId } from '@core/cast-member/domain/cast-member.aggregate';
+import { CategoryId } from '@core/category/domain/category.aggregate';
+import { GenreId } from '@core/genre/domain/genre.aggregate';
 import { Banner } from '../banner.vo';
 import { Rating } from '../rating.vo';
 import { ThumbnailHalf } from '../thumbnail-half.vo';

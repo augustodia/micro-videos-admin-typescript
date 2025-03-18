@@ -1,6 +1,6 @@
-import { Category } from '../../../../../category/domain/category.aggregate';
-import { CategoryInMemoryRepository } from '../../../../../category/infra/db/in-memory/category-in-memory.repository';
-import { SortDirection } from '../../../../../shared/domain/repository/search-params';
+import { Category } from '@core/category/domain/category.aggregate';
+import { CategoryInMemoryRepository } from '@core/category/infra/db/in-memory/category-in-memory.repository';
+import { SortDirection } from '@core/shared/domain/repository/search-params';
 import { Genre } from '../../../../domain/genre.aggregate';
 import { GenreSearchResult } from '../../../../domain/genre.repository';
 import { GenreInMemoryRepository } from '../../../../infra/db/in-memory/genre-in-memory.repository';
@@ -35,7 +35,7 @@ describe('ListGenresUseCase Unit Tests', () => {
     });
 
     const categories = Category.fake().theCategories(3).build();
-    categoryRepo.bulkInsert(categories);
+    await categoryRepo.bulkInsert(categories);
     const genre = Genre.fake()
       .aGenre()
       .addCategoryId(categories[0].category_id)

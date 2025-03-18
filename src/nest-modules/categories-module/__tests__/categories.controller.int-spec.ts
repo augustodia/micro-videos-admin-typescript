@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ICategoryRepository } from '../../../core/category/domain/category.repository';
+import { ICategoryRepository } from '@core/category/domain/category.repository';
 import { CategoriesController } from '../categories.controller';
 import { ConfigModule } from '../../config-module/config.module';
 import { DatabaseModule } from '../../database-module/database.module';
 import { CategoriesModule } from '../categories.module';
 import { CATEGORY_PROVIDERS } from '../categories.providers';
-import { CreateCategoryUseCase } from '../../../core/category/application/use-cases/create-category/create-category.use-case';
-import { UpdateCategoryUseCase } from '../../../core/category/application/use-cases/update-category/update-category.use-case';
-import { ListCategoriesUseCase } from '../../../core/category/application/use-cases/list-categories/list-categories.use-case';
-import { GetCategoryUseCase } from '../../../core/category/application/use-cases/get-category/get-category.use-case';
-import { DeleteCategoryUseCase } from '../../../core/category/application/use-cases/delete-category/delete-category.use-case';
+import { CreateCategoryUseCase } from '@core/category/application/use-cases/create-category/create-category.use-case';
+import { UpdateCategoryUseCase } from '@core/category/application/use-cases/update-category/update-category.use-case';
+import { ListCategoriesUseCase } from '@core/category/application/use-cases/list-categories/list-categories.use-case';
+import { GetCategoryUseCase } from '@core/category/application/use-cases/get-category/get-category.use-case';
+import { DeleteCategoryUseCase } from '@core/category/application/use-cases/delete-category/delete-category.use-case';
 import {
   CreateCategoryFixture,
   ListCategoriesFixture,
@@ -19,11 +19,8 @@ import {
   CategoryCollectionPresenter,
   CategoryPresenter,
 } from '../categories.presenter';
-import { CategoryOutputMapper } from '../../../core/category/application/use-cases/common/category-output';
-import {
-  Category,
-  CategoryId,
-} from '../../../core/category/domain/category.aggregate';
+import { CategoryOutputMapper } from '@core/category/application/use-cases/common/category-output';
+import { Category, CategoryId } from '@core/category/domain/category.aggregate';
 
 describe('CategoriesController Integration Tests', () => {
   let controller: CategoriesController;
@@ -92,7 +89,7 @@ describe('CategoriesController Integration Tests', () => {
               ? expected.description
               : category.description,
           is_active:
-            expected.is_active === true || expected.is_active === false
+            expected.is_active || !expected.is_active
               ? expected.is_active
               : category.is_active,
         });

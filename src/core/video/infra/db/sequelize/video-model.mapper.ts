@@ -1,9 +1,9 @@
 import { Video, VideoId } from '../../../domain/video.aggregate';
-import { LoadEntityError } from '../../../../shared/domain/validators/validation.error';
-import { CategoryId } from '../../../../category/domain/category.aggregate';
-import { Notification } from '../../../../shared/domain/validators/notification';
-import { GenreId } from '../../../../genre/domain/genre.aggregate';
-import { CastMemberId } from '../../../../cast-member/domain/cast-member.aggregate';
+import { LoadEntityError } from '@core/shared/domain/validators/validation.error';
+import { CategoryId } from '@core/category/domain/category.aggregate';
+import { Notification } from '@core/shared/domain/validators/notification';
+import { GenreId } from '@core/genre/domain/genre.aggregate';
+import { CastMemberId } from '@core/cast-member/domain/cast-member.aggregate';
 import { Rating } from '../../../domain/rating.vo';
 import {
   VideoCastMemberModel,

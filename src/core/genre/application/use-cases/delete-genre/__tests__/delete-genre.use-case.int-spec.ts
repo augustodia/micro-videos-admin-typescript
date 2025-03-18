@@ -1,16 +1,16 @@
 import { DeleteGenreUseCase } from '../delete-genre.use-case';
-import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
-import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
+import { setupSequelize } from '@core/shared/infra/testing/helpers';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
 import { Genre, GenreId } from '../../../../domain/genre.aggregate';
-import { UnitOfWorkSequelize } from '../../../../../shared/infra/db/sequelize/unit-of-work-sequelize';
-import { Category } from '../../../../../category/domain/category.aggregate';
+import { UnitOfWorkSequelize } from '@core/shared/infra/db/sequelize/unit-of-work-sequelize';
+import { Category } from '@core/category/domain/category.aggregate';
 import { GenreSequelizeRepository } from '../../../../infra/db/sequelize/genre-sequelize.repository';
-import { CategorySequelizeRepository } from '../../../../../category/infra/db/sequelize/category-sequelize.repository';
+import { CategorySequelizeRepository } from '@core/category/infra/db/sequelize/category-sequelize.repository';
 import {
   GenreCategoryModel,
   GenreModel,
 } from '../../../../infra/db/sequelize/genre-model';
-import { CategoryModel } from '../../../../../category/infra/db/sequelize/category.model';
+import { CategoryModel } from '@core/category/infra/db/sequelize/category.model';
 
 describe('DeleteGenreUseCase Integration Tests', () => {
   let uow: UnitOfWorkSequelize;

@@ -1,4 +1,4 @@
-import { Category } from '../../../../category/domain/category.aggregate';
+import { Category } from '@core/category/domain/category.aggregate';
 import { Genre } from '../../../domain/genre.aggregate';
 import { GenreOutputMapper } from './genre-output';
 

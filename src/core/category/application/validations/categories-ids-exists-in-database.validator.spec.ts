@@ -1,4 +1,4 @@
-import { NotFoundError } from '../../../shared/domain/errors/not-found.error';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
 import { Category, CategoryId } from '../../domain/category.aggregate';
 import { CategoryInMemoryRepository } from '../../infra/db/in-memory/category-in-memory.repository';
 import { CategoriesIdExistsInDatabaseValidator } from './categories-ids-exists-in-database.validator';

@@ -88,7 +88,7 @@ describe('CastMemberInMemoryRepository', () => {
         .build(),
     ];
 
-    const itemsSorted = await repository['applySort'](items, null, null);
+    const itemsSorted = repository['applySort'](items, null, null);
     expect(itemsSorted).toStrictEqual([items[2], items[1], items[0]]);
   });
 
@@ -99,10 +99,10 @@ describe('CastMemberInMemoryRepository', () => {
       CastMember.fake().anActor().withName('a').build(),
     ];
 
-    let itemsSorted = await repository['applySort'](items, 'name', 'asc');
+    let itemsSorted = repository['applySort'](items, 'name', 'asc');
     expect(itemsSorted).toStrictEqual([items[2], items[1], items[0]]);
 
-    itemsSorted = await repository['applySort'](items, 'name', 'desc');
+    itemsSorted = repository['applySort'](items, 'name', 'desc');
     expect(itemsSorted).toStrictEqual([items[0], items[1], items[2]]);
   });
 });

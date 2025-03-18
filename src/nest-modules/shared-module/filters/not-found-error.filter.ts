@@ -1,5 +1,5 @@
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
-import { NotFoundError } from '../../../core/shared/domain/errors/not-found.error';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
 import { Response } from 'express';
 
 @Catch(NotFoundError)

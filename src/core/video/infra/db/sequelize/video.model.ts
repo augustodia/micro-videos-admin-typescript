@@ -8,10 +8,10 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-import { CastMemberModel } from '../../../../cast-member/infra/db/sequelize/cast-member-sequelize';
+import { CastMemberModel } from '@core/cast-member/infra/db/sequelize/cast-member-sequelize';
 import { RatingValues } from '../../../domain/rating.vo';
-import { CategoryModel } from '../../../../category/infra/db/sequelize/category.model';
-import { GenreModel } from '../../../../genre/infra/db/sequelize/genre-model';
+import { CategoryModel } from '@core/category/infra/db/sequelize/category.model';
+import { GenreModel } from '@core/genre/infra/db/sequelize/genre-model';
 import { ImageMediaModel } from './image-media.model';
 import { AudioVideoMediaModel } from './audio-video-media.model';
 

@@ -1,16 +1,16 @@
-import { CastMember } from '../../../../../cast-member/domain/cast-member.aggregate';
+import { CastMember } from '@core/cast-member/domain/cast-member.aggregate';
 import {
   CastMemberModel,
   CastMemberSequelizeRepository,
-} from '../../../../../cast-member/infra/db/sequelize/cast-member-sequelize';
-import { Category } from '../../../../../category/domain/category.aggregate';
-import { CategorySequelizeRepository } from '../../../../../category/infra/db/sequelize/category-sequelize.repository';
-import { CategoryModel } from '../../../../../category/infra/db/sequelize/category.model';
-import { Genre } from '../../../../../genre/domain/genre.aggregate';
-import { GenreModel } from '../../../../../genre/infra/db/sequelize/genre-model';
-import { GenreSequelizeRepository } from '../../../../../genre/infra/db/sequelize/genre-sequelize.repository';
-import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
-import { UnitOfWorkSequelize } from '../../../../../shared/infra/db/sequelize/unit-of-work-sequelize';
+} from '@core/cast-member/infra/db/sequelize/cast-member-sequelize';
+import { Category } from '@core/category/domain/category.aggregate';
+import { CategorySequelizeRepository } from '@core/category/infra/db/sequelize/category-sequelize.repository';
+import { CategoryModel } from '@core/category/infra/db/sequelize/category.model';
+import { Genre } from '@core/genre/domain/genre.aggregate';
+import { GenreModel } from '@core/genre/infra/db/sequelize/genre-model';
+import { GenreSequelizeRepository } from '@core/genre/infra/db/sequelize/genre-sequelize.repository';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
+import { UnitOfWorkSequelize } from '@core/shared/infra/db/sequelize/unit-of-work-sequelize';
 import { Video, VideoId } from '../../../../domain/video.aggregate';
 import {
   VideoSearchParams,
@@ -926,7 +926,7 @@ describe('VideoSequelizeRepository Integration Tests', () => {
           .addGenreId(genre.genre_id)
           .addCastMemberId(castMember.cast_member_id)
           .build();
-        uow.start();
+        await uow.start();
         await videoRepo.insert(video);
         await uow.commit();
 

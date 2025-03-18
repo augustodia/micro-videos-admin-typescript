@@ -1,9 +1,9 @@
-import { CategoriesIdExistsInDatabaseValidator } from '../../../../category/application/validations/categories-ids-exists-in-database.validator';
-import { ICategoryRepository } from '../../../../category/domain/category.repository';
-import { IUseCase } from '../../../../shared/application/use-case.interface';
-import { NotFoundError } from '../../../../shared/domain/errors/not-found.error';
-import { IUnitOfWork } from '../../../../shared/domain/repository/unit-of-work.interface';
-import { EntityValidationError } from '../../../../shared/domain/validators/validation.error';
+import { CategoriesIdExistsInDatabaseValidator } from '@core/category/application/validations/categories-ids-exists-in-database.validator';
+import { ICategoryRepository } from '@core/category/domain/category.repository';
+import { IUseCase } from '@core/shared/application/use-case.interface';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
+import { IUnitOfWork } from '@core/shared/domain/repository/unit-of-work.interface';
+import { EntityValidationError } from '@core/shared/domain/validators/validation.error';
 import { Genre, GenreId } from '../../../domain/genre.aggregate';
 import { IGenreRepository } from '../../../domain/genre.repository';
 import { GenreOutput, GenreOutputMapper } from '../common/genre-output';

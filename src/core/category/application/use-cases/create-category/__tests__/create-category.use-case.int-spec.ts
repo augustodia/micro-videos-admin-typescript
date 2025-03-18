@@ -1,4 +1,4 @@
-import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
+import { setupSequelize } from '@core/shared/infra/testing/helpers';
 import { CategoryId } from '../../../../domain/category.aggregate';
 import { CategorySequelizeRepository } from '../../../../infra/db/sequelize/category-sequelize.repository';
 import { CategoryModel } from '../../../../infra/db/sequelize/category.model';

@@ -2,16 +2,16 @@ import { GenreOutput, GenreOutputMapper } from '../common/genre-output';
 import {
   PaginationOutput,
   PaginationOutputMapper,
-} from '../../../../shared/application/pagination-output';
+} from '@core/shared/application/pagination-output';
 import {
   IGenreRepository,
   GenreSearchParams,
   GenreSearchResult,
 } from '../../../domain/genre.repository';
-import { ICategoryRepository } from '../../../../category/domain/category.repository';
+import { ICategoryRepository } from '@core/category/domain/category.repository';
 import { ListGenresInput } from './list-genres.input';
-import { IUseCase } from '../../../../shared/application/use-case.interface';
-import { CategoryId } from '../../../../category/domain/category.aggregate';
+import { IUseCase } from '@core/shared/application/use-case.interface';
+import { CategoryId } from '@core/category/domain/category.aggregate';
 
 export class ListGenresUseCase
   implements IUseCase<ListGenresInput, ListGenresOutput>

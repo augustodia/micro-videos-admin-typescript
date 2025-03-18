@@ -6,8 +6,8 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-import { AudioVideoMediaStatus } from '../../../../shared/domain/value-objects/audio-video-media.vo';
-import { Uuid } from '../../../../shared/domain/value-objects/uuid.vo';
+import { AudioVideoMediaStatus } from '@core/shared/domain/value-objects/audio-video-media.vo';
+import { Uuid } from '@core/shared/domain/value-objects/uuid.vo';
 import { VideoModel } from './video.model';
 
 export enum AudioVideoMediaRelatedField {

@@ -1,15 +1,15 @@
 import request from 'supertest';
 import { instanceToPlain } from 'class-transformer';
-import { Genre, GenreId } from '../../src/core/genre/domain/genre.aggregate';
-import { IGenreRepository } from '../../src/core/genre/domain/genre.repository';
+import { Genre, GenreId } from '@core/genre/domain/genre.aggregate';
+import { IGenreRepository } from '@core/genre/domain/genre.repository';
 import { startApp } from '../../src/nest-modules/shared-module/testing/helpers';
 import { UpdateGenreFixture } from '../../src/nest-modules/genres-module/testing/genre-fixture';
 import { GENRES_PROVIDERS } from '../../src/nest-modules/genres-module/genres.providers';
 import { GenresController } from '../../src/nest-modules/genres-module/genres.controller';
-import { ICategoryRepository } from '../../src/core/category/domain/category.repository';
+import { ICategoryRepository } from '@core/category/domain/category.repository';
 import { CATEGORY_PROVIDERS } from '../../src/nest-modules/categories-module/categories.providers';
-import { Category } from '../../src/core/category/domain/category.aggregate';
-import { GenreOutputMapper } from '../../src/core/genre/application/use-cases/common/genre-output';
+import { Category } from '@core/category/domain/category.aggregate';
+import { GenreOutputMapper } from '@core/genre/application/use-cases/common/genre-output';
 
 describe('GenresController (e2e)', () => {
   const uuid = '9366b7dc-2d71-4799-b91c-c64adb205104';

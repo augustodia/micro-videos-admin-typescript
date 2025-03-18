@@ -1,5 +1,5 @@
 import { CreateCastMemberUseCase } from '../create-cast-member.use-case';
-import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
+import { setupSequelize } from '@core/shared/infra/testing/helpers';
 import {
   CastMemberModel,
   CastMemberSequelizeRepository,

@@ -1,4 +1,4 @@
-import { NotFoundError } from '../../../shared/domain/errors/not-found.error';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
 import { Genre, GenreId } from '../../domain/genre.aggregate';
 import { GenreInMemoryRepository } from '../../infra/db/in-memory/genre-in-memory.repository';
 import { GenresIdExistsInDatabaseValidator } from './genres-ids-exists-in-database.validator';

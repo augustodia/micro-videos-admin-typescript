@@ -1,6 +1,6 @@
-import { CategoryId } from '../../../../category/domain/category.aggregate';
-import { Notification } from '../../../../shared/domain/validators/notification';
-import { LoadEntityError } from '../../../../shared/domain/validators/validation.error';
+import { CategoryId } from '@core/category/domain/category.aggregate';
+import { Notification } from '@core/shared/domain/validators/notification';
+import { LoadEntityError } from '@core/shared/domain/validators/validation.error';
 import { Genre, GenreId } from '../../../domain/genre.aggregate';
 import { GenreCategoryModel, GenreModel } from './genre-model';
 

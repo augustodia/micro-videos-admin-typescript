@@ -1,10 +1,10 @@
 import { Chance } from 'chance';
 import { VideoFakeBuilder } from '../video-fake.builder';
 import { VideoId } from '../video.aggregate';
-import { CategoryId } from '../../../category/domain/category.aggregate';
+import { CategoryId } from '@core/category/domain/category.aggregate';
 import { Rating } from '../rating.vo';
-import { GenreId } from '../../../genre/domain/genre.aggregate';
-import { CastMemberId } from '../../../cast-member/domain/cast-member.aggregate';
+import { GenreId } from '@core/genre/domain/genre.aggregate';
+import { CastMemberId } from '@core/cast-member/domain/cast-member.aggregate';
 import { VideoMedia } from '../video-media.vo';
 import { Trailer } from '../trailer.vo';
 import { ThumbnailHalf } from '../thumbnail-half.vo';

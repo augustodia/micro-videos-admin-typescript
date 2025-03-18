@@ -1,5 +1,5 @@
 import { Op, literal } from 'sequelize';
-import { SortDirection } from '../../../../shared/domain/repository/search-params';
+import { SortDirection } from '@core/shared/domain/repository/search-params';
 import { Genre, GenreId } from '../../../domain/genre.aggregate';
 import {
   GenreSearchParams,
@@ -8,10 +8,9 @@ import {
 } from '../../../domain/genre.repository';
 import { GenreModel } from './genre-model';
 import { GenreModelMapper } from './genre-model-mapper';
-import { InvalidArgumentError } from '../../../../shared/domain/errors/invalid-argument.error';
-import { NotFoundError } from '../../../../shared/domain/errors/not-found.error';
-import { UnitOfWorkSequelize } from '../../../../shared/infra/db/sequelize/unit-of-work-sequelize';
-import { object } from 'joi';
+import { InvalidArgumentError } from '@core/shared/domain/errors/invalid-argument.error';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
+import { UnitOfWorkSequelize } from '@core/shared/infra/db/sequelize/unit-of-work-sequelize';
 
 export class GenreSequelizeRepository implements IGenreRepository {
   sortableFields: string[] = ['name', 'created_at'];

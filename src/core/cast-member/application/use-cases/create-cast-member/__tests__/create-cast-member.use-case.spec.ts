@@ -1,4 +1,4 @@
-import { EntityValidationError } from '../../../../../shared/domain/validators/validation.error';
+import { EntityValidationError } from '@core/shared/domain/validators/validation.error';
 import { CastMemberTypes } from '../../../../domain/cast-member-type.vo';
 import { CastMemberInMemoryRepository } from '../../../../infra/db/in-memory/cast-member-in-memory.repository';
 import { CreateCastMemberInput } from '../create-cast-member.input';

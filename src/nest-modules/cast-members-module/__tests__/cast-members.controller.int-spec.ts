@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ICastMemberRepository } from '../../../core/cast-member/domain/cast-member.repository';
+import { ICastMemberRepository } from '@core/cast-member/domain/cast-member.repository';
 import { CastMembersController } from '../cast-members.controller';
 import { CastMembersModule } from '../cast-members.module';
-import { CreateCastMemberUseCase } from '../../../core/cast-member/application/use-cases/create-cast-member/create-cast-member.use-case';
-import { UpdateCastMemberUseCase } from '../../../core/cast-member/application/use-cases/update-cast-member/update-cast-member.use-case';
-import { ListCastMembersUseCase } from '../../../core/cast-member/application/use-cases/list-cast-members/list-cast-members.use-case';
-import { GetCastMemberUseCase } from '../../../core/cast-member/application/use-cases/get-cast-member/get-cast-member.use-case';
-import { DeleteCastMemberUseCase } from '../../../core/cast-member/application/use-cases/delete-cast-member/delete-cast-member.use-case';
-import { CastMember } from '../../../core/cast-member/domain/cast-member.aggregate';
-import { Uuid } from '../../../core/shared/domain/value-objects/uuid.vo';
+import { CreateCastMemberUseCase } from '@core/cast-member/application/use-cases/create-cast-member/create-cast-member.use-case';
+import { UpdateCastMemberUseCase } from '@core/cast-member/application/use-cases/update-cast-member/update-cast-member.use-case';
+import { ListCastMembersUseCase } from '@core/cast-member/application/use-cases/list-cast-members/list-cast-members.use-case';
+import { GetCastMemberUseCase } from '@core/cast-member/application/use-cases/get-cast-member/get-cast-member.use-case';
+import { DeleteCastMemberUseCase } from '@core/cast-member/application/use-cases/delete-cast-member/delete-cast-member.use-case';
+import { CastMember } from '@core/cast-member/domain/cast-member.aggregate';
+import { Uuid } from '@core/shared/domain/value-objects/uuid.vo';
 import { CastMemberCollectionPresenter } from '../cast-members.presenter';
 import * as CastMemberProviders from '../cast-members.providers';
 import {
@@ -18,7 +18,7 @@ import {
 } from '../testing/cast-member-fixtures';
 import { DatabaseModule } from '../../database-module/database.module';
 import { ConfigModule } from '../../config-module/config.module';
-import { CastMemberOutputMapper } from '../../../core/cast-member/application/use-cases/common/cast-member-output';
+import { CastMemberOutputMapper } from '@core/cast-member/application/use-cases/common/cast-member-output';
 
 describe('CastMembersController Integration Tests', () => {
   let controller: CastMembersController;

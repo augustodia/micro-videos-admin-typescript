@@ -11,7 +11,7 @@ class StubEvent implements IDomainEvent {
     public name: string,
   ) {
     this.occurred_on = new Date();
-    this.name;
+    this.name = name;
   }
 }
 

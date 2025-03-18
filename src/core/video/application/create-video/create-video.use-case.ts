@@ -1,9 +1,9 @@
-import { CastMembersIdExistsInDatabaseValidator } from '../../../cast-member/application/validations/cast-members-ids-exists-in-database.validator';
-import { CategoriesIdExistsInDatabaseValidator } from '../../../category/application/validations/categories-ids-exists-in-database.validator';
-import { GenresIdExistsInDatabaseValidator } from '../../../genre/application/validations/genres-ids-exists-in-database.validator';
-import { IUseCase } from '../../../shared/application/use-case.interface';
-import { IUnitOfWork } from '../../../shared/domain/repository/unit-of-work.interface';
-import { EntityValidationError } from '../../../shared/domain/validators/validation.error';
+import { CastMembersIdExistsInDatabaseValidator } from '@core/cast-member/application/validations/cast-members-ids-exists-in-database.validator';
+import { CategoriesIdExistsInDatabaseValidator } from '@core/category/application/validations/categories-ids-exists-in-database.validator';
+import { GenresIdExistsInDatabaseValidator } from '@core/genre/application/validations/genres-ids-exists-in-database.validator';
+import { IUseCase } from '@core/shared/application/use-case.interface';
+import { IUnitOfWork } from '@core/shared/domain/repository/unit-of-work.interface';
+import { EntityValidationError } from '@core/shared/domain/validators/validation.error';
 import { Rating } from '../../domain/rating.vo';
 import { Video } from '../../domain/video.aggregate';
 import { IVideoRepository } from '../../domain/video.repository';

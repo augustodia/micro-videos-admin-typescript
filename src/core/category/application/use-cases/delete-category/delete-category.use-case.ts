@@ -1,4 +1,4 @@
-import { IUseCase } from '../../../../shared/application/use-case.interface';
+import { IUseCase } from '@core/shared/application/use-case.interface';
 import { CategoryId } from '../../../domain/category.aggregate';
 import { ICategoryRepository } from '../../../domain/category.repository';
 

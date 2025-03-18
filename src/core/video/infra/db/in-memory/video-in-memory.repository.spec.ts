@@ -1,5 +1,5 @@
-import { CategoryId } from '../../../../category/domain/category.aggregate';
-import { GenreId } from '../../../../genre/domain/genre.aggregate';
+import { CategoryId } from '@core/category/domain/category.aggregate';
+import { GenreId } from '@core/genre/domain/genre.aggregate';
 import { Video } from '../../../domain/video.aggregate';
 import { VideoInMemoryRepository } from './video-in-memory.repository';
 
@@ -178,7 +178,7 @@ describe('VideoInMemoryRepository', () => {
         .build(),
     ];
 
-    const itemsSorted = await repository['applySort'](items, null, null);
+    const itemsSorted = repository['applySort'](items, null, null);
     expect(itemsSorted).toStrictEqual([items[2], items[1], items[0]]);
   });
 
@@ -189,10 +189,10 @@ describe('VideoInMemoryRepository', () => {
       Video.fake().aVideoWithoutMedias().withTitle('a').build(),
     ];
 
-    let itemsSorted = await repository['applySort'](items, 'title', 'asc');
+    let itemsSorted = repository['applySort'](items, 'title', 'asc');
     expect(itemsSorted).toStrictEqual([items[2], items[1], items[0]]);
 
-    itemsSorted = await repository['applySort'](items, 'title', 'desc');
+    itemsSorted = repository['applySort'](items, 'title', 'desc');
     expect(itemsSorted).toStrictEqual([items[0], items[1], items[2]]);
   });
 });

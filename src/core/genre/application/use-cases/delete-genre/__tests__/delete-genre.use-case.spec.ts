@@ -1,5 +1,5 @@
-import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
-import { UnitOfWorkFakeInMemory } from '../../../../../shared/infra/db/in-memory/fake-unit-of-work-in-memory';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
+import { UnitOfWorkFakeInMemory } from '@core/shared/infra/db/in-memory/fake-unit-of-work-in-memory';
 import { Genre, GenreId } from '../../../../domain/genre.aggregate';
 import { GenreInMemoryRepository } from '../../../../infra/db/in-memory/genre-in-memory.repository';
 import { DeleteGenreUseCase } from '../delete-genre.use-case';

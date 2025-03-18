@@ -1,4 +1,4 @@
-import { NotFoundError } from '../../../shared/domain/errors/not-found.error';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
 import { CastMember, CastMemberId } from '../../domain/cast-member.aggregate';
 import { CastMemberInMemoryRepository } from '../../infra/db/in-memory/cast-member-in-memory.repository';
 import { CastMembersIdExistsInDatabaseValidator } from './cast-members-ids-exists-in-database.validator';

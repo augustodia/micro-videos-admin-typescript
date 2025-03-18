@@ -2,7 +2,7 @@ import { Controller, Get, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { EntityValidationErrorFilter } from './entity-validation-error.filter';
 import request from 'supertest';
-import { EntityValidationError } from '../../../core/shared/domain/validators/validation.error';
+import { EntityValidationError } from '@core/shared/domain/validators/validation.error';
 
 @Controller('stub')
 class StubController {

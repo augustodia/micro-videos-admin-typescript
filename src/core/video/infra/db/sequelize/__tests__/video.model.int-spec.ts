@@ -13,19 +13,19 @@ import {
 import {
   CastMemberModel,
   CastMemberSequelizeRepository,
-} from '../../../../../cast-member/infra/db/sequelize/cast-member-sequelize';
+} from '@core/cast-member/infra/db/sequelize/cast-member-sequelize';
 import { RatingValues } from '../../../../domain/rating.vo';
 import { VideoId } from '../../../../domain/video.aggregate';
-import { AudioVideoMediaStatus } from '../../../../../shared/domain/value-objects/audio-video-media.vo';
-import { Category } from '../../../../../category/domain/category.aggregate';
-import { Genre } from '../../../../../genre/domain/genre.aggregate';
-import { CastMember } from '../../../../../cast-member/domain/cast-member.aggregate';
+import { AudioVideoMediaStatus } from '@core/shared/domain/value-objects/audio-video-media.vo';
+import { Category } from '@core/category/domain/category.aggregate';
+import { Genre } from '@core/genre/domain/genre.aggregate';
+import { CastMember } from '@core/cast-member/domain/cast-member.aggregate';
 import { setupSequelizeForVideo } from '../testing/helpers';
-import { GenreModel } from '../../../../../genre/infra/db/sequelize/genre-model';
-import { CategorySequelizeRepository } from '../../../../../category/infra/db/sequelize/category-sequelize.repository';
-import { CategoryModel } from '../../../../../category/infra/db/sequelize/category.model';
-import { GenreSequelizeRepository } from '../../../../../genre/infra/db/sequelize/genre-sequelize.repository';
-import { UnitOfWorkFakeInMemory } from '../../../../../shared/infra/db/in-memory/fake-unit-of-work-in-memory';
+import { GenreModel } from '@core/genre/infra/db/sequelize/genre-model';
+import { CategorySequelizeRepository } from '@core/category/infra/db/sequelize/category-sequelize.repository';
+import { CategoryModel } from '@core/category/infra/db/sequelize/category.model';
+import { GenreSequelizeRepository } from '@core/genre/infra/db/sequelize/genre-sequelize.repository';
+import { UnitOfWorkFakeInMemory } from '@core/shared/infra/db/in-memory/fake-unit-of-work-in-memory';
 
 describe('VideoCategoryModel Unit Tests', () => {
   setupSequelizeForVideo();

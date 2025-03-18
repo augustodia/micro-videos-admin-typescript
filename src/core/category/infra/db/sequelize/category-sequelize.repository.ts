@@ -1,5 +1,5 @@
 import { Op, literal } from 'sequelize';
-import { NotFoundError } from '../../../../shared/domain/errors/not-found.error';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
 import { Category, CategoryId } from '../../../domain/category.aggregate';
 import {
   CategorySearchParams,
@@ -8,8 +8,8 @@ import {
 } from '../../../domain/category.repository';
 import { CategoryModel } from './category.model';
 import { CategoryModelMapper } from './category-model-mapper';
-import { SortDirection } from '../../../../shared/domain/repository/search-params';
-import { InvalidArgumentError } from '../../../../shared/domain/errors/invalid-argument.error';
+import { SortDirection } from '@core/shared/domain/repository/search-params';
+import { InvalidArgumentError } from '@core/shared/domain/errors/invalid-argument.error';
 
 export class CategorySequelizeRepository implements ICategoryRepository {
   sortableFields: string[] = ['name', 'created_at'];

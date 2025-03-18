@@ -2,11 +2,11 @@ import {
   CastMemberOutput,
   CastMemberOutputMapper,
 } from '../common/cast-member-output';
-import { IUseCase } from '../../../../shared/application/use-case.interface';
+import { IUseCase } from '@core/shared/application/use-case.interface';
 import {
   PaginationOutput,
   PaginationOutputMapper,
-} from '../../../../shared/application/pagination-output';
+} from '@core/shared/application/pagination-output';
 import {
   ICastMemberRepository,
   CastMemberSearchParams,

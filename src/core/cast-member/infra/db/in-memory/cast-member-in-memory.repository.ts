@@ -1,5 +1,5 @@
-import { InMemorySearchableRepository } from '../../../../shared/infra/db/in-memory/in-memory.repository';
-import { SortDirection } from '../../../../shared/domain/repository/search-params';
+import { InMemorySearchableRepository } from '@core/shared/infra/db/in-memory/in-memory.repository';
+import { SortDirection } from '@core/shared/domain/repository/search-params';
 import {
   CastMember,
   CastMemberId,

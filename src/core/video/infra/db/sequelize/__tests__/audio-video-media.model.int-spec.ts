@@ -1,7 +1,7 @@
 import { DataType } from 'sequelize-typescript';
 import { AudioVideoMediaModel } from '../audio-video-media.model';
 import { setupSequelizeForVideo } from '../testing/helpers';
-import { AudioVideoMediaStatus } from '../../../../../shared/domain/value-objects/audio-video-media.vo';
+import { AudioVideoMediaStatus } from '@core/shared/domain/value-objects/audio-video-media.vo';
 
 describe('AudioVideoMediaModel Unit Tests', () => {
   setupSequelizeForVideo();

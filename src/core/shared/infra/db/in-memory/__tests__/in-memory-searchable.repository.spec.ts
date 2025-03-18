@@ -101,10 +101,10 @@ describe('InMemorySearchableRepository Unit Tests', () => {
         new StubEntity({ name: 'a', price: 5 }),
       ];
 
-      let itemsSorted = await repository['applySort'](items, null, null);
+      let itemsSorted = repository['applySort'](items, null, null);
       expect(itemsSorted).toStrictEqual(items);
 
-      itemsSorted = await repository['applySort'](items, 'price', 'asc');
+      itemsSorted = repository['applySort'](items, 'price', 'asc');
       expect(itemsSorted).toStrictEqual(items);
     });
 
@@ -115,10 +115,10 @@ describe('InMemorySearchableRepository Unit Tests', () => {
         new StubEntity({ name: 'c', price: 5 }),
       ];
 
-      let itemsSorted = await repository['applySort'](items, 'name', 'asc');
+      let itemsSorted = repository['applySort'](items, 'name', 'asc');
       expect(itemsSorted).toStrictEqual([items[1], items[0], items[2]]);
 
-      itemsSorted = await repository['applySort'](items, 'name', 'desc');
+      itemsSorted = repository['applySort'](items, 'name', 'desc');
       expect(itemsSorted).toStrictEqual([items[2], items[0], items[1]]);
     });
   });
@@ -133,16 +133,16 @@ describe('InMemorySearchableRepository Unit Tests', () => {
         new StubEntity({ name: 'e', price: 5 }),
       ];
 
-      let itemsPaginated = await repository['applyPaginate'](items, 1, 2);
+      let itemsPaginated = repository['applyPaginate'](items, 1, 2);
       expect(itemsPaginated).toStrictEqual([items[0], items[1]]);
 
-      itemsPaginated = await repository['applyPaginate'](items, 2, 2);
+      itemsPaginated = repository['applyPaginate'](items, 2, 2);
       expect(itemsPaginated).toStrictEqual([items[2], items[3]]);
 
-      itemsPaginated = await repository['applyPaginate'](items, 3, 2);
+      itemsPaginated = repository['applyPaginate'](items, 3, 2);
       expect(itemsPaginated).toStrictEqual([items[4]]);
 
-      itemsPaginated = await repository['applyPaginate'](items, 4, 2);
+      itemsPaginated = repository['applyPaginate'](items, 4, 2);
       expect(itemsPaginated).toStrictEqual([]);
     });
   });

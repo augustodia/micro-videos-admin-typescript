@@ -1,12 +1,12 @@
 import request from 'supertest';
 import { instanceToPlain } from 'class-transformer';
-import { ICategoryRepository } from '../../src/core/category/domain/category.repository';
+import { ICategoryRepository } from '@core/category/domain/category.repository';
 import * as CategoryProviders from '../../src/nest-modules/categories-module/categories.providers';
-import { CategoryOutputMapper } from '../../src/core/category/application/use-cases/common/category-output';
-import { Uuid } from '../../src/core/shared/domain/value-objects/uuid.vo';
+import { CategoryOutputMapper } from '@core/category/application/use-cases/common/category-output';
+import { Uuid } from '@core/shared/domain/value-objects/uuid.vo';
 import { startApp } from '../../src/nest-modules/shared-module/testing/helpers';
 import { CategoriesController } from '../../src/nest-modules/categories-module/categories.controller';
-import { Category } from '../../src/core/category/domain/category.aggregate';
+import { Category } from '@core/category/domain/category.aggregate';
 import { UpdateCategoryFixture } from '../../src/nest-modules/categories-module/testing/category-fixture';
 
 describe('CategoriesController (e2e)', () => {

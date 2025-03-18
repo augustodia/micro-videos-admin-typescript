@@ -1,9 +1,9 @@
 import {
   PaginationOutput,
   PaginationOutputMapper,
-} from '../../../../shared/application/pagination-output';
-import { IUseCase } from '../../../../shared/application/use-case.interface';
-import { SortDirection } from '../../../../shared/domain/repository/search-params';
+} from '@core/shared/application/pagination-output';
+import { IUseCase } from '@core/shared/application/use-case.interface';
+import { SortDirection } from '@core/shared/domain/repository/search-params';
 import {
   CategoryFilter,
   CategorySearchParams,

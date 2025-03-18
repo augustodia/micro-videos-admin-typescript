@@ -1,5 +1,5 @@
-import { Either } from '../../../shared/domain/either';
-import { NotFoundError } from '../../../shared/domain/errors/not-found.error';
+import { Either } from '@core/shared/domain/either';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
 import { Category, CategoryId } from '../../domain/category.aggregate';
 import { ICategoryRepository } from '../../domain/category.repository';
 

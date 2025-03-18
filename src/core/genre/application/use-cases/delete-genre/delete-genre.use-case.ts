@@ -1,5 +1,5 @@
-import { IUseCase } from '../../../../shared/application/use-case.interface';
-import { IUnitOfWork } from '../../../../shared/domain/repository/unit-of-work.interface';
+import { IUseCase } from '@core/shared/application/use-case.interface';
+import { IUnitOfWork } from '@core/shared/domain/repository/unit-of-work.interface';
 import { GenreId } from '../../../domain/genre.aggregate';
 import { IGenreRepository } from '../../../domain/genre.repository';
 

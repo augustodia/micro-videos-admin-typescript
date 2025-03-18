@@ -1,5 +1,5 @@
-import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
-import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
+import { setupSequelize } from '@core/shared/infra/testing/helpers';
 import { Category, CategoryId } from '../../../../domain/category.aggregate';
 import { CategorySequelizeRepository } from '../../../../infra/db/sequelize/category-sequelize.repository';
 import { CategoryModel } from '../../../../infra/db/sequelize/category.model';
@@ -25,7 +25,7 @@ describe('UpdateCategoryUseCase Integration Tests', () => {
 
   it('should update a category', async () => {
     const entity = Category.fake().aCategory().build();
-    repository.insert(entity);
+    await repository.insert(entity);
 
     let output = await useCase.execute({
       id: entity.category_id.id,

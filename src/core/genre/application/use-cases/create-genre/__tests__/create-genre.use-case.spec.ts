@@ -1,11 +1,8 @@
-import { CategoriesIdExistsInDatabaseValidator } from '../../../../../category/application/validations/categories-ids-exists-in-database.validator';
-import {
-  Category,
-  CategoryId,
-} from '../../../../../category/domain/category.aggregate';
-import { CategoryInMemoryRepository } from '../../../../../category/infra/db/in-memory/category-in-memory.repository';
-import { EntityValidationError } from '../../../../../shared/domain/validators/validation.error';
-import { UnitOfWorkFakeInMemory } from '../../../../../shared/infra/db/in-memory/fake-unit-of-work-in-memory';
+import { CategoriesIdExistsInDatabaseValidator } from '@core/category/application/validations/categories-ids-exists-in-database.validator';
+import { Category } from '@core/category/domain/category.aggregate';
+import { CategoryInMemoryRepository } from '@core/category/infra/db/in-memory/category-in-memory.repository';
+import { EntityValidationError } from '@core/shared/domain/validators/validation.error';
+import { UnitOfWorkFakeInMemory } from '@core/shared/infra/db/in-memory/fake-unit-of-work-in-memory';
 import { GenreInMemoryRepository } from '../../../../infra/db/in-memory/genre-in-memory.repository';
 import { CreateGenreUseCase } from '../create-genre.use-case';
 

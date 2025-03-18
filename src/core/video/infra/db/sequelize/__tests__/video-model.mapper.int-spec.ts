@@ -1,20 +1,20 @@
-import { CastMember } from '../../../../../cast-member/domain/cast-member.aggregate';
-import { ICastMemberRepository } from '../../../../../cast-member/domain/cast-member.repository';
+import { CastMember } from '@core/cast-member/domain/cast-member.aggregate';
+import { ICastMemberRepository } from '@core/cast-member/domain/cast-member.repository';
 import {
   CastMemberModel,
   CastMemberSequelizeRepository,
-} from '../../../../../cast-member/infra/db/sequelize/cast-member-sequelize';
-import { Category } from '../../../../../category/domain/category.aggregate';
-import { ICategoryRepository } from '../../../../../category/domain/category.repository';
-import { CategorySequelizeRepository } from '../../../../../category/infra/db/sequelize/category-sequelize.repository';
-import { CategoryModel } from '../../../../../category/infra/db/sequelize/category.model';
-import { Genre } from '../../../../../genre/domain/genre.aggregate';
-import { IGenreRepository } from '../../../../../genre/domain/genre.repository';
-import { GenreModel } from '../../../../../genre/infra/db/sequelize/genre-model';
-import { GenreSequelizeRepository } from '../../../../../genre/infra/db/sequelize/genre-sequelize.repository';
-import { LoadEntityError } from '../../../../../shared/domain/validators/validation.error';
-import { AudioVideoMediaStatus } from '../../../../../shared/domain/value-objects/audio-video-media.vo';
-import { UnitOfWorkFakeInMemory } from '../../../../../shared/infra/db/in-memory/fake-unit-of-work-in-memory';
+} from '@core/cast-member/infra/db/sequelize/cast-member-sequelize';
+import { Category } from '@core/category/domain/category.aggregate';
+import { ICategoryRepository } from '@core/category/domain/category.repository';
+import { CategorySequelizeRepository } from '@core/category/infra/db/sequelize/category-sequelize.repository';
+import { CategoryModel } from '@core/category/infra/db/sequelize/category.model';
+import { Genre } from '@core/genre/domain/genre.aggregate';
+import { IGenreRepository } from '@core/genre/domain/genre.repository';
+import { GenreModel } from '@core/genre/infra/db/sequelize/genre-model';
+import { GenreSequelizeRepository } from '@core/genre/infra/db/sequelize/genre-sequelize.repository';
+import { LoadEntityError } from '@core/shared/domain/validators/validation.error';
+import { AudioVideoMediaStatus } from '@core/shared/domain/value-objects/audio-video-media.vo';
+import { UnitOfWorkFakeInMemory } from '@core/shared/infra/db/in-memory/fake-unit-of-work-in-memory';
 import { Banner } from '../../../../domain/banner.vo';
 import { Rating, RatingValues } from '../../../../domain/rating.vo';
 import { ThumbnailHalf } from '../../../../domain/thumbnail-half.vo';

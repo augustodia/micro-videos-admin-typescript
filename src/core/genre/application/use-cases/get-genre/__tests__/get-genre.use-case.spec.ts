@@ -1,6 +1,6 @@
-import { Category } from '../../../../../category/domain/category.aggregate';
-import { CategoryInMemoryRepository } from '../../../../../category/infra/db/in-memory/category-in-memory.repository';
-import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
+import { Category } from '@core/category/domain/category.aggregate';
+import { CategoryInMemoryRepository } from '@core/category/infra/db/in-memory/category-in-memory.repository';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
 import { Genre, GenreId } from '../../../../domain/genre.aggregate';
 import { GenreInMemoryRepository } from '../../../../infra/db/in-memory/genre-in-memory.repository';
 import { GetGenreUseCase } from '../get-genre.use-case';

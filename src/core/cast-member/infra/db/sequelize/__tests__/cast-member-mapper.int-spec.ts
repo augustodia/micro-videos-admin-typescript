@@ -1,5 +1,5 @@
-import { LoadEntityError } from '../../../../../shared/domain/validators/validation.error';
-import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
+import { LoadEntityError } from '@core/shared/domain/validators/validation.error';
+import { setupSequelize } from '@core/shared/infra/testing/helpers';
 import {
   CastMemberType,
   CastMemberTypes,

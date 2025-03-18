@@ -2,8 +2,8 @@ import {
   CastMember,
   CastMemberId,
 } from '../../../../domain/cast-member.aggregate';
-import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
-import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
+import { setupSequelize } from '@core/shared/infra/testing/helpers';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
 import {
   CastMemberModel,
   CastMemberModelMapper,

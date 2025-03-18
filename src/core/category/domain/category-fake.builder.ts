@@ -16,7 +16,7 @@ export class CategoryFakeBuilder<TBuild = any> {
   // auto generated in entity
   private _created_at: PropOrFactory<Date> | undefined = undefined;
 
-  private countObjs;
+  private readonly countObjs;
 
   static aCategory() {
     return new CategoryFakeBuilder<Category>();

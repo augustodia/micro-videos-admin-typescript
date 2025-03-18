@@ -1,5 +1,5 @@
-import { Either } from '../../../shared/domain/either';
-import { NotFoundError } from '../../../shared/domain/errors/not-found.error';
+import { Either } from '@core/shared/domain/either';
+import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
 import { CastMember, CastMemberId } from '../../domain/cast-member.aggregate';
 import { ICastMemberRepository } from '../../domain/cast-member.repository';
 

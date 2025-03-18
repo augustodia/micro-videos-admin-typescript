@@ -1,18 +1,18 @@
-import { CastMembersIdExistsInDatabaseValidator } from '../../../../cast-member/application/validations/cast-members-ids-exists-in-database.validator';
-import { CastMember } from '../../../../cast-member/domain/cast-member.aggregate';
+import { CastMembersIdExistsInDatabaseValidator } from '@core/cast-member/application/validations/cast-members-ids-exists-in-database.validator';
+import { CastMember } from '@core/cast-member/domain/cast-member.aggregate';
 import {
   CastMemberModel,
   CastMemberSequelizeRepository,
-} from '../../../../cast-member/infra/db/sequelize/cast-member-sequelize';
-import { CategoriesIdExistsInDatabaseValidator } from '../../../../category/application/validations/categories-ids-exists-in-database.validator';
-import { Category } from '../../../../category/domain/category.aggregate';
-import { CategorySequelizeRepository } from '../../../../category/infra/db/sequelize/category-sequelize.repository';
-import { CategoryModel } from '../../../../category/infra/db/sequelize/category.model';
-import { GenresIdExistsInDatabaseValidator } from '../../../../genre/application/validations/genres-ids-exists-in-database.validator';
-import { Genre } from '../../../../genre/domain/genre.aggregate';
-import { GenreModel } from '../../../../genre/infra/db/sequelize/genre-model';
-import { GenreSequelizeRepository } from '../../../../genre/infra/db/sequelize/genre-sequelize.repository';
-import { UnitOfWorkSequelize } from '../../../../shared/infra/db/sequelize/unit-of-work-sequelize';
+} from '@core/cast-member/infra/db/sequelize/cast-member-sequelize';
+import { CategoriesIdExistsInDatabaseValidator } from '@core/category/application/validations/categories-ids-exists-in-database.validator';
+import { Category } from '@core/category/domain/category.aggregate';
+import { CategorySequelizeRepository } from '@core/category/infra/db/sequelize/category-sequelize.repository';
+import { CategoryModel } from '@core/category/infra/db/sequelize/category.model';
+import { GenresIdExistsInDatabaseValidator } from '@core/genre/application/validations/genres-ids-exists-in-database.validator';
+import { Genre } from '@core/genre/domain/genre.aggregate';
+import { GenreModel } from '@core/genre/infra/db/sequelize/genre-model';
+import { GenreSequelizeRepository } from '@core/genre/infra/db/sequelize/genre-sequelize.repository';
+import { UnitOfWorkSequelize } from '@core/shared/infra/db/sequelize/unit-of-work-sequelize';
 import { RatingValues } from '../../../domain/rating.vo';
 import { Video, VideoId } from '../../../domain/video.aggregate';
 import { setupSequelizeForVideo } from '../../../infra/db/sequelize/testing/helpers';

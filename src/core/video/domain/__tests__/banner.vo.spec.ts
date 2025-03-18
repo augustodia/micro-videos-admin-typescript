@@ -1,7 +1,7 @@
 import {
   InvalidMediaFileMimeTypeError,
   InvalidMediaFileSizeError,
-} from '../../../shared/domain/validators/media-file.validator';
+} from '@core/shared/domain/validators/media-file.validator';
 import { Banner } from '../banner.vo';
 import { VideoId } from '../video.aggregate';
 
