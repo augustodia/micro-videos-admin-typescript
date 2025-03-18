@@ -8,6 +8,7 @@ import { ThumbnailHalf } from '@core/video/domain/thumbnail-half.vo';
 import { Thumbnail } from '@core/video/domain/thumbnail.vo';
 import { EntityValidationError } from '@core/shared/domain/validators/validation.error';
 import { IUnitOfWork } from '@core/shared/domain/repository/unit-of-work.interface';
+import { IStorage } from '@core/shared/application/storage.interface';
 
 export class UploadImageMediasUseCase
   implements IUseCase<UploadImageMediasInput, UploadImageMediasOutput>
@@ -15,6 +16,7 @@ export class UploadImageMediasUseCase
   constructor(
     private readonly uow: IUnitOfWork,
     private readonly videoRepo: IVideoRepository,
+    private readonly storage: IStorage,
   ) {}
   async execute(
     input: UploadImageMediasInput,
