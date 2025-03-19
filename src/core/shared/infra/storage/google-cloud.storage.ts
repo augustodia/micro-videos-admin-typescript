@@ -12,6 +12,7 @@ export class GoogleCloudStorage implements IStorage {
     id: string,
   ): Promise<{ data: Buffer; mime_type: string | undefined }> {
     const file = this.storageSDK.bucket(this.bucketName).file(id);
+    const url = file.cloudStorageURI;
     const [content, metadata] = await Promise.all([
       file.download(),
       file.getMetadata(),
