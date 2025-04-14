@@ -2,7 +2,7 @@ import { Global, Module, Scope } from '@nestjs/common';
 import { SequelizeModule, getConnectionToken } from '@nestjs/sequelize';
 import { ConfigService } from '@nestjs/config';
 import { CONFIG_SCHEMA_TYPE } from '../config-module/config.module';
-import { CategoryModel } from '../../core/category/infra/db/sequelize/category-model';
+import { CategoryModel } from '@core/category/infra/db/sequelize/category-model';
 import { UnitOfWorkSequelize } from '@core/shared/infra/db/sequelize/unit-of-work-sequelize';
 import { Sequelize } from 'sequelize';
 import { AudioVideoMediaModel } from '@core/video/infra/db/sequelize/audio-video-media.model';
@@ -10,7 +10,7 @@ import { ImageMediaModel } from '@core/video/infra/db/sequelize/image-media.mode
 import {
   GenreCategoryModel,
   GenreModel,
-} from '../../core/genre/infra/db/sequelize/genre-model';
+} from '@core/genre/infra/db/sequelize/genre-model';
 import { CastMemberModel } from '@core/cast-member/infra/db/sequelize/cast-member-sequelize';
 import {
   VideoCastMemberModel,
