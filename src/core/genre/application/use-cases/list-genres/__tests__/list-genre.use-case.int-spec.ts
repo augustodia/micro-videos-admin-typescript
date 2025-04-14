@@ -1,6 +1,6 @@
 import { Category } from '@core/category/domain/category.aggregate';
 import { CategorySequelizeRepository } from '@core/category/infra/db/sequelize/category-sequelize.repository';
-import { CategoryModel } from '@core/category/infra/db/sequelize/category.model';
+import { CategoryModel } from '@core/category/infra/db/sequelize/category-model';
 import { UnitOfWorkSequelize } from '@core/shared/infra/db/sequelize/unit-of-work-sequelize';
 import { setupSequelize } from '@core/shared/infra/testing/helpers';
 import { Genre } from '../../../../domain/genre.aggregate';

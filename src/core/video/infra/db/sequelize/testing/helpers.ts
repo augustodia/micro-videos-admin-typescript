@@ -9,7 +9,7 @@ import {
 } from '../video.model';
 import { AudioVideoMediaModel } from '../audio-video-media.model';
 import { CastMemberModel } from '@core/cast-member/infra/db/sequelize/cast-member-sequelize';
-import { CategoryModel } from '@core/category/infra/db/sequelize/category.model';
+import { CategoryModel } from '@core/category/infra/db/sequelize/category-model';
 import {
   GenreCategoryModel,
   GenreModel,
