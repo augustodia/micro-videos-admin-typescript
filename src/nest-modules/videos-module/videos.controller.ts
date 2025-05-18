@@ -9,6 +9,8 @@ import {
   ParseUUIDPipe,
   UploadedFiles,
   ValidationPipe,
+  UseInterceptors,
+  BadRequestException,
 } from '@nestjs/common';
 import { CreateVideoUseCase } from '@core/video/application/create-video/create-video.use-case';
 import { UpdateVideoUseCase } from '@core/video/application/update-video/update-video.use-case';
@@ -17,6 +19,7 @@ import { GetVideoUseCase } from '@core/video/application/get-video/get-video.use
 import { CreateVideoDto } from './dto/create-video.dto';
 import { UpdateVideoDto } from './dto/update-video.dto';
 import { UpdateVideoInput } from '@core/video/application/update-video/update-video.input';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
 @Controller('videos')
 export class VideosController {
@@ -45,12 +48,34 @@ export class VideosController {
     return await this.getUseCase.execute({ id });
   }
 
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'banner', maxCount: 1 },
+      { name: 'thumbnail', maxCount: 1 },
+      { name: 'thumbnail_half', maxCount: 1 },
+      { name: 'trailer', maxCount: 1 },
+      { name: 'video', maxCount: 1 },
+    ]),
+  )
   @Patch(':id')
   async update(
     @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 422 })) id: string,
-    @Body() updateVideoDto: any,
+    @Body() updateVideoDto: UpdateVideoDto,
+    @UploadedFiles()
+    files?: {
+      banner?: Express.Multer.File[];
+      thumbnail?: Express.Multer.File[];
+      thumbnail_half?: Express.Multer.File[];
+      trailer?: Express.Multer.File[];
+      video?: Express.Multer.File[];
+    },
   ) {
+    const hasFiles = files && Object.keys(files).length > 0;
     const hasData = Object.keys(updateVideoDto).length > 0;
+
+    if (hasFiles && hasData) {
+      throw new BadRequestException('Files and data cannot be sent together');
+    }
 
     if (hasData) {
       const data = await new ValidationPipe({
