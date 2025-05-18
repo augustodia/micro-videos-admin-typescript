@@ -20,6 +20,8 @@ import { CreateVideoDto } from './dto/create-video.dto';
 import { UpdateVideoDto } from './dto/update-video.dto';
 import { UpdateVideoInput } from '@core/video/application/update-video/update-video.input';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { UploadAudioVideoMediaInput } from '@core/video/application/upload-audio-video-medias/upload-audio-video-media.input';
+import { UploadImageMediasUseCase } from '@core/video/application/upload-image-medias/upload-image-medias.use-case';
 
 @Controller('videos')
 export class VideosController {
@@ -31,6 +33,9 @@ export class VideosController {
 
   @Inject(UploadAudioVideoMediasUseCase)
   private uploadAudioVideoMedia: UploadAudioVideoMediasUseCase;
+
+  @Inject(UploadImageMediasUseCase)
+  private uploadImageMedia: UploadImageMediasUseCase;
 
   @Inject(GetVideoUseCase)
   private getUseCase: GetVideoUseCase;
@@ -72,6 +77,9 @@ export class VideosController {
   ) {
     const hasFiles = files && Object.keys(files).length > 0;
     const hasData = Object.keys(updateVideoDto).length > 0;
+    if (!hasFiles && !hasData) {
+      throw new BadRequestException('No data or files were sent');
+    }
 
     if (hasFiles && hasData) {
       throw new BadRequestException('Files and data cannot be sent together');
@@ -86,15 +94,59 @@ export class VideosController {
       });
 
       const input = new UpdateVideoInput({ id, ...data });
-      const { id: updatedId } = await this.updateUseCase.execute(input);
-      return await this.getUseCase.execute({ id: updatedId });
+      await this.updateUseCase.execute(input);
     }
-  }
 
-  @Patch(':id/upload')
-  uploadFile(
-    @UploadedFiles()
-    @Body()
-    data,
-  ) {}
+    const hasMoreThanOneFile = files && Object.keys(files).length > 1;
+    if (hasMoreThanOneFile) {
+      throw new BadRequestException('Only one file can be sent');
+    }
+
+    const hasAudioVideoMedia = files?.trailer?.length || files?.video?.length;
+    const fileField = Object.keys(files!)[0];
+    const file = files![fileField][0];
+    if (hasAudioVideoMedia) {
+      const dto: UploadAudioVideoMediaInput = {
+        video_id: id,
+        field: fileField as any,
+        file: {
+          raw_name: file.originalname,
+          mime_type: file.mimetype,
+          size: file.size,
+          data: file.buffer,
+        },
+      };
+
+      const input = await new ValidationPipe({
+        errorHttpStatusCode: 422,
+      }).transform(dto, {
+        metatype: UploadAudioVideoMediaInput,
+        type: 'body',
+      });
+
+      await this.uploadAudioVideoMedia.execute(input);
+    } else {
+      const dto: UploadAudioVideoMediaInput = {
+        video_id: id,
+        field: fileField as any,
+        file: {
+          raw_name: file.originalname,
+          mime_type: file.mimetype,
+          size: file.size,
+          data: file.buffer,
+        },
+      };
+
+      const input = await new ValidationPipe({
+        errorHttpStatusCode: 422,
+      }).transform(dto, {
+        metatype: UploadAudioVideoMediaInput,
+        type: 'body',
+      });
+
+      await this.uploadImageMedia.execute(input);
+    }
+
+    return await this.getUseCase.execute({ id });
+  }
 }
