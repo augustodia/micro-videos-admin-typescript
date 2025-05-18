@@ -22,6 +22,7 @@ import { UpdateVideoInput } from '@core/video/application/update-video/update-vi
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { UploadAudioVideoMediaInput } from '@core/video/application/upload-audio-video-medias/upload-audio-video-media.input';
 import { UploadImageMediasUseCase } from '@core/video/application/upload-image-medias/upload-image-medias.use-case';
+import { UploadImageMediasInput } from '@core/video/application/upload-image-medias/upload-image-medias.input';
 
 @Controller('videos')
 export class VideosController {
@@ -126,7 +127,7 @@ export class VideosController {
 
       await this.uploadAudioVideoMedia.execute(input);
     } else {
-      const dto: UploadAudioVideoMediaInput = {
+      const dto: UploadImageMediasInput = {
         video_id: id,
         field: fileField as any,
         file: {
@@ -140,7 +141,7 @@ export class VideosController {
       const input = await new ValidationPipe({
         errorHttpStatusCode: 422,
       }).transform(dto, {
-        metatype: UploadAudioVideoMediaInput,
+        metatype: UploadImageMediasInput,
         type: 'body',
       });
 
