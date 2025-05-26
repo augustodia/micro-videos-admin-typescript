@@ -1,5 +1,5 @@
 import { DataType } from 'sequelize-typescript';
-import { CategoryModel } from '../category.model';
+import { CategoryModel } from '../category-model';
 import { setupSequelize } from '@core/shared/infra/testing/helpers';
 
 describe('CategoryModel Integration Tests', () => {

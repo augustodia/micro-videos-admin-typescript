@@ -8,7 +8,7 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-import { CategoryModel } from '@core/category/infra/db/sequelize/category.model';
+import { CategoryModel } from '@core/category/infra/db/sequelize/category-model';
 
 export type GenreModelProps = {
   genre_id: string;

@@ -5,7 +5,7 @@ import {
 } from '@core/cast-member/infra/db/sequelize/cast-member-sequelize';
 import { ICategoryRepository } from '@core/category/domain/category.repository';
 import { CategorySequelizeRepository } from '@core/category/infra/db/sequelize/category-sequelize.repository';
-import { CategoryModel } from '@core/category/infra/db/sequelize/category.model';
+import { CategoryModel } from '@core/category/infra/db/sequelize/category-model';
 import { IGenreRepository } from '@core/genre/domain/genre.repository';
 import { GenreModel } from '@core/genre/infra/db/sequelize/genre-model';
 import { GenreSequelizeRepository } from '@core/genre/infra/db/sequelize/genre-sequelize.repository';

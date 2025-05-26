@@ -10,7 +10,7 @@ import {
   GenreCategoryModel,
   GenreModel,
 } from '../../../../infra/db/sequelize/genre-model';
-import { CategoryModel } from '@core/category/infra/db/sequelize/category.model';
+import { CategoryModel } from '@core/category/infra/db/sequelize/category-model';
 
 describe('GetGenreUseCase Integration Tests', () => {
   let uow: UnitOfWorkSequelize;

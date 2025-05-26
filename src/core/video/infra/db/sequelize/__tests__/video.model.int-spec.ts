@@ -23,7 +23,7 @@ import { CastMember } from '@core/cast-member/domain/cast-member.aggregate';
 import { setupSequelizeForVideo } from '../testing/helpers';
 import { GenreModel } from '@core/genre/infra/db/sequelize/genre-model';
 import { CategorySequelizeRepository } from '@core/category/infra/db/sequelize/category-sequelize.repository';
-import { CategoryModel } from '@core/category/infra/db/sequelize/category.model';
+import { CategoryModel } from '@core/category/infra/db/sequelize/category-model';
 import { GenreSequelizeRepository } from '@core/genre/infra/db/sequelize/genre-sequelize.repository';
 import { UnitOfWorkFakeInMemory } from '@core/shared/infra/db/in-memory/fake-unit-of-work-in-memory';
 

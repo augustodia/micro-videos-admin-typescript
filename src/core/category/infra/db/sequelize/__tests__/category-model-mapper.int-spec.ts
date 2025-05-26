@@ -2,7 +2,7 @@ import { LoadEntityError } from '@core/shared/domain/validators/validation.error
 import { setupSequelize } from '@core/shared/infra/testing/helpers';
 import { Category, CategoryId } from '../../../../domain/category.aggregate';
 import { CategoryModelMapper } from '../category-model-mapper';
-import { CategoryModel } from '../category.model';
+import { CategoryModel } from '../category-model';
 
 describe('CategoryModelMapper Integration Tests', () => {
   setupSequelize({ models: [CategoryModel] });

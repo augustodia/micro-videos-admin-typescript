@@ -1,6 +1,6 @@
 import { LoadEntityError } from '@core/shared/domain/validators/validation.error';
 import { Category, CategoryId } from '../../../domain/category.aggregate';
-import { CategoryModel } from './category.model';
+import { CategoryModel } from './category-model';
 
 export class CategoryModelMapper {
   static toModel(entity: Category): CategoryModel {

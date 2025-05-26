@@ -6,7 +6,7 @@ import {
   CategorySearchResult,
   ICategoryRepository,
 } from '../../../domain/category.repository';
-import { CategoryModel } from './category.model';
+import { CategoryModel } from './category-model';
 import { CategoryModelMapper } from './category-model-mapper';
 import { SortDirection } from '@core/shared/domain/repository/search-params';
 import { InvalidArgumentError } from '@core/shared/domain/errors/invalid-argument.error';

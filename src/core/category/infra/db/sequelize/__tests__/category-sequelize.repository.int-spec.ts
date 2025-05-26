@@ -1,4 +1,4 @@
-import { CategoryModel } from '../category.model';
+import { CategoryModel } from '../category-model';
 import { CategorySequelizeRepository } from '../category-sequelize.repository';
 import { Category, CategoryId } from '../../../../domain/category.aggregate';
 import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
