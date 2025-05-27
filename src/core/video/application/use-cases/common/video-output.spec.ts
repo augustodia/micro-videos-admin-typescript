@@ -1,7 +1,7 @@
 import { CastMember } from '@core/cast-member/domain/cast-member.aggregate';
 import { Category } from '@core/category/domain/category.aggregate';
 import { Genre } from '@core/genre/domain/genre.aggregate';
-import { Video } from '../../domain/video.aggregate';
+import { Video } from '../../../domain/video.aggregate';
 import { VideoOutputMapper } from './video-output';
 
 describe('VideoOutputMapper Unit Tests', () => {

@@ -2,8 +2,8 @@ import { CastMemberTypes } from '@core/cast-member/domain/cast-member-type.vo';
 import { CastMember } from '@core/cast-member/domain/cast-member.aggregate';
 import { Category } from '@core/category/domain/category.aggregate';
 import { Genre } from '@core/genre/domain/genre.aggregate';
-import { RatingValues } from '../../domain/rating.vo';
-import { Video } from '../../domain/video.aggregate';
+import { RatingValues } from '../../../domain/rating.vo';
+import { Video } from '../../../domain/video.aggregate';
 
 export type VideoCategoryOutput = {
   id: string;

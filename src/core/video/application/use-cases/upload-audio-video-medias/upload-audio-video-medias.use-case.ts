@@ -2,11 +2,11 @@ import { IStorage } from '@core/shared/application/storage.interface';
 import { IUseCase } from '@core/shared/application/use-case.interface';
 import { NotFoundError } from '@core/shared/domain/errors/not-found.error';
 import { EntityValidationError } from '@core/shared/domain/validators/validation.error';
-import { UploadAudioVideoMediaInput } from '@core/video/application/upload-audio-video-medias/upload-audio-video-media.input';
-import { Trailer } from '../../domain/trailer.vo';
-import { VideoMedia } from '../../domain/video-media.vo';
-import { Video, VideoId } from '../../domain/video.aggregate';
-import { IVideoRepository } from '../../domain/video.repository';
+import { UploadAudioVideoMediaInput } from '@core/video/application/use-cases/upload-audio-video-medias/upload-audio-video-media.input';
+import { Trailer } from '../../../domain/trailer.vo';
+import { VideoMedia } from '../../../domain/video-media.vo';
+import { Video, VideoId } from '../../../domain/video.aggregate';
+import { IVideoRepository } from '../../../domain/video.repository';
 import { ApplicationService } from '@core/shared/application/application.service';
 
 export class UploadAudioVideoMediasUseCase

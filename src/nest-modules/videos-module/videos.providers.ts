@@ -13,14 +13,14 @@ import { ICastMemberRepository } from '@core/cast-member/domain/cast-member.repo
 import { ICategoryRepository } from '@core/category/domain/category.repository';
 import { ApplicationService } from '@core/shared/application/application.service';
 import { IStorage } from '@core/shared/application/storage.interface';
-import { CreateVideoUseCase } from '@core/video/application/create-video/create-video.use-case';
+import { CreateVideoUseCase } from '@core/video/application/use-cases/create-video/create-video.use-case';
 import { CategoriesIdExistsInDatabaseValidator } from '@core/category/application/validations/categories-ids-exists-in-database.validator';
 import { GenresIdExistsInDatabaseValidator } from '@core/genre/application/validations/genres-ids-exists-in-database.validator';
 import { CastMembersIdExistsInDatabaseValidator } from '@core/cast-member/application/validations/cast-members-ids-exists-in-database.validator';
-import { UpdateVideoUseCase } from '@core/video/application/update-video/update-video.use-case';
-import { UploadAudioVideoMediasUseCase } from '@core/video/application/upload-audio-video-medias/upload-audio-video-medias.use-case';
-import { GetVideoUseCase } from '@core/video/application/get-video/get-video.use-case';
-import { ProcessAudioVideoMediasUseCase } from '@core/video/application/process-audio-video-medias/process-audio-video-medias.use-case';
+import { UpdateVideoUseCase } from '@core/video/application/use-cases/update-video/update-video.use-case';
+import { UploadAudioVideoMediasUseCase } from '@core/video/application/use-cases/upload-audio-video-medias/upload-audio-video-medias.use-case';
+import { GetVideoUseCase } from '@core/video/application/use-cases/get-video/get-video.use-case';
+import { ProcessAudioVideoMediasUseCase } from '@core/video/application/use-cases/process-audio-video-medias/process-audio-video-medias.use-case';
 
 export const REPOSITORIES = {
   VIDEO_REPOSITORY: {
