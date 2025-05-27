@@ -13,11 +13,11 @@ import { Genre } from '@core/genre/domain/genre.aggregate';
 import { GenreModel } from '@core/genre/infra/db/sequelize/genre-model';
 import { GenreSequelizeRepository } from '@core/genre/infra/db/sequelize/genre-sequelize.repository';
 import { UnitOfWorkSequelize } from '@core/shared/infra/db/sequelize/unit-of-work-sequelize';
-import { RatingValues } from '../../../domain/rating.vo';
-import { Video, VideoId } from '../../../domain/video.aggregate';
-import { setupSequelizeForVideo } from '../../../infra/db/sequelize/testing/helpers';
-import { VideoSequelizeRepository } from '../../../infra/db/sequelize/video-sequelize.repository';
-import { VideoModel } from '../../../infra/db/sequelize/video.model';
+import { RatingValues } from '../../../../domain/rating.vo';
+import { Video, VideoId } from '../../../../domain/video.aggregate';
+import { setupSequelizeForVideo } from '../../../../infra/db/sequelize/testing/helpers';
+import { VideoSequelizeRepository } from '../../../../infra/db/sequelize/video-sequelize.repository';
+import { VideoModel } from '../../../../infra/db/sequelize/video.model';
 import { CreateVideoUseCase } from '../create-video.use-case';
 
 import { DatabaseError } from 'sequelize';

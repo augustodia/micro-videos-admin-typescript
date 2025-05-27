@@ -194,6 +194,8 @@ export class VideoSequelizeRepository implements IVideoRepository {
         },
       ),
     ]);
+
+    this.uow.addAggregateRoot(entity);
   }
 
   async delete(id: VideoId): Promise<void> {
