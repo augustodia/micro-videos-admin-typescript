@@ -21,6 +21,8 @@ import { UpdateVideoUseCase } from '@core/video/application/use-cases/update-vid
 import { UploadAudioVideoMediasUseCase } from '@core/video/application/use-cases/upload-audio-video-medias/upload-audio-video-medias.use-case';
 import { GetVideoUseCase } from '@core/video/application/use-cases/get-video/get-video.use-case';
 import { ProcessAudioVideoMediasUseCase } from '@core/video/application/use-cases/process-audio-video-medias/process-audio-video-medias.use-case';
+import { PublishVideoMediaReplacedInQueueHandler } from '@core/video/application/handlers/publish-video-media-replaced-in-queue.handler';
+import { UploadImageMediasUseCase } from '@core/video/application/use-cases/upload-image-medias/upload-image-medias.use-case';
 
 export const REPOSITORIES = {
   VIDEO_REPOSITORY: {
@@ -112,6 +114,18 @@ export const USE_CASES = {
       'IStorage',
     ],
   },
+
+  UPLOAD_IMAGE_MEDIA_USE_CASE: {
+    provide: UploadImageMediasUseCase,
+    useFactory: (
+      uow: IUnitOfWork,
+      videoRepo: IVideoRepository,
+      storage: IStorage,
+    ) => {
+      return new UploadImageMediasUseCase(uow, videoRepo, storage);
+    },
+    inject: ['UnitOfWork', REPOSITORIES.VIDEO_REPOSITORY.provide, 'IStorage'],
+  },
   GET_VIDEO_USE_CASE: {
     provide: GetVideoUseCase,
     useFactory: (
@@ -143,7 +157,15 @@ export const USE_CASES = {
   },
 };
 
+export const HANDLERS = {
+  PUBLISH_VIDEO_MEDIA_REPLACED_IN_QUEUE_HANDLER: {
+    provide: PublishVideoMediaReplacedInQueueHandler,
+    useClass: PublishVideoMediaReplacedInQueueHandler,
+  },
+};
+
 export const VIDEOS_PROVIDERS = {
   REPOSITORIES,
   USE_CASES,
+  HANDLERS,
 };
